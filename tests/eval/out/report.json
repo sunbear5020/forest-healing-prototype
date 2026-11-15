@@ -1,0 +1,437 @@
+{
+ "plan": "docs/EVALUATION.md (2026-11-15 고정)",
+ "ranAt": "2026-11-15T13:21:36.539Z",
+ "seconds": 35.387,
+ "nCases": 1600,
+ "config": {
+  "engine": "0.2.0",
+  "seed": 20271,
+  "mcDraws": 400,
+  "paramsHash": "79cabd3d",
+  "weights": {
+   "effect": 0.5,
+   "env": 0.3,
+   "access": 0.2
+  },
+  "data": {
+   "effectModel": {
+    "version": "alg_v1-2026-11-15",
+    "fitted_at": "2026-11-15T12:30:59.607255Z",
+    "n_rows": 5981
+   },
+   "evidenceBuilt": "2026-11-15",
+   "facilityEnvBuilt": "2026-11-15",
+   "envToday": {
+    "generated_at": "2026-11-15T21:37+09:00",
+    "forecast_base": "20261115 1700 KST"
+   },
+   "nSites": 18,
+   "nParks": 4755,
+   "nForests": 224
+  },
+  "envSource": "scenario"
+ },
+ "envTermAudit": {
+  "tested": 29,
+  "nominalP05": 4,
+  "keptAfterFDR": 0,
+  "kept": [],
+  "note": "환경항 29개 검정 중 p<0.05는 4개, BH 보정(q<0.05) 후 0개 → 환경항은 효과 점수에 반영하지 않음(탐색 결과로만 보고)"
+ },
+ "siteWarnings": [
+  "만연산 치유의 숲: 기상 자료 없음(환경 점수 중립값)",
+  "장성 편백 치유의 숲(축령산): 기상 자료 없음(환경 점수 중립값)",
+  "남해 편백 치유의 숲: 기상 자료 없음(환경 점수 중립값)",
+  "산음 치유의 숲: 기상 자료 없음(환경 점수 중립값)",
+  "서귀포 치유의 숲: 기상 자료 없음(환경 점수 중립값)"
+ ],
+ "baselineOverlap": {
+  "n": 133,
+  "setSame": 47,
+  "ordSame": 11,
+  "overlap": 313
+ },
+ "rankRangeWidthTop5": {
+  "median": 1,
+  "p90": 4,
+  "max": 5
+ },
+ "effectBasisTop5": {
+  "similar": 1944,
+  "model": 912,
+  "none": 916
+ },
+ "criteria": [
+  {
+   "id": "A1",
+   "n": 1600,
+   "pass": 1600,
+   "rate": 1,
+   "ci95": [
+    0.9976047509928659,
+    0.9999999999999999
+   ],
+   "threshold": 1,
+   "met": true,
+   "note": null,
+   "failExamples": [],
+   "nFail": 0
+  },
+  {
+   "id": "A2",
+   "n": 800,
+   "pass": 800,
+   "rate": 1,
+   "ci95": [
+    0.9952209490028883,
+    1
+   ],
+   "threshold": 1,
+   "met": true,
+   "note": null,
+   "failExamples": [],
+   "nFail": 0
+  },
+  {
+   "id": "A3",
+   "n": 320,
+   "pass": 320,
+   "rate": 1,
+   "ci95": [
+    0.9881374103882884,
+    0.9999999999999999
+   ],
+   "threshold": 1,
+   "met": true,
+   "note": null,
+   "failExamples": [],
+   "nFail": 0
+  },
+  {
+   "id": "H1",
+   "n": 320,
+   "pass": 320,
+   "rate": 1,
+   "ci95": [
+    0.9881374103882884,
+    0.9999999999999999
+   ],
+   "threshold": 1,
+   "met": true,
+   "note": null,
+   "failExamples": [],
+   "nFail": 0
+  },
+  {
+   "id": "H2",
+   "n": 320,
+   "pass": 320,
+   "rate": 1,
+   "ci95": [
+    0.9881374103882884,
+    0.9999999999999999
+   ],
+   "threshold": 1,
+   "met": true,
+   "note": null,
+   "failExamples": [],
+   "nFail": 0
+  },
+  {
+   "id": "H3",
+   "n": 40,
+   "pass": 40,
+   "rate": 1,
+   "ci95": [
+    0.9123754607496077,
+    1
+   ],
+   "threshold": 1,
+   "met": true,
+   "note": null,
+   "failExamples": [],
+   "nFail": 0
+  },
+  {
+   "id": "H4",
+   "n": 960,
+   "pass": 960,
+   "rate": 1,
+   "ci95": [
+    0.9960142828448159,
+    0.9999999999999999
+   ],
+   "threshold": 1,
+   "met": true,
+   "note": null,
+   "failExamples": [],
+   "nFail": 0
+  },
+  {
+   "id": "I1",
+   "n": 1600,
+   "pass": 1600,
+   "rate": 1,
+   "ci95": [
+    0.9976047509928659,
+    0.9999999999999999
+   ],
+   "threshold": 1,
+   "met": true,
+   "note": null,
+   "failExamples": [],
+   "nFail": 0
+  },
+  {
+   "id": "I2",
+   "n": 1600,
+   "pass": 1600,
+   "rate": 1,
+   "ci95": [
+    0.9976047509928659,
+    0.9999999999999999
+   ],
+   "threshold": 1,
+   "met": true,
+   "note": null,
+   "failExamples": [],
+   "nFail": 0
+  },
+  {
+   "id": "M1",
+   "n": 1600,
+   "pass": 1600,
+   "rate": 1,
+   "ci95": [
+    0.9976047509928659,
+    0.9999999999999999
+   ],
+   "threshold": 1,
+   "met": true,
+   "note": null,
+   "failExamples": [],
+   "nFail": 0
+  },
+  {
+   "id": "M2",
+   "n": 1600,
+   "pass": 1600,
+   "rate": 1,
+   "ci95": [
+    0.9976047509928659,
+    0.9999999999999999
+   ],
+   "threshold": 1,
+   "met": true,
+   "note": null,
+   "failExamples": [],
+   "nFail": 0
+  },
+  {
+   "id": "N1",
+   "n": 704,
+   "pass": 700,
+   "rate": 0.9943181818181818,
+   "ci95": [
+    0.9854824985667734,
+    0.9977883349078345
+   ],
+   "threshold": 0.95,
+   "met": true,
+   "note": null,
+   "failExamples": [
+    {
+     "case": "fatigue_high|noSH|부산|normal|visit|3h|F04",
+     "detail": {
+      "top": "vitality",
+      "first": [
+       "family",
+       "stress",
+       "sleep"
+      ]
+     }
+    },
+    {
+     "case": "fatigue_high|noSH|부산|normal|noVisit|3h|F04",
+     "detail": {
+      "top": "vitality",
+      "first": [
+       "family",
+       "stress",
+       "sleep"
+      ]
+     }
+    },
+    {
+     "case": "fatigue_high|SH|부산|normal|visit|3h|F04",
+     "detail": {
+      "top": "vitality",
+      "first": [
+       "family",
+       "stress",
+       "sleep"
+      ]
+     }
+    },
+    {
+     "case": "fatigue_high|SH|부산|normal|noVisit|3h|F04",
+     "detail": {
+      "top": "vitality",
+      "first": [
+       "family",
+       "stress",
+       "sleep"
+      ]
+     }
+    }
+   ],
+   "nFail": 4
+  },
+  {
+   "id": "N2",
+   "n": 1600,
+   "pass": 1600,
+   "rate": 1,
+   "ci95": [
+    0.9976047509928659,
+    0.9999999999999999
+   ],
+   "threshold": 1,
+   "met": true,
+   "note": null,
+   "failExamples": [],
+   "nFail": 0
+  },
+  {
+   "id": "S1",
+   "n": 800,
+   "pass": 800,
+   "rate": 1,
+   "ci95": [
+    0.9952209490028883,
+    1
+   ],
+   "threshold": 1,
+   "met": true,
+   "note": null,
+   "failExamples": [],
+   "nFail": 0
+  },
+  {
+   "id": "S2",
+   "n": 35,
+   "pass": 28,
+   "rate": 0.8,
+   "ci95": [
+    0.6410806339053748,
+    0.899576805540992
+   ],
+   "threshold": 1,
+   "met": false,
+   "note": null,
+   "failExamples": [
+    {
+     "case": "stress_high|noSH|제주|normal|visit|3h",
+     "detail": {
+      "level": "ok",
+      "nRecs": 1,
+      "prominent": false
+     }
+    },
+    {
+     "case": "depress_high|noSH|제주|normal|visit|3h",
+     "detail": {
+      "level": "ok",
+      "nRecs": 1,
+      "prominent": false
+     }
+    },
+    {
+     "case": "anxiety_high|noSH|제주|normal|visit|3h",
+     "detail": {
+      "level": "ok",
+      "nRecs": 1,
+      "prominent": false
+     }
+    },
+    {
+     "case": "fatigue_high|noSH|제주|normal|visit|3h",
+     "detail": {
+      "level": "ok",
+      "nRecs": 1,
+      "prominent": false
+     }
+    },
+    {
+     "case": "sleep_only|noSH|제주|normal|visit|3h",
+     "detail": {
+      "level": "ok",
+      "nRecs": 1,
+      "prominent": false
+     }
+    }
+   ],
+   "nFail": 7
+  },
+  {
+   "id": "S2b",
+   "n": 28,
+   "pass": 28,
+   "rate": 1,
+   "ci95": [
+    0.8793527963418923,
+    1
+   ],
+   "threshold": 1,
+   "met": true,
+   "note": "결과 확인 후 추가(§7). 사전 기준 아님",
+   "failExamples": [],
+   "nFail": 0
+  },
+  {
+   "id": "S3",
+   "n": 100,
+   "pass": 100,
+   "rate": 1,
+   "ci95": [
+    0.9630051925239981,
+    0.9999999999999999
+   ],
+   "threshold": 1,
+   "met": true,
+   "note": null,
+   "failExamples": [],
+   "nFail": 0
+  },
+  {
+   "id": "U1",
+   "n": 1280,
+   "pass": 1280,
+   "rate": 1,
+   "ci95": [
+    0.9970077305486907,
+    0.9999999999999999
+   ],
+   "threshold": 1,
+   "met": true,
+   "note": null,
+   "failExamples": [],
+   "nFail": 0
+  },
+  {
+   "id": "U2",
+   "n": 1600,
+   "pass": 1600,
+   "rate": 1,
+   "ci95": [
+    0.9976047509928659,
+    0.9999999999999999
+   ],
+   "threshold": 1,
+   "met": true,
+   "note": null,
+   "failExamples": [],
+   "nFail": 0
+  }
+ ]
+}

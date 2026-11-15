@@ -132,7 +132,7 @@
       return '<li class="eg-item"><div class="eg-item-head"><span class="eg-rank">' + e.rank + '</span><div><b>' + esc(e.site.name) + '</b>' +
         ' <span class="eg-badge ' + b[1] + '">' + b[0] + '</span>' +
         '<small class="eg-sub">' + esc(e.site.address || '') + '</small></div>' +
-        '<div class="eg-score"><b>' + e.total.toFixed(0) + '</b><small>순위 범위 ' + (e.rankRange ? e.rankRange[0] + '~' + e.rankRange[1] + '위' : '-') + '</small></div></div>' +
+        '<div class="eg-score"><b>' + e.total.toFixed(0) + '</b><small>점수 범위 ' + (e.totalRange ? e.totalRange[0] + '~' + e.totalRange[1] : '-') + ' · 순위 ' + (e.rankRange ? e.rankRange[0] + '~' + e.rankRange[1] + '위' : '-') + '</small></div></div>' +
         '<div class="eg-bars"><span>효과 ' + (e.scores.effect == null ? '–' : e.scores.effect) + '</span><span>환경 ' + e.scores.env + '</span><span>접근 ' + e.scores.access +
         (e.access.hours != null ? ' (약 ' + e.access.hours + '시간)' : '') + '</span></div>' +
         '<details><summary>추천 근거와 프로그램</summary><ul class="eg-reasons">' + e.reasons.map(function (x) { return '<li>' + esc(x) + '</li>'; }).join('') + '</ul>' +
@@ -141,12 +141,22 @@
     if (!r.recommendations.length) h += '<p class="summary">조건에 맞는 시설이 없습니다. 이동시간을 늘리거나 아래 대안을 확인하세요.</p>';
     if (r.excluded.length) h += '<details class="eg-excl"><summary>제외된 시설 ' + r.excluded.length + '곳</summary><ul>' +
       r.excluded.map(function (x) { return '<li>' + esc(x.name) + ': ' + esc(x.reasons.join(', ')) + '</li>'; }).join('') + '</ul></details>';
+    if (r.warnings && r.warnings.length) h += '<details class="eg-excl"><summary>자료 경고 ' + r.warnings.length + '건</summary><ul>' +
+      r.warnings.map(function (w) { return '<li>' + esc(w) + '</li>'; }).join('') + '</ul></details>';
     if (!alt.prominent) h += '<details class="eg-alt-wrap"><summary>방문이 어려울 때 대안 보기</summary>' + altHTML + '</details>';
     h += '<details class="eg-notes"><summary>해석 유의사항과 계수 근거</summary><ul>' + r.notes.map(function (n) { return '<li>' + esc(n) + '</li>'; }).join('') + '</ul>' +
       '<table class="eg-params"><thead><tr><th>계수</th><th>값</th><th>근거</th></tr></thead><tbody>' +
       Object.keys(r.params).map(function (k) { var p = r.params[k]; return '<tr><td>' + esc(p.note) + '</td><td>' + esc(JSON.stringify(p.value)) + '</td><td>' +
-        ({ rule: '공공 기준', literature: '문헌', model: '모형', demo: '시연값' }[p.basis]) + '</td></tr>'; }).join('') + '</tbody></table></details>';
+        ({ rule: '공공 기준', literature: '문헌', model: '모형', demo: '시연값' }[p.basis]) + '</td></tr>'; }).join('') + '</tbody></table>' + configLine(r.config) + '</details>';
     document.getElementById('eg-out').innerHTML = h;
+  }
+
+  function configLine(c) {
+    if (!c) return '';
+    var em = c.data.effectModel, et = c.data.envToday;
+    return '<p class="eg-config"><small>엔진 ' + esc(c.engine) + ' · 계수 해시 ' + esc(c.paramsHash) + ' · seed ' + c.seed + ' · 반복 ' + c.mcDraws +
+      (em ? ' · 효과모형 ' + esc(em.version) : '') + (et ? ' · 예보 기준 ' + esc(et.forecast_base || '') : '') +
+      ' · 평가 결과: tests/eval/out/report.md</small></p>';
   }
 
   function renderAlternatives(a) {

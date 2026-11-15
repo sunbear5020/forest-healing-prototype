@@ -84,4 +84,25 @@ t('같은 입력·같은 seed → 같은 결과(재현성)', () => {
   const a = E.recommend(base, ctx), b = E.recommend(base, ctx);
   assert.deepEqual(a.recommendations.map((e) => [e.site.id, e.rankRange]), b.recommendations.map((e) => [e.site.id, e.rankRange]));
 });
+t('환경항 다중비교 보정(BH) 결과를 보고하고, 남은 항만 반영', () => {
+  const r = E.recommend(base, ctx);
+  const a = r.evidenceAudit.envTerms;
+  assert.ok(a.tested > 0 && a.keptAfterFDR <= a.nominalP05);
+  if (a.keptAfterFDR === 0) r.recommendations.forEach((e) => assert.equal(e.envTermsUsed.length, 0));
+});
+t('시설 목록 순서를 바꿔도 결과 동일(순서 불변)', () => {
+  const a = E.recommend(base, ctx), b = E.recommend(base, { ...ctx, sites: ctx.sites.slice().reverse() });
+  assert.deepEqual(a.recommendations.map((e) => [e.site.id, e.total]), b.recommendations.map((e) => [e.site.id, e.total]));
+});
+t('설정 기록과 점수 범위가 결과에 포함', () => {
+  const r = E.recommend(base, ctx);
+  assert.equal(r.config.engine, E.version);
+  assert.ok(r.config.paramsHash && r.config.data.effectModel.version);
+  r.recommendations.forEach((e) => assert.ok(e.totalRange[0] <= e.total + 1 && e.totalRange[1] >= e.total - 1));
+});
+t('자료가 빠지면 조용히 넘어가지 않고 경고', () => {
+  const r = E.recommend(base, { ...ctx, envToday: null, evidence: { prior: ctx.evidence.prior } });
+  assert.ok(r.warnings.some((w) => w.includes('효과모형')));
+  assert.ok(r.warnings.some((w) => w.includes('예보')));
+});
 console.log(`\n${n} tests passed`);
