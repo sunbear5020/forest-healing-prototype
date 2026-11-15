@@ -325,6 +325,12 @@
       basis.push('시설 환경 프로필은 공개자료 요약(data.js)만 있음');
       if (walk === 'barrier' && !proto.barrierFree) { score -= 15; notes.push('무장애 숲길 정보 없음'); }
     }
+    // 임상(반경 5 km, 1:5,000 임상도) — 근거 표시만, 점수에는 쓰지 않음(효과와의 관계 미추정)
+    var stv = ctx.facilityEnv && ctx.facilityEnv.stands && ctx.facilityEnv.stands[site.id];
+    if (stv) {
+      var sp = stv.pct_of_5km_circle;
+      basis.push('반경 5 km 임상: 활엽수림 ' + sp.broadleaf + '%, 침엽수림 ' + sp.conifer + '%, 혼효림 ' + sp.mixed + '%' + (sp.bamboo >= 0.5 ? ', 죽림 ' + sp.bamboo + '%' : '') + '(1:5,000 임상도, 원 면적 대비)');
+    }
     if (walk === 'barrier' && proto && proto.barrierFree) { score += 5; basis.push('무장애 데크 있음'); }
     return { score: clamp(score, 0, 100), hazards: hazards, notes: notes, basis: basis, indoor: indoor };
   }
