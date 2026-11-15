@@ -1,13 +1,13 @@
 {
  "plan": "docs/EVALUATION.md (2026-11-15 고정)",
- "ranAt": "2026-11-15T13:59:02.474Z",
- "seconds": 38.258,
+ "ranAt": "2026-11-15T16:11:17.697Z",
+ "seconds": 42.4,
  "nCases": 1600,
  "config": {
-  "engine": "0.3.0",
+  "engine": "0.4.0",
   "seed": 20271,
   "mcDraws": 400,
-  "paramsHash": "c02f3cff",
+  "paramsHash": "ee591a7f",
   "weights": {
    "effect": 0.5,
    "env": 0.3,
@@ -41,18 +41,18 @@
  "siteWarnings": [],
  "baselineOverlap": {
   "n": 133,
-  "setSame": 41,
-  "ordSame": 12,
-  "overlap": 307
+  "setSame": 83,
+  "ordSame": 79,
+  "overlap": 349
  },
  "rankRangeWidthTop5": {
-  "median": 1,
-  "p90": 3,
-  "max": 5
+  "median": 0,
+  "p90": 1,
+  "max": 2
  },
  "effectBasisTop5": {
-  "similar": 1944,
-  "model": 912,
+  "similar": 1920,
+  "model": 936,
   "none": 916
  },
  "criteria": [
@@ -253,12 +253,12 @@
   },
   {
    "id": "N1",
-   "n": 704,
-   "pass": 700,
-   "rate": 0.9943181818181818,
+   "n": 680,
+   "pass": 676,
+   "rate": 0.9941176470588236,
    "ci95": [
-    0.9854824985667734,
-    0.9977883349078345
+    0.9849735119019354,
+    0.9977101973079168
    ],
    "threshold": 0.95,
    "met": true,

@@ -23,7 +23,7 @@
 }(typeof self !== 'undefined' ? self : this, function () {
   'use strict';
 
-  var VERSION = '0.3.0';
+  var VERSION = '0.4.0';
 
   /* ---------------------------------------------------------------------
      계수표 — basis: rule(공공 기준) / literature / model / demo(시연값)
@@ -47,6 +47,7 @@
     mcDraws:        { value: 400, basis: 'demo', note: '순위 범위 계산 반복 수' },
     fdr:            { value: 0.05, basis: 'rule', note: '효과모형 환경항 다중비교 보정(Benjamini-Hochberg) 기준 q' },
     forestPark:     { value: { canopyMin: 60, areaHa: 10, radiusKm: [10, 20, 40] }, basis: 'demo', note: '산림공원(숲이 많은 큰 공원): 수관 피복 60% 이상·10 ha 이상. 공식 공원 구분이 아니라 WorldCover 기준 정의' },
+    nearIfUncertain: { value: { delta: 5, pSure: 0.8 }, basis: 'demo', note: '같은 순위 단계 안에서 1위 후보보다 점수가 delta점 넘게 낮을 확률이 pSure 미만인(확실히 낮다고 할 수 없는) 시설 중 이동시간이 가장 짧은 곳을 앞에 둠. v0.3 가상 판정 후 추가(사후 규칙)' },
     badWeatherIndoorFirst: { value: ['pm25', 'rain'], basis: 'demo', note: 'PM2.5 나쁨·비 예상일에는 실내 대체 시설이 있는 곳을 먼저(점수보다 앞선 순위 규칙). v0.2 가상 판정에서 드러난 약점 보완' }
   };
 
@@ -563,6 +564,40 @@
     // 4. 순위 범위(몬테카를로)
     var pool = evals.filter(function (e) { return e.eligible; });
     var rng = mulberry32(input.seed || 20271);
+    // 시설별 종합 점수의 표준편차(효과 구간만, 정규 근사, 0~100 절단 무시) — 시드와 무관한 해석적 값
+    var tSD = pool.map(function (e) {
+      if (e.effectSD == null) return 0;
+      var v = 0, den = 0;
+      Object.keys(e.byDomain).forEach(function (d) {
+        var x = e.byDomain[d], sd = Math.max(0.01, (x.hi - x.lo) / 2.563);
+        v += Math.pow(profile.weights[d] * sd, 2); den += profile.weights[d];
+      });
+      return W.effect * 100 / PARAMS.effectScale.value * Math.sqrt(v) / den;
+    });
+    function normCdf(z) { var t = 1 / (1 + 0.2316419 * Math.abs(z)), d = 0.3989423 * Math.exp(-z * z / 2);
+      var q = d * t * (0.3193815 + t * (-0.3565638 + t * (1.781478 + t * (-1.821256 + t * 1.330274)))); return z > 0 ? 1 - q : q; }
+    var NU = PARAMS.nearIfUncertain.value;
+    // i가 j보다 delta점 넘게 높을 확률(점수 차이 = 주어진 값 기준)
+    function pSure(vals, i, j) {
+      var sd = Math.sqrt(tSD[i] * tSD[i] + tSD[j] * tSD[j]), diff = vals[i] - vals[j] - NU.delta;
+      return sd < 1e-9 ? (diff > 0 ? 1 : 0) : normCdf(diff / sd);
+    }
+    function hoursOf(e) { return e.access.hours == null ? 0 : e.access.hours; }
+    // 순서 규칙: tier → (점수 최고 후보를 '확실히' 앞서지 못하는 시설 중) 이동시간 짧은 곳 → 점수 → ID
+    function orderPool(vals) {
+      var rest = pool.map(function (_, i) { return i; }), out = [];
+      var byScore = function (a, b) { return pool[a].tier - pool[b].tier || vals[b] - vals[a] || (pool[a].site.id < pool[b].site.id ? -1 : 1); };
+      while (rest.length) {
+        rest.sort(byScore);
+        var best = rest[0];
+        var cand = rest.filter(function (j) { return pool[j].tier === pool[best].tier && (j === best || pSure(vals, best, j) < NU.pSure); });
+        cand.sort(function (a, b) { return hoursOf(pool[a]) - hoursOf(pool[b]) || vals[b] - vals[a] || (pool[a].site.id < pool[b].site.id ? -1 : 1); });
+        var pick = cand[0];
+        if (pick !== best) pool[pick]._nearFirstOver = pool[pick]._nearFirstOver || pool[best].site.name;
+        out.push(pick); rest.splice(rest.indexOf(pick), 1);
+      }
+      return out;
+    }
     var N = PARAMS.mcDraws.value, ranks = pool.map(function () { return []; }), totals = pool.map(function () { return []; });
     for (var it = 0; it < N && pool.length; it++) {
       var draws = pool.map(function (e) {
@@ -575,15 +610,16 @@
         return total(e, clamp(100 * (num / den) / PARAMS.effectScale.value, 0, 100));
       });
       draws.forEach(function (v, i) { totals[i].push(v); });
-      var order = draws.map(function (v, i) { return [v, i]; }).sort(function (a, b) { return pool[a[1]].tier - pool[b[1]].tier || b[0] - a[0] || a[1] - b[1]; });
-      order.forEach(function (o, r) { ranks[o[1]].push(r + 1); });
+      orderPool(draws).forEach(function (i, r) { ranks[i].push(r + 1); });
     }
     pool.forEach(function (e, i) {
       e.rankRange = ranks[i].length ? [Math.round(quantile(ranks[i], 0.1)), Math.round(quantile(ranks[i], 0.9))] : null;
       e.totalRange = totals[i].length ? [round(quantile(totals[i], 0.1), 0), round(quantile(totals[i], 0.9), 0)] : null;
     });
-    pool.sort(function (a, b) { return a.tier - b.tier || b.total - a.total || (a.site.id < b.site.id ? -1 : 1); });
-    pool.forEach(function (e, i) { e.rank = i + 1; });
+    pool.forEach(function (e) { delete e._nearFirstOver; });
+    var finalOrder = orderPool(pool.map(function (e) { return e.total; }));
+    pool = finalOrder.map(function (i) { return pool[i]; });
+    pool.forEach(function (e, i) { e.rank = i + 1; e.nearFirst = e._nearFirstOver || null; delete e._nearFirstOver; });
     var top = pool.slice(0, input.topN || 5);
     top.forEach(function (e) {
       e.programs = pickPrograms(e.proto, profile, walk, e.envDetail.hazards);
@@ -669,6 +705,7 @@
     }
     if (profile.literatureOnlyDomains.length) out.push(profile.literatureOnlyDomains.map(function (d) { return DOMAINS[d].label; }).join('·') + '는 효과 자료가 없어 환경 노출만 반영');
     out.push('방문일 환경: ' + e.env.label);
+    if (e.nearFirst) out.push('점수가 더 높은 ' + e.nearFirst + '와(과) 차이가 불확실 범위 안이라, 이동시간이 짧은 이곳을 앞에 둠');
     var badW = e.envDetail.hazards.filter(function (h) { return PARAMS.badWeatherIndoorFirst.value.indexOf(h) >= 0; });
     if (badW.length) out.push(e.tier === 0 ? '나쁜 날씨(' + badW.join('·') + '): 실내 대체 시설이 있어 앞 순위로 둠' : '나쁜 날씨(' + badW.join('·') + '): 실내 대체 시설 정보가 없어 실내 시설 다음 순위로 둠');
     e.envDetail.notes.forEach(function (n) { out.push(n); });
