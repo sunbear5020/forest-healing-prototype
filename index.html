@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>숲처방 — 산림치유 맞춤 추천 | 경상국립대 인간환경연구실</title>
+<meta name="description" content="기상환경·지역환경·임상도·치유목적 4축으로 전국 치유의 숲 12곳과 산림치유 프로그램을 추천하는 대국민 서비스 프로토타입" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&family=Noto+Serif+KR:wght@500;600;700&display=swap" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<header class="site-header">
+  <div class="wrap header-inner">
+    <a class="brand" href="#top">
+      <span class="brand-mark" aria-hidden="true">
+        <svg viewBox="0 0 32 32" width="30" height="30">
+          <path d="M16 3c5.2 3.6 8.6 8.3 8.6 13.1 0 4.5-3.9 7.9-8.6 7.9s-8.6-3.4-8.6-7.9C7.4 11.3 10.8 6.6 16 3z" fill="currentColor" opacity=".92"/>
+          <path d="M16 12v17" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" opacity=".55"/>
+          <path d="M16 19l-5 4M16 23l4.5 3.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" opacity=".45"/>
+        </svg>
+      </span>
+      <span class="brand-text">
+        <strong>숲처방</strong>
+        <em>산림치유 맞춤 추천</em>
+      </span>
+    </a>
+    <nav class="header-actions">
+      <button class="ghost-btn" id="btn-algo">알고리즘·데이터</button>
+      <button class="ghost-btn" id="btn-about">서비스 소개</button>
+    </nav>
+  </div>
+</header>
+
+<section class="hero" id="top">
+  <div class="wrap">
+    <p class="eyebrow">경상국립대학교 산림환경자원학과 · 인간환경연구실(HEL&amp;FEI) 프로토타입</p>
+    <h1>오늘의 숲을,<br /><span>당신의 몸과 마음에 맞게.</span></h1>
+    <p class="lede">
+      기상환경 · 지역환경 · 임상도 · 치유목적 네 개의 축으로 전국 <strong>치유의 숲 12곳</strong>을 평가해
+      지금 조건에 가장 잘 맞는 숲과 <strong>산림치유 프로그램</strong>을 제안합니다.
+      왼쪽 조건을 바꾸면 추천 순위가 실시간으로 달라집니다.
+    </p>
+    <ul class="hero-meta">
+      <li><b>12</b><span>치유의 숲</span></li>
+      <li><b>37</b><span>등록 프로그램</span></li>
+      <li><b>4</b><span>추천 축</span></li>
+      <li><b>4</b><span>기상 시나리오</span></li>
+    </ul>
+  </div>
+  <div class="hero-ridge" aria-hidden="true"></div>
+</section>
+
+<main class="wrap layout">
+  <!-- ───────────────── 입력 패널 ───────────────── -->
+  <aside class="panel" id="panel" aria-label="추천 조건 입력">
+    <div class="panel-head">
+      <h2>추천 조건</h2>
+      <button class="text-btn" id="btn-reset">초기화</button>
+    </div>
+
+    <section class="panel-block">
+      <div class="block-title"><span class="step">1</span> 출발 지역 <em>거리·이동 편의성</em></div>
+      <div class="segmented" id="region-group" role="radiogroup" aria-label="출발 지역"></div>
+    </section>
+
+    <section class="panel-block">
+      <div class="block-title"><span class="step">2</span> 치유 목적</div>
+      <div class="option-list" id="purpose-group" role="radiogroup" aria-label="치유 목적"></div>
+    </section>
+
+    <section class="panel-block">
+      <div class="block-title"><span class="step">3</span> 보행·체력 선호</div>
+      <div class="chip-group" id="walk-group" role="radiogroup" aria-label="보행 선호"></div>
+    </section>
+
+    <section class="panel-block weather-block">
+      <div class="block-title"><span class="step">4</span> 기상·대기환경 시뮬레이터</div>
+      <div class="preset-grid" id="preset-group"></div>
+
+      <div class="slider-row">
+        <label for="temp">기온 <output id="temp-out">19℃</output></label>
+        <input type="range" id="temp" min="0" max="35" step="1" value="19" />
+        <div class="scale"><span>0℃</span><span>35℃</span></div>
+      </div>
+
+      <div class="slider-row">
+        <label for="humidity">습도 <output id="humidity-out">50%</output></label>
+        <input type="range" id="humidity" min="20" max="95" step="1" value="50" />
+        <div class="scale"><span>20%</span><span>95%</span></div>
+      </div>
+
+      <div class="field-row">
+        <span class="field-label">초미세먼지 PM2.5</span>
+        <div class="segmented small" id="pm-group" role="radiogroup" aria-label="초미세먼지"></div>
+      </div>
+
+      <div class="field-row inline">
+        <label class="switch">
+          <input type="checkbox" id="rain" />
+          <span class="switch-track" aria-hidden="true"><span class="switch-thumb"></span></span>
+          <span class="switch-label">강수(비·눈)</span>
+        </label>
+        <label class="switch">
+          <input type="checkbox" id="wind-on" />
+          <span class="switch-track" aria-hidden="true"><span class="switch-thumb"></span></span>
+          <span class="switch-label">강풍</span>
+        </label>
+      </div>
+
+      <div class="env-readout" id="env-readout"></div>
+    </section>
+
+  </aside>
+
+  <!-- ───────────────── 결과 영역 ───────────────── -->
+  <section class="main-col" aria-label="추천 결과">
+    <div class="card map-card">
+      <div class="map-head">
+        <div>
+          <h2>전국 치유의 숲 지도</h2>
+          <p id="map-caption">상위 5곳을 순위 마커로 표시합니다. 마커를 누르면 해당 카드로 이동합니다.</p>
+        </div>
+        <div class="map-legend">
+          <span><i class="dot top"></i>TOP 5</span>
+          <span><i class="dot rest"></i>그 외</span>
+        </div>
+      </div>
+      <div class="map-layout">
+        <div id="map" role="img" aria-label="추천 치유의 숲 위치 지도"></div>
+        <aside class="map-rail">
+          <p class="rail-cap">현재 조건</p>
+          <p class="rail-cond" id="rail-cond"></p>
+          <p class="rail-cap">TOP 5 바로가기</p>
+          <ol class="rail-list" id="rail-list"></ol>
+        </aside>
+      </div>
+    </div>
+
+    <div class="results-head">
+      <div>
+        <h2>추천 치유의 숲 <span id="result-count" class="count-pill">TOP 5</span></h2>
+        <p id="summary" class="summary"></p>
+      </div>
+    </div>
+
+    <p class="demo-tip">
+      <strong>시연 팁</strong> 시나리오 프리셋을 바꾸면 카드의 순위 변동(<span class="up">▲</span>/<span class="down">▼</span>)이 표시됩니다.
+      같은 숲이라도 기상 조건에 따라 프로그램이 실내형으로 자동 전환됩니다.
+    </p>
+
+    <div id="results" class="results"></div>
+
+    <p class="disclaimer">
+      본 화면은 연구실 시연용 프로토타입입니다. 점수와 추천 문구는 공개 데이터에 기반한 가중치 모델의 계산 결과이며,
+      실제 기관의 예약·운영 정보는 방문 전 각 시설에 확인해야 합니다.
+    </p>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap footer-inner">
+    <div>
+      <strong>숲처방</strong>
+      <p>경상국립대학교 산림환경자원학과 인간환경연구실 · 산림치유 추천 알고리즘 프로토타입 v1.0</p>
+    </div>
+    <ul class="source-list">
+      <li>산림청 숲나들e · 한국산림복지진흥원</li>
+      <li>산림청 임상도(1:5,000)</li>
+      <li>기상청 단기예보 · 에어코리아 PM2.5</li>
+    </ul>
+  </div>
+</footer>
+
+<!-- ───────────────── 상세 모달 ───────────────── -->
+<div class="modal" id="modal-detail" hidden>
+  <div class="modal-backdrop" data-close></div>
+  <div class="modal-panel detail-panel" role="dialog" aria-modal="true" aria-labelledby="detail-title">
+    <button class="modal-close" data-close aria-label="닫기">✕</button>
+    <div id="detail-body"></div>
+  </div>
+</div>
+
+<!-- ───────────────── 알고리즘 모달 ───────────────── -->
+<div class="modal" id="modal-algo" hidden>
+  <div class="modal-backdrop" data-close></div>
+  <div class="modal-panel" role="dialog" aria-modal="true" aria-labelledby="algo-title">
+    <button class="modal-close" data-close aria-label="닫기">✕</button>
+    <header class="modal-head">
+      <p class="eyebrow">Algorithm &amp; Data</p>
+      <h2 id="algo-title">기상환경 × 지역환경 × 임상도 × 치유목적</h2>
+      <p>네 축의 가중합으로 종합 적합도를 계산하고, 상위 숲에 프로그램을 매칭합니다. 가중치를 직접 조정해 순위 변화를 확인할 수 있습니다.</p>
+    </header>
+
+    <div class="algo-body">
+      <div class="formula-card">
+        <span class="formula-label">종합 적합도</span>
+        <p class="formula">S = <b id="w-w">0.32</b>·W + <b id="w-r">0.18</b>·R + <b id="w-s">0.22</b>·S<sub>stand</sub> + <b id="w-p">0.28</b>·P</p>
+        <p class="formula-note">W 기상적합도 · R 지역환경 · S<sub>stand</sub> 임상도 매칭 · P 목적 적합도 (각 0~100점)</p>
+      </div>
+
+      <div class="weight-grid">
+        <div class="weight-row">
+          <label for="wt-weather">기상적합도 <em>W</em></label>
+          <input type="range" id="wt-weather" min="0" max="100" step="1" value="32" />
+          <output id="wt-weather-out">32%</output>
+        </div>
+        <div class="weight-row">
+          <label for="wt-region">지역환경 <em>R</em></label>
+          <input type="range" id="wt-region" min="0" max="100" step="1" value="18" />
+          <output id="wt-region-out">18%</output>
+        </div>
+        <div class="weight-row">
+          <label for="wt-stand">임상도 매칭 <em>S</em></label>
+          <input type="range" id="wt-stand" min="0" max="100" step="1" value="22" />
+          <output id="wt-stand-out">22%</output>
+        </div>
+        <div class="weight-row">
+          <label for="wt-purpose">목적 적합도 <em>P</em></label>
+          <input type="range" id="wt-purpose" min="0" max="100" step="1" value="28" />
+          <output id="wt-purpose-out">28%</output>
+        </div>
+      </div>
+      <div class="weight-presets">
+        <button data-weights="32,18,22,28" class="chip">기본형</button>
+        <button data-weights="45,15,15,25" class="chip">기상민감형</button>
+        <button data-weights="20,20,20,40" class="chip">목적중심형</button>
+        <button data-weights="25,25,25,25" class="chip">균등형</button>
+      </div>
+
+      <div class="axis-grid">
+        <article class="axis-card w">
+          <h3><span>W</span>기상적합도</h3>
+          <p class="axis-src">기상청 단기예보 · 에어코리아 PM2.5</p>
+          <ul>
+            <li>숲 체감기온 = 기온 − (표고/100 × 0.6℃ × 0.85) → 열쾌적 구간(18~23℃)과의 거리</li>
+            <li>습도 55% 기준 이탈 보정, 78% 이상 다습 가중 감점</li>
+            <li>PM2.5 좋음/보통/나쁨 → 100/72/28, 나쁨에는 실내 프로그램 보유·수관울폐도로 완충</li>
+            <li>강수 시 해당 숲의 <em>실내 대체 역량</em>(치유센터·숙박·움막)으로 강수 점수 산정</li>
+          </ul>
+        </article>
+
+        <article class="axis-card r">
+          <h3><span>R</span>지역환경</h3>
+          <p class="axis-src">숲나들e 시설정보 · 도로 이동시간</p>
+          <ul>
+            <li>출발 권역 → 숲 소재 권역 편도 이동시간(0.5h 기준 100점, 시간당 감점)</li>
+            <li>지형·경사(완만/보통/산악) × 보행 선호 적합도, 무장애 데크로드 가점</li>
+            <li>표고 적합도: 무장애·완만 선호는 저표고, 트레킹 선호는 중·고표고 가점</li>
+            <li>접근성 유형(도심형/근교형/산악형)에 따라 가족·시니어 조건에서 보정</li>
+          </ul>
+        </article>
+
+        <article class="axis-card s">
+          <h3><span>S</span>임상도 매칭</h3>
+          <p class="axis-src">산림청 임상도 1:5,000 · 수종 구성비</p>
+          <ul>
+            <li>주임상(침엽수림/활엽수림/혼효림) × 치유목적 친화도 행렬</li>
+            <li>대표 수종의 산림치유 인자(피톤치드·음이온·경관·차광) 가중 합산</li>
+            <li>영급(장령림 가점)과 수관울폐도(상/중/하) 반영</li>
+          </ul>
+        </article>
+
+        <article class="axis-card p">
+          <h3><span>P</span>목적 적합도</h3>
+          <p class="axis-src">프로그램 태그 · 대상 · 난이도</p>
+          <ul>
+            <li>숲별 목적 프로파일(5개 목적 0~100) 기본값</li>
+            <li>해당 목적 태그를 가진 프로그램 수에 따른 가점</li>
+            <li>보행 선호와 프로그램 난이도 정합성, 기상 악화 시 실내 프로그램 매칭</li>
+          </ul>
+        </article>
+      </div>
+
+      <div class="dataflow">
+        <h3>데이터 연계 구조</h3>
+        <div class="flow">
+          <div class="flow-col">
+            <span class="flow-cap">공공데이터</span>
+            <div class="flow-item">산림청<br /><b>치유의 숲 시설정보</b></div>
+            <div class="flow-item">산림청<br /><b>임상도·수종 구성</b></div>
+            <div class="flow-item">기상청<br /><b>단기예보(기온·습도·강수)</b></div>
+            <div class="flow-item">에어코리아<br /><b>PM2.5 측정값</b></div>
+          </div>
+          <div class="flow-arrow" aria-hidden="true">→</div>
+          <div class="flow-col">
+            <span class="flow-cap">정규화</span>
+            <div class="flow-item">표고 보정 기온</div>
+            <div class="flow-item">권역 이동시간 행렬</div>
+            <div class="flow-item">임상·인자 점수화</div>
+            <div class="flow-item">목적 프로파일</div>
+          </div>
+          <div class="flow-arrow" aria-hidden="true">→</div>
+          <div class="flow-col">
+            <span class="flow-cap">가중합 · 매칭</span>
+            <div class="flow-item accent">4축 가중합 → <b>종합 적합도</b></div>
+            <div class="flow-item">TOP 5 선정</div>
+            <div class="flow-item">프로그램 자동 선택<br /><small>(기상 악화 시 실내 대체)</small></div>
+            <div class="flow-item">추천 근거 문장 생성</div>
+          </div>
+          <div class="flow-arrow" aria-hidden="true">→</div>
+          <div class="flow-col">
+            <span class="flow-cap">출력</span>
+            <div class="flow-item">순위 카드 · 점수 바</div>
+            <div class="flow-item">지도 마커</div>
+            <div class="flow-item">상세 임상도 리포트</div>
+            <div class="flow-item">기관 시연용 근거</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="algo-note">
+        <h3>모델 파라미터에 관한 안내</h3>
+        <p>
+          가중치·감점 계수는 문헌과 전문가 검토를 거쳐 조정해야 하는 <strong>초기 시연값</strong>입니다.
+          현재 값은 (1) 열쾌적성 구간을 산림치유 프로그램의 활동 적정 기온대로 두고, (2) 미세먼지 나쁨에서 실외 노출을 억제하며,
+          (3) 임상도 인자와 목적의 대응관계를 단순 가산하는 규칙 기반 모델입니다.
+          실데이터 연계 시에는 임상도 GIS 폴리곤과 기상청 격자 예보를 숲 단위로 집계하고, 프로그램 효과 데이터로 목적 프로파일을 추정하는 방식으로 확장할 수 있습니다.
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ───────────────── 소개 모달 ───────────────── -->
+<div class="modal" id="modal-about" hidden>
+  <div class="modal-backdrop" data-close></div>
+  <div class="modal-panel narrow" role="dialog" aria-modal="true" aria-labelledby="about-title">
+    <button class="modal-close" data-close aria-label="닫기">✕</button>
+    <header class="modal-head">
+      <p class="eyebrow">About</p>
+      <h2 id="about-title">숲처방</h2>
+      <p>기상과 임상, 그리고 사람의 목적을 함께 읽는 산림치유 추천 서비스</p>
+    </header>
+    <div class="about-body">
+      <p>
+        치유의 숲은 숲마다 표고와 수종, 숲길의 경사, 프로그램의 성격이 다릅니다. 같은 날 같은 사람이라도
+        기온과 미세먼지, 이동 거리에 따라 가장 알맞은 숲은 달라집니다. 숲처방은 이 차이를 네 개의 축으로
+        드러내어, 국민이 자신의 조건에서 왜 그 숲이 추천되었는지 이해할 수 있게 합니다.
+      </p>
+      <h3>이 프로토타입이 하는 일</h3>
+      <ul class="about-list">
+        <li><b>조건 입력</b> 출발 지역, 치유 목적, 보행·체력 선호, 기상·대기환경</li>
+        <li><b>12곳 평가</b> 전국 국립·공립 치유의 숲의 실데이터를 4축으로 점수화</li>
+        <li><b>프로그램 매칭</b> 비·미세먼지 나쁨에는 실내·저강도 프로그램으로 자동 전환</li>
+        <li><b>근거 제시</b> 표고 보정 기온, 수종 구성, 이동시간 등 실제 수치로 추천 이유 설명</li>
+      </ul>
+      <h3>데이터 출처</h3>
+      <ul class="about-list">
+        <li>산림청 숲나들e(sooperang.go.kr), 한국산림복지진흥원(fowi.or.kr) — 시설·프로그램 정보</li>
+        <li>산림청 국립자연휴양림(foresttrip.go.kr), 지자체 치유의 숲 안내 — 운영 정보</li>
+        <li>산림청 임상도 — 주임상·수종·영급 (숲별 공개자료로 요약)</li>
+        <li>기상청 단기예보, 에어코리아 — 기온·습도·강수·PM2.5 (시뮬레이터로 대체)</li>
+        <li>주소 좌표: 카카오맵 지오코딩 / 표고: DEM 표고값</li>
+      </ul>
+      <p class="about-foot">
+        경상국립대학교 산림환경자원학과 인간환경연구실(HEL&amp;FEI) · 김건우 교수 연구실 시연용 프로토타입.
+        실제 서비스에서는 기상청·에어코리아 API와 임상도 GIS를 실시간 연계합니다.
+      </p>
+    </div>
+  </div>
+</div>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="data.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
