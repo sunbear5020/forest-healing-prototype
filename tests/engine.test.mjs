@@ -12,7 +12,7 @@ const ev = j('evidence.json');
 const ctx = {
   sites: j('sites.json').sites, evidence: ev, facilityEnv: j('facility_env.json'), envToday: j('env_today.json'),
   forests: j('forests_nearby.json').forests, regionHealth: j('region_health.json'), sigunguPoints: ev.sigungu_points,
-  protoForests: sandbox.FORESTS, travelHours: sandbox.TRAVEL_HOURS, parks: j('parks.json').parks
+  tourism: j('tourism.json').sites, tourismMeta: j('tourism.json')._meta, protoForests: sandbox.FORESTS, travelHours: sandbox.TRAVEL_HOURS, parks: j('parks.json').parks
 };
 let n = 0; const t = (name, f) => { f(); n++; console.log('ok -', name); };
 
@@ -119,5 +119,16 @@ t('v0.3: 강풍·폭염이면 대체 경로에 실외 자제 안내', () => {
   assert.ok(r.alternatives.weather.note.includes('강풍'));
   const ok = E.recommend({ ...base, canVisit: false, envOverride: { temp: 20, humidity: 50, pm: 'good', rain: false, wind: 2 } }, ctx);
   assert.equal(ok.alternatives.weather, undefined);
+});
+t('대체 경로 단계: 공원 → 산림공원(수관 60%·10 ha 이상) → 도시숲 자리 → 산림', () => {
+  const r = E.recommend({ ...base, canVisit: false }, ctx);
+  const a = r.alternatives;
+  assert.ok(a.forestParks.length > 0 && a.forestParks.every((p) => p.tree_pct >= 60 && p.area_ha >= 10));
+  assert.equal(a.urbanForest.available, false);
+  console.log('forestParks:', a.forestParks.map((p) => `${p.name} ${p.km}km 수관${p.tree_pct}% ${p.area_ha}ha`).join(' | '));
+});
+t('관광 연계: 추천 시설마다 10 km 안 관광 목록(최대 5곳)', () => {
+  const r = E.recommend(base, ctx);
+  r.recommendations.forEach((e) => { assert.ok(Array.isArray(e.links.tourism)); assert.ok(e.links.tourism.length <= 5 && e.links.tourism.every((t) => t.km <= 10)); });
 });
 console.log(`\n${n} tests passed`);

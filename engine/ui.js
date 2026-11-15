@@ -136,7 +136,8 @@
         '<div class="eg-bars"><span>효과 ' + (e.scores.effect == null ? '–' : e.scores.effect) + '</span><span>환경 ' + e.scores.env + '</span><span>접근 ' + e.scores.access +
         (e.access.hours != null ? ' (약 ' + e.access.hours + '시간)' : '') + '</span></div>' +
         '<details><summary>추천 근거와 프로그램</summary><ul class="eg-reasons">' + e.reasons.map(function (x) { return '<li>' + esc(x) + '</li>'; }).join('') + '</ul>' +
-        '<p><b>프로그램</b><br>' + prog + '</p><p><b>주변 산림</b> ' + near + '<br><small>' + esc(e.links.tourismNote || '') + '</small></p></details></li>';
+        '<p><b>프로그램</b><br>' + prog + '</p><p><b>주변 산림</b> ' + near + '</p><p><b>주변 관광</b> ' + (e.links.tourism && e.links.tourism.length ? e.links.tourism.map(function (t) { return esc(t.name) + ' <small>' + esc(t.type) + ' ' + t.km + 'km</small>'; }).join(', ') : '–') +
+        '<br><small>' + esc(e.links.tourismNote || '') + '</small></p></details></li>';
     }).join('') + '</ol>';
     if (!r.recommendations.length) h += '<p class="summary">조건에 맞는 시설이 없습니다. 이동시간을 늘리거나 아래 대안을 확인하세요.</p>';
     if (r.excluded.length) h += '<details class="eg-excl"><summary>제외된 시설 ' + r.excluded.length + '곳</summary><ul>' +
@@ -169,6 +170,10 @@
       h += '<li><b>가까운 숲 같은 공원</b>(수관 피복 30% 이상, 1 ha 이상)<ul>' +
         (a.parks.length ? a.parks.map(function (p) { return '<li>' + esc(p.name) + ' ' + p.km + 'km · 수관 ' + p.tree_pct + '% · ' + p.area_ha + 'ha <small>' + esc(p.addr || '') + '</small></li>'; }).join('')
           : '<li>반경 10 km 안에 조건에 맞는 공원이 없습니다.</li>') + '</ul><small>' + esc(a.parkNote || '') + '</small></li>';
+      h += '<li><b>산림공원</b>(수관 피복 60% 이상, 10 ha 이상인 큰 공원)<ul>' +
+        (a.forestParks && a.forestParks.length ? a.forestParks.map(function (p) { return '<li>' + esc(p.name) + ' ' + p.km + 'km · 수관 ' + p.tree_pct + '% · ' + p.area_ha + 'ha</li>'; }).join('')
+          : '<li>반경 40 km 안에 조건에 맞는 공원이 없습니다.</li>') + '</ul></li>';
+      if (a.urbanForest) h += '<li><b>도시숲</b> <small>' + esc(a.urbanForest.note) + '</small></li>';
       h += '<li><b>가까운 산림</b>(자연휴양림·치유의숲)<ul>' + a.forests.map(function (f) { return '<li>' + esc(f.name) + ' ' + f.km + 'km <small>' + esc(f.kind || '') + '</small></li>'; }).join('') + '</ul></li>';
     }
     return h + '</ol></div>';

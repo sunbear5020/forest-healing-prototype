@@ -21,7 +21,7 @@ GitHub Pages에서 그대로 돌아가는 정적 구성이며, 입력값은 브�
   ├─④ 종합 = 0.5·E + 0.3·V + 0.2·A(시연값), 몬테카를로 400회로 점수·순위 범위(10~90%, 효과 불확실성만 반영)
   ├─④' 나쁜 날씨(PM2.5 나쁨·비)면 실내 대체 시설 있는 곳을 점수보다 먼저(v0.3, 시연 규칙)
   ├─⑤ 프로그램(목적 태그·난이도·기상 → 실내 전환), 주변 산림 20 km, 관광 연계 자리
-  └─⑥ 대체 경로: 디지털치료제 자리 / 공원(수관 ≥30%, ≥1 ha, 2→5→10 km) / 가까운 휴양림·치유의숲
+  └─⑥ 대체 경로: 디지털치료제 자리 / 공원(수관 ≥30%, ≥1 ha, 2→5→10 km) / 산림공원(수관 ≥60%, ≥10 ha) / 도시숲(자료 없음, 자리만) / 가까운 휴양림·치유의숲
        강풍·폭염·PM2.5 나쁨이면 실외 자제 안내를 먼저(v0.3)
 ```
 
@@ -37,7 +37,7 @@ GitHub Pages에서 그대로 돌아가는 정적 구성이며, 입력값은 브�
 | `data/*.json` | 정적 자료 = 공개 조회용 API(GET). 아래 표 |
 | `scripts/build/*.py` | 연구 원자료 → `data/*.json` 재생성 |
 | `scripts/fetch_env_today.py` | 예보·대기질 스냅샷. `.github/workflows/env-daily.yml`이 하루 2회 실행 |
-| `tests/engine.test.mjs` | 엔진 시험 16건(`node tests/engine.test.mjs`) |
+| `tests/engine.test.mjs` | 엔진 시험 18건(`node tests/engine.test.mjs`) |
 | `docs/EVALUATION.md` | **사전 고정 평가계획**: 좋은 추천의 정의, 판정 기준·통과선, 전문가 판정 절차, 변경 기록 |
 | `tests/eval/run_eval.mjs` | 1,600건 교차 시나리오 규칙 판정 → `tests/eval/out/report.{md,json}` |
 | `tests/eval/make_expert_cases.mjs`, `kappa.py` | 전문가 블라인드 판정 사례 100건(엔진 vs 가까운 순), 판정자 간 κ·엔진 선호율 |
@@ -54,9 +54,11 @@ GitHub Pages에서 그대로 돌아가는 정적 구성이며, 입력값은 브�
 | ② 기후 | `facility_env.json` | 매칭 ASOS/AWS 2021~2025 일자료 월평균, 0.65 ℃/100 m 보정 | 확보(30년 평년 아님) |
 | ③ 실황 | `env_today.json` | 기상청 단기예보(5 km 격자), 에어코리아 시도 PM2.5 중앙값 | 자동 갱신(Secrets 등록 필요) |
 | 대안: 공원 | `parks.json` | 전국도시공원정보표준데이터(15012890), 1 ha 이상 4,755곳 + WorldCover 원형 근사 | 확보 |
+| 대안: 산림공원 | `parks.json` | 같은 공원 자료 중 수관 피복 60% 이상·10 ha 이상(공식 구분 아님, 시연 기준) | 확보 |
+| 대안: 도시숲 | — | 산림청 도시숲 현황 통계(15157393)는 지자체별 면적 수치뿐, 전국 위치 자료 없음 | **미확보**(일부 지자체 파일만 있음) |
 | 대안: 산림 | `forests_nearby.json` | 전국휴양림표준데이터(15013111) 186곳 + 산림청 치유의숲 좌표(15110279) 38곳 | 확보 |
 | 지역 맥락 | `region_health.json` | 지역사회건강조사 2025 시군구 스트레스 인지율·우울감 경험률(KOSIS 177) | 확보 |
-| 관광 연계 | — | 한국관광공사 위치기반 관광정보 API | **미확보**(활용신청 필요, 현재 키 미등록 응답) |
+| 관광 연계 | `tourism.json` | 한국관광공사 국문 관광정보 서비스(KorService2) 위치기반 조회, 시설 반경 10 km 관광지·문화시설·레포츠 | 확보(2026-11-15). 재수집: `scripts/build/tourism.py` |
 | 디지털치료제 | — | 개발 중 | 연결 자리만(`ctx.digitalTherapeutic`) |
 | 임상도·수종 | — | 산림청 임상도 | 미확보. 프로토타입 12곳은 공개자료 요약(data.js) |
 
@@ -91,6 +93,7 @@ python scripts/build/sites.py "$R" data/sites.json
 python scripts/build/green_places.py parks_raw.json rcrfrst.json healforest.json "$WC" data
 python scripts/build/evidence.py "$R" parks_raw.json data/evidence.json
 python scripts/build/region_health.py data/region_health.json
+DATA_GO_KR_KEY=... python scripts/build/tourism.py data/sites.json data/tourism.json
 DATA_GO_KR_KEY=... python scripts/fetch_env_today.py
 node tests/engine.test.mjs
 node tests/eval/run_eval.mjs          # 규칙 판정(사전 기준 미달이 있으면 종료 코드 1)

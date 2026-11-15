@@ -46,6 +46,7 @@
     gentleBarrier:  { value: 8, basis: 'demo', note: '무장애 선호: 반경 0.5 km 완경사(8° 미만) 비율이 이 값(%) 미만이면 감점(무장애 데크 정보가 없는 시설)' },
     mcDraws:        { value: 400, basis: 'demo', note: '순위 범위 계산 반복 수' },
     fdr:            { value: 0.05, basis: 'rule', note: '효과모형 환경항 다중비교 보정(Benjamini-Hochberg) 기준 q' },
+    forestPark:     { value: { canopyMin: 60, areaHa: 10, radiusKm: [10, 20, 40] }, basis: 'demo', note: '산림공원(숲이 많은 큰 공원): 수관 피복 60% 이상·10 ha 이상. 공식 공원 구분이 아니라 WorldCover 기준 정의' },
     badWeatherIndoorFirst: { value: ['pm25', 'rain'], basis: 'demo', note: 'PM2.5 나쁨·비 예상일에는 실내 대체 시설이 있는 곳을 먼저(점수보다 앞선 순위 규칙). v0.2 가상 판정에서 드러난 약점 보완' }
   };
 
@@ -379,8 +380,9 @@
     var tour = ctx.tourism && ctx.tourism[site.id];
     return {
       forests: out.slice(0, 3),
-      tourism: tour || null,
-      tourismNote: tour ? null : '주변 관광지 연계는 한국관광공사 위치기반 관광정보 API 활용신청 후 연결 예정(현재 키 미등록)'
+      tourism: tour ? tour.slice(0, 5) : null,
+      tourismNote: tour ? '반경 10 km 관광지·문화시설·레포츠(한국관광공사 관광정보, ' + ((ctx.tourismMeta && ctx.tourismMeta.built) || '') + ' 수집). 거리 기준 참고 목록이며 치유 효과와 무관합니다.'
+                        : '주변 관광지 자료 없음'
     };
   }
 
@@ -392,7 +394,7 @@
     var res = {
       digital: Object.assign({ available: false, status: '개발 중', title: '산림치유 디지털치료제',
                                note: '개발 중인 디지털치료제 연결 자리입니다. 출시 후 링크를 연결합니다.' }, ctx.digitalTherapeutic || {}),
-      parks: [], forests: [], originNote: null
+      parks: [], forestParks: [], urbanForest: null, forests: [], originNote: null
     };
     if (!origin || origin.lat == null) {
       res.originNote = '출발 위치(기기 위치 또는 시군구)를 알려 주시면 근처 공원과 산림을 찾습니다.';
@@ -412,6 +414,18 @@
         });
       }
       res.parks = found.sort(function (a, b) { return b.score - a.score; }).slice(0, 5);
+      var fp = PARAMS.forestPark.value, ffound = [];
+      for (var r2 = 0; r2 < fp.radiusKm.length && ffound.length < 3; r2++) {
+        ffound = [];
+        ctx.parks.forEach(function (p) {
+          if (p.tree_pct == null || p.tree_pct < fp.canopyMin || p.area_m2 < fp.areaHa * 10000) return;
+          var d = haversineKm(origin, p);
+          if (d > fp.radiusKm[r2]) return;
+          ffound.push({ name: p.name, type: p.type, km: round(d, 1), tree_pct: p.tree_pct, area_ha: round(p.area_m2 / 10000, 1), addr: p.addr, lat: p.lat, lng: p.lng, radiusKm: fp.radiusKm[r2] });
+        });
+      }
+      res.forestParks = ffound.sort(function (a, b) { return a.km - b.km; }).slice(0, 3);
+      res.urbanForest = { available: false, note: '도시숲은 전국 위치 자료가 공개되어 있지 않습니다(산림청 도시숲 현황 통계는 지자체별 면적 수치). 지자체 자료를 확보하면 이 단계에 연결합니다.' };
       res.parkNote = '수관 피복률은 공원 대표 좌표 중심의 원형 근사(ESA WorldCover 2021) 추정값이며, 수종 정보는 아직 결합하지 않았습니다.';
     }
     var fl = [];
