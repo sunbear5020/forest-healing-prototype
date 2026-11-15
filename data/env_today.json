@@ -1,0 +1,676 @@
+{
+ "generated_at": "2026-11-15T21:37+09:00",
+ "forecast_base": "20261115 1700 KST",
+ "sources": {
+  "forecast": "기상청 단기예보 조회서비스(공공데이터포털 15084084), 격자 5 km, 10~16시",
+  "pm25": "한국환경공단 에어코리아 시도별 실시간 측정정보, 시도 측정소 PM2.5 중앙값(시설 인근 측정소 아님)"
+ },
+ "sites": {
+  "F02": {
+   "grid": [
+    86,
+    112
+   ],
+   "days": [
+    {
+     "date": "2026-11-16",
+     "tmp_day": 12.3,
+     "tmx": 13.0,
+     "tmn": 5.0,
+     "reh": 74,
+     "wsd_max": 4.9,
+     "pop_max": 30.0,
+     "rain_hours": 0,
+     "sky_mode": 4
+    },
+    {
+     "date": "2026-11-17",
+     "tmp_day": 11.0,
+     "tmx": 12.0,
+     "tmn": 7.0,
+     "reh": 78,
+     "wsd_max": 4.1,
+     "pop_max": 30.0,
+     "rain_hours": 0,
+     "sky_mode": 4
+    }
+   ],
+   "pm25": {
+    "pm25_median": 11.0,
+    "n_station": 51,
+    "time": "2026-11-15 21:00"
+   },
+   "sido": "경북",
+   "error": null
+  },
+  "F03": {
+   "grid": [
+    82,
+    127
+   ],
+   "days": [
+    {
+     "date": "2026-11-16",
+     "tmp_day": 9.9,
+     "tmx": 11.0,
+     "tmn": 4.0,
+     "reh": 78,
+     "wsd_max": 4.6,
+     "pop_max": 30.0,
+     "rain_hours": 0,
+     "sky_mode": 4
+    },
+    {
+     "date": "2026-11-17",
+     "tmp_day": 10.3,
+     "tmx": 12.0,
+     "tmn": 4.0,
+     "reh": 76,
+     "wsd_max": 3.9,
+     "pop_max": 30.0,
+     "rain_hours": 0,
+     "sky_mode": 4
+    }
+   ],
+   "pm25": {
+    "pm25_median": 13.0,
+    "n_station": 37,
+    "time": "2026-11-15 21:00"
+   },
+   "sido": "강원",
+   "error": null
+  },
+  "F04": {
+   "grid": [
+    86,
+    95
+   ],
+   "days": [
+    {
+     "date": "2026-11-16",
+     "tmp_day": 13.6,
+     "tmx": 15.0,
+     "tmn": 4.0,
+     "reh": 74,
+     "wsd_max": 2.5,
+     "pop_max": 30.0,
+     "rain_hours": 0,
+     "sky_mode": 4
+    },
+    {
+     "date": "2026-11-17",
+     "tmp_day": 13.3,
+     "tmx": 14.0,
+     "tmn": 6.0,
+     "reh": 70,
+     "wsd_max": 3.6,
+     "pop_max": 30.0,
+     "rain_hours": 0,
+     "sky_mode": 4
+    }
+   ],
+   "pm25": {
+    "pm25_median": 11.0,
+    "n_station": 51,
+    "time": "2026-11-15 21:00"
+   },
+   "sido": "경북",
+   "error": null
+  },
+  "F05": {
+   "grid": [
+    56,
+    81
+   ],
+   "days": [
+    {
+     "date": "2026-11-16",
+     "tmp_day": 15.6,
+     "tmx": 18.0,
+     "tmn": 5.0,
+     "reh": 61,
+     "wsd_max": 2.5,
+     "pop_max": 30.0,
+     "rain_hours": 0,
+     "sky_mode": 1
+    },
+    {
+     "date": "2026-11-17",
+     "tmp_day": 12.6,
+     "tmx": 14.0,
+     "tmn": 8.0,
+     "reh": 79,
+     "wsd_max": 2.8,
+     "pop_max": 60.0,
+     "rain_hours": 1,
+     "sky_mode": 4
+    }
+   ],
+   "pm25": {
+    "pm25_median": 11.0,
+    "n_station": 51,
+    "time": "2026-11-15 21:00"
+   },
+   "sido": "전남",
+   "error": null
+  },
+  "F06": {
+   "grid": [
+    97,
+    86
+   ],
+   "days": [
+    {
+     "date": "2026-11-16",
+     "tmp_day": 11.6,
+     "tmx": 13.0,
+     "tmn": 7.0,
+     "reh": 85,
+     "wsd_max": 3.2,
+     "pop_max": 60.0,
+     "rain_hours": 5,
+     "sky_mode": 4
+    },
+    {
+     "date": "2026-11-17",
+     "tmp_day": 12.0,
+     "tmx": 13.0,
+     "tmn": 8.0,
+     "reh": 74,
+     "wsd_max": 4.9,
+     "pop_max": 30.0,
+     "rain_hours": 0,
+     "sky_mode": 4
+    }
+   ],
+   "pm25": {
+    "pm25_median": 11.0,
+    "n_station": 51,
+    "time": "2026-11-15 21:00"
+   },
+   "sido": "경북",
+   "error": null
+  },
+  "F07": {
+   "grid": [
+    66,
+    100
+   ],
+   "days": [
+    {
+     "date": "2026-11-16",
+     "tmp_day": 15.6,
+     "tmx": 17.0,
+     "tmn": 4.0,
+     "reh": 64,
+     "wsd_max": 4.1,
+     "pop_max": 30.0,
+     "rain_hours": 0,
+     "sky_mode": 3
+    },
+    {
+     "date": "2026-11-17",
+     "tmp_day": 14.0,
+     "tmx": 15.0,
+     "tmn": 8.0,
+     "reh": 73,
+     "wsd_max": 4.6,
+     "pop_max": 30.0,
+     "rain_hours": 0,
+     "sky_mode": 4
+    }
+   ],
+   "pm25": {
+    "pm25_median": 19.0,
+    "n_station": 15,
+    "time": "2026-11-15 21:00"
+   },
+   "sido": "대전",
+   "error": null
+  },
+  "F08": {
+   "grid": [
+    73,
+    125
+   ],
+   "days": [
+    {
+     "date": "2026-11-16",
+     "tmp_day": 13.9,
+     "tmx": 15.0,
+     "tmn": 5.0,
+     "reh": 64,
+     "wsd_max": 3.3,
+     "pop_max": 30.0,
+     "rain_hours": 0,
+     "sky_mode": 4
+    },
+    {
+     "date": "2026-11-17",
+     "tmp_day": 12.7,
+     "tmx": 14.0,
+     "tmn": 7.0,
+     "reh": 69,
+     "wsd_max": 2.8,
+     "pop_max": 30.0,
+     "rain_hours": 0,
+     "sky_mode": 4
+    }
+   ],
+   "pm25": {
+    "pm25_median": 38.0,
+    "n_station": 117,
+    "time": "2026-11-15 21:00"
+   },
+   "sido": "경기",
+   "error": null
+  },
+  "F09": {
+   "grid": [
+    91,
+    130
+   ],
+   "days": [
+    {
+     "date": "2026-11-16",
+     "tmp_day": 7.6,
+     "tmx": 8.0,
+     "tmn": 7.0,
+     "reh": 95,
+     "wsd_max": 3.9,
+     "pop_max": 60.0,
+     "rain_hours": 7,
+     "sky_mode": 4
+    },
+    {
+     "date": "2026-11-17",
+     "tmp_day": 10.9,
+     "tmx": 12.0,
+     "tmn": 6.0,
+     "reh": 77,
+     "wsd_max": 3.0,
+     "pop_max": 30.0,
+     "rain_hours": 0,
+     "sky_mode": 4
+    }
+   ],
+   "pm25": {
+    "pm25_median": 13.0,
+    "n_station": 37,
+    "time": "2026-11-15 21:00"
+   },
+   "sido": "강원",
+   "error": null
+  },
+  "F10": {
+   "grid": [
+    101,
+    80
+   ],
+   "days": [
+    {
+     "date": "2026-11-16",
+     "tmp_day": 15.6,
+     "tmx": 16.0,
+     "tmn": 10.0,
+     "reh": 74,
+     "wsd_max": 5.1,
+     "pop_max": 60.0,
+     "rain_hours": 5,
+     "sky_mode": 4
+    },
+    {
+     "date": "2026-11-17",
+     "tmp_day": 16.4,
+     "tmx": 17.0,
+     "tmn": 13.0,
+     "reh": 65,
+     "wsd_max": 6.4,
+     "pop_max": 30.0,
+     "rain_hours": 0,
+     "sky_mode": 4
+    }
+   ],
+   "pm25": {
+    "pm25_median": 7.0,
+    "n_station": 24,
+    "time": "2026-11-15 21:00"
+   },
+   "sido": "울산",
+   "error": null
+  },
+  "F11": {
+   "grid": [
+    78,
+    90
+   ],
+   "days": [
+    {
+     "date": "2026-11-16",
+     "tmp_day": 10.1,
+     "tmx": 11.0,
+     "tmn": 4.0,
+     "reh": 83,
+     "wsd_max": 3.1,
+     "pop_max": 30.0,
+     "rain_hours": 0,
+     "sky_mode": 4
+    },
+    {
+     "date": "2026-11-17",
+     "tmp_day": 8.4,
+     "tmx": 9.0,
+     "tmn": 5.0,
+     "reh": 88,
+     "wsd_max": 4.1,
+     "pop_max": 30.0,
+     "rain_hours": 0,
+     "sky_mode": 4
+    }
+   ],
+   "pm25": {
+    "pm25_median": 11.0,
+    "n_station": 51,
+    "time": "2026-11-15 21:00"
+   },
+   "sido": "경북",
+   "error": null
+  },
+  "F12": {
+   "grid": [
+    82,
+    115
+   ],
+   "days": [
+    {
+     "date": "2026-11-16",
+     "tmp_day": 12.7,
+     "tmx": 14.0,
+     "tmn": 4.0,
+     "reh": 69,
+     "wsd_max": 4.1,
+     "pop_max": 30.0,
+     "rain_hours": 0,
+     "sky_mode": 4
+    },
+    {
+     "date": "2026-11-17",
+     "tmp_day": 11.9,
+     "tmx": 13.0,
+     "tmn": 4.0,
+     "reh": 72,
+     "wsd_max": 3.8,
+     "pop_max": 30.0,
+     "rain_hours": 0,
+     "sky_mode": 4
+    }
+   ],
+   "pm25": {
+    "pm25_median": 22.0,
+    "n_station": 33,
+    "time": "2026-11-15 21:00"
+   },
+   "sido": "충북",
+   "error": null
+  },
+  "F13": {
+   "grid": [
+    58,
+    108
+   ],
+   "days": [
+    {
+     "date": "2026-11-16",
+     "tmp_day": 14.7,
+     "tmx": 17.0,
+     "tmn": 4.0,
+     "reh": 65,
+     "wsd_max": 4.6,
+     "pop_max": 30.0,
+     "rain_hours": 0,
+     "sky_mode": 4
+    },
+    {
+     "date": "2026-11-17",
+     "tmp_day": 13.6,
+     "tmx": 15.0,
+     "tmn": 9.0,
+     "reh": 74,
+     "wsd_max": 5.3,
+     "pop_max": 30.0,
+     "rain_hours": 0,
+     "sky_mode": 4
+    }
+   ],
+   "pm25": {
+    "pm25_median": 36.0,
+    "n_station": 53,
+    "time": "2026-11-15 21:00"
+   },
+   "sido": "충남",
+   "error": null
+  },
+  "F14": {
+   "grid": [
+    65,
+    78
+   ],
+   "days": [
+    {
+     "date": "2026-11-16",
+     "tmp_day": 15.9,
+     "tmx": 18.0,
+     "tmn": 4.0,
+     "reh": 61,
+     "wsd_max": 2.2,
+     "pop_max": 30.0,
+     "rain_hours": 0,
+     "sky_mode": 3
+    },
+    {
+     "date": "2026-11-17",
+     "tmp_day": 14.1,
+     "tmx": 16.0,
+     "tmn": 6.0,
+     "reh": 74,
+     "wsd_max": 2.8,
+     "pop_max": 30.0,
+     "rain_hours": 0,
+     "sky_mode": 4
+    }
+   ],
+   "pm25": {
+    "pm25_median": 11.0,
+    "n_station": 51,
+    "time": "2026-11-15 21:00"
+   },
+   "sido": "전남",
+   "error": null
+  },
+  "saneum": {
+   "grid": [
+    70,
+    127
+   ],
+   "days": [
+    {
+     "date": "2026-11-16",
+     "tmp_day": 11.4,
+     "tmx": 13.0,
+     "tmn": 3.0,
+     "reh": 69,
+     "wsd_max": 2.8,
+     "pop_max": 30.0,
+     "rain_hours": 0,
+     "sky_mode": 4
+    },
+    {
+     "date": "2026-11-17",
+     "tmp_day": 10.3,
+     "tmx": 11.0,
+     "tmn": 4.0,
+     "reh": 79,
+     "wsd_max": 2.4,
+     "pop_max": 30.0,
+     "rain_hours": 0,
+     "sky_mode": 4
+    }
+   ],
+   "pm25": {
+    "pm25_median": 38.0,
+    "n_station": 117,
+    "time": "2026-11-15 21:00"
+   },
+   "sido": "경기",
+   "error": null
+  },
+  "jangseong": {
+   "grid": [
+    56,
+    79
+   ],
+   "days": [
+    {
+     "date": "2026-11-16",
+     "tmp_day": 15.0,
+     "tmx": 17.0,
+     "tmn": 4.0,
+     "reh": 66,
+     "wsd_max": 2.8,
+     "pop_max": 30.0,
+     "rain_hours": 0,
+     "sky_mode": 3
+    },
+    {
+     "date": "2026-11-17",
+     "tmp_day": 11.9,
+     "tmx": 14.0,
+     "tmn": 7.0,
+     "reh": 81,
+     "wsd_max": 2.6,
+     "pop_max": 30.0,
+     "rain_hours": 0,
+     "sky_mode": 4
+    }
+   ],
+   "pm25": {
+    "pm25_median": 11.0,
+    "n_station": 51,
+    "time": "2026-11-15 21:00"
+   },
+   "sido": "전남",
+   "error": null
+  },
+  "seogwipo": {
+   "grid": [
+    53,
+    33
+   ],
+   "days": [
+    {
+     "date": "2026-11-16",
+     "tmp_day": 18.3,
+     "tmx": 20.0,
+     "tmn": 13.0,
+     "reh": 74,
+     "wsd_max": 5.8,
+     "pop_max": 30.0,
+     "rain_hours": 0,
+     "sky_mode": 3
+    },
+    {
+     "date": "2026-11-17",
+     "tmp_day": 18.1,
+     "tmx": 20.0,
+     "tmn": 16.0,
+     "reh": 81,
+     "wsd_max": 5.9,
+     "pop_max": 30.0,
+     "rain_hours": 0,
+     "sky_mode": 4
+    }
+   ],
+   "pm25": {
+    "pm25_median": 13.0,
+    "n_station": 14,
+    "time": "2026-11-15 21:00"
+   },
+   "sido": "제주",
+   "error": null
+  },
+  "hwasun": {
+   "grid": [
+    61,
+    73
+   ],
+   "days": [
+    {
+     "date": "2026-11-16",
+     "tmp_day": 13.0,
+     "tmx": 15.0,
+     "tmn": 3.0,
+     "reh": 67,
+     "wsd_max": 3.2,
+     "pop_max": 30.0,
+     "rain_hours": 0,
+     "sky_mode": 3
+    },
+    {
+     "date": "2026-11-17",
+     "tmp_day": 12.0,
+     "tmx": 13.0,
+     "tmn": 8.0,
+     "reh": 79,
+     "wsd_max": 4.1,
+     "pop_max": 30.0,
+     "rain_hours": 0,
+     "sky_mode": 4
+    }
+   ],
+   "pm25": {
+    "pm25_median": 11.0,
+    "n_station": 51,
+    "time": "2026-11-15 21:00"
+   },
+   "sido": "전남",
+   "error": null
+  },
+  "namhae": {
+   "grid": [
+    79,
+    66
+   ],
+   "days": [
+    {
+     "date": "2026-11-16",
+     "tmp_day": 15.1,
+     "tmx": 18.0,
+     "tmn": 9.0,
+     "reh": 72,
+     "wsd_max": 4.3,
+     "pop_max": 30.0,
+     "rain_hours": 0,
+     "sky_mode": 4
+    },
+    {
+     "date": "2026-11-17",
+     "tmp_day": 15.7,
+     "tmx": 18.0,
+     "tmn": 12.0,
+     "reh": 71,
+     "wsd_max": 6.5,
+     "pop_max": 30.0,
+     "rain_hours": 0,
+     "sky_mode": 4
+    }
+   ],
+   "pm25": {
+    "pm25_median": 7.0,
+    "n_station": 49,
+    "time": "2026-11-15 21:00"
+   },
+   "sido": "경남",
+   "error": null
+  }
+ }
+}

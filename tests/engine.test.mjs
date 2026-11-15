@@ -1,0 +1,87 @@
+// 실행: node tests/engine.test.mjs
+import { readFileSync } from 'node:fs';
+import vm from 'node:vm';
+import assert from 'node:assert/strict';
+import { createRequire } from 'node:module';
+const require = createRequire(import.meta.url);
+const E = require('../engine/soopgyeol-engine.js');
+const j = (p) => JSON.parse(readFileSync(new URL('../data/' + p, import.meta.url)));
+const sandbox = {}; vm.createContext(sandbox);
+vm.runInContext(readFileSync(new URL('../data.js', import.meta.url), 'utf8') + ';this.FORESTS=FORESTS;this.TRAVEL_HOURS=TRAVEL_HOURS;', sandbox);
+const ev = j('evidence.json');
+const ctx = {
+  sites: j('sites.json').sites, evidence: ev, facilityEnv: j('facility_env.json'), envToday: j('env_today.json'),
+  forests: j('forests_nearby.json').forests, regionHealth: j('region_health.json'), sigunguPoints: ev.sigungu_points,
+  protoForests: sandbox.FORESTS, travelHours: sandbox.TRAVEL_HOURS, parks: j('parks.json').parks
+};
+let n = 0; const t = (name, f) => { f(); n++; console.log('ok -', name); };
+
+const seoul = { lat: 37.5665, lng: 126.978 };
+const base = { check: { stress: 3, anxiety: 2, depression: 1, fatigue: 2, sleep: 1, breath: 0 }, purpose: 'stress', walk: 'normal',
+  maxHours: 3, origin: seoul, month: 10 };
+
+t('기본 추천: 상위 5곳, 순위·범위·근거 포함', () => {
+  const r = E.recommend(base, ctx);
+  assert.equal(r.recommendations.length, 5);
+  r.recommendations.forEach((e, i) => {
+    assert.equal(e.rank, i + 1);
+    assert.ok(e.rankRange && e.rankRange[0] <= e.rankRange[1]);
+    assert.ok(e.total >= 0 && e.total <= 100);
+    assert.ok(['model', 'mixed', 'similar', 'literature'].includes(e.effectBasis));
+    assert.ok(e.reasons.length >= 2);
+  });
+  console.log(r.recommendations.map((e) => `${e.rank}.${e.site.name} ${e.total} [${e.rankRange}] ${e.effectBasis} E${e.scores.effect} V${e.scores.env} A${e.scores.access}`).join('\n'));
+});
+t('이동시간 제한 밖 시설은 제외되고 사유가 남음', () => {
+  const r = E.recommend({ ...base, maxHours: 1.5 }, ctx);
+  assert.ok(r.excluded.length > 0);
+  r.recommendations.forEach((e) => assert.ok(e.access.hours <= 1.5));
+  assert.ok(r.excluded.every((x) => x.reasons.length > 0));
+});
+t('자해 생각 응답 → 긴급 안내와 대체경로 우선 표시', () => {
+  const r = E.recommend({ ...base, selfharm: true }, ctx);
+  assert.equal(r.safety.level, 'urgent');
+  assert.ok(r.safety.contacts.some((c) => c.tel === '109'));
+  assert.equal(r.alternatives.prominent, true);
+});
+t('방문 불가 → 근처 공원(수관 30% 이상)·가까운 산림·디지털치료제 자리', () => {
+  const r = E.recommend({ ...base, canVisit: false }, ctx);
+  const a = r.alternatives;
+  assert.equal(a.prominent, true);
+  assert.equal(a.digital.available, false);
+  assert.ok(a.parks.length > 0 && a.parks.every((p) => p.tree_pct >= 30));
+  assert.ok(a.forests.length > 0);
+  console.log('parks:', a.parks.map((p) => `${p.name} ${p.km}km 수관${p.tree_pct}%`).join(' | '));
+  console.log('forests:', a.forests.map((p) => `${p.name} ${p.km}km`).join(' | '));
+});
+t('호흡기 불편 + PM2.5 나쁨 시나리오 → 실내 대체 없는 시설 제외', () => {
+  const r = E.recommend({ ...base, check: { breath: 4 }, purpose: 'respiratory', envOverride: { temp: 15, humidity: 40, pm: 'bad', rain: false, wind: 2 } }, ctx);
+  assert.ok(r.excluded.some((x) => x.reasons.some((s) => s.includes('PM2.5'))));
+  r.recommendations.forEach((e) => assert.ok(e.envDetail.indoor));
+});
+t('수면·호흡기만 고르면 효과 계산 없이 환경·접근으로만 순위', () => {
+  const r = E.recommend({ ...base, check: { sleep: 3 }, purpose: 'sleep' }, ctx);
+  r.recommendations.forEach((e) => assert.equal(e.scores.effect, null));
+  assert.deepEqual(r.profile.literatureOnlyDomains, ['sleep']);
+});
+t('효과모형 시설은 model, 그 외는 similar 근거로 표시', () => {
+  const r = E.recommend({ ...base, maxHours: 9, topN: 18 }, ctx);
+  const byId = Object.fromEntries(r.recommendations.map((e) => [e.site.id, e]));
+  assert.equal(byId.F03.effectBasis, 'model');
+  assert.equal(byId.F09.effectBasis, 'similar');
+});
+t('지역 맥락은 개인 점수와 분리', () => {
+  const r = E.recommend(base, ctx);
+  assert.ok(r.context.region && r.context.region.stress > 0);
+  console.log('region:', JSON.stringify(r.context.region));
+});
+t('시군구만 입력해도 대표점으로 거리 계산', () => {
+  const r = E.recommend({ ...base, origin: { sido: '경상남도', sigungu: '진주시' } }, ctx);
+  assert.ok(r.recommendations[0].access.km != null);
+  assert.ok(r.alternatives.parks.length > 0);
+});
+t('같은 입력·같은 seed → 같은 결과(재현성)', () => {
+  const a = E.recommend(base, ctx), b = E.recommend(base, ctx);
+  assert.deepEqual(a.recommendations.map((e) => [e.site.id, e.rankRange]), b.recommendations.map((e) => [e.site.id, e.rankRange]));
+});
+console.log(`\n${n} tests passed`);

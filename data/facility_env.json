@@ -1,0 +1,2664 @@
+{
+ "_meta": {
+  "built": "2026-11-15",
+  "layers": {
+   "fixed": "지형(수치지형도 5 m DEM), 수관 피복(ESA WorldCover 2021, 반경 1 km), 피톤치드(진흥원 게시 시험성적서 2018, 136건 중 시설 대응분)",
+   "climate": "매칭 관측소 2021~2025 일자료 월평균, 기온은 표고차×0.65 ℃/100 m 보정. 30년 평년값 아님",
+   "anomaly": "엔진 실행 시 예보값 − 월평균으로 계산"
+  },
+  "phytoncide_caveat": "2018년 1회성·일부 지점 측정. 포집 시간대·기상 미기재. 총량의 약 82%가 벤즈알데하이드라 테르펜 6종 합(벤즈알데하이드 제외)을 지표로 씀. 피톤치드 농도와 치유 효과의 관계는 본 연구에서 추정하지 않음.",
+  "lapse_rate_c_per_100m": 0.65
+ },
+ "species_phytoncide_2018": {
+  "가족산책로, 갈참나무": {
+   "n": 1,
+   "terpene_ppt_median": 361.9,
+   "anion_median": 1365
+  },
+  "굴참나무": {
+   "n": 3,
+   "terpene_ppt_median": 30.3,
+   "anion_median": 540
+  },
+  "낙엽송": {
+   "n": 7,
+   "terpene_ppt_median": 97.8,
+   "anion_median": 849
+  },
+  "목공예체험장, 편백나무": {
+   "n": 1,
+   "terpene_ppt_median": 834.6,
+   "anion_median": 480
+  },
+  "사이숲길, 상수리나무": {
+   "n": 3,
+   "terpene_ppt_median": 153.6,
+   "anion_median": 901
+  },
+  "서어나무": {
+   "n": 3,
+   "terpene_ppt_median": 26.1,
+   "anion_median": 947
+  },
+  "소나무": {
+   "n": 34,
+   "terpene_ppt_median": 160.7,
+   "anion_median": 517
+  },
+  "솔향치유숲길, 소나무": {
+   "n": 3,
+   "terpene_ppt_median": 245.7,
+   "anion_median": 549
+  },
+  "숲속쉼터, 소나무": {
+   "n": 1,
+   "terpene_ppt_median": 285.2,
+   "anion_median": 1477
+  },
+  "야영데크, 편백나무": {
+   "n": 1,
+   "terpene_ppt_median": 543.4,
+   "anion_median": 446
+  },
+  "용추계곡, 갈참나무": {
+   "n": 1,
+   "terpene_ppt_median": 340.4,
+   "anion_median": 974
+  },
+  "자작나무": {
+   "n": 4,
+   "terpene_ppt_median": 72.7,
+   "anion_median": 804
+  },
+  "잔디마당, 편백나무": {
+   "n": 1,
+   "terpene_ppt_median": 714.8,
+   "anion_median": 604
+  },
+  "잣나무": {
+   "n": 29,
+   "terpene_ppt_median": 133.0,
+   "anion_median": 604
+  },
+  "참나무": {
+   "n": 7,
+   "terpene_ppt_median": 45.1,
+   "anion_median": 443
+  },
+  "참나무속": {
+   "n": 6,
+   "terpene_ppt_median": 37.0,
+   "anion_median": 426
+  },
+  "층층나무": {
+   "n": 1,
+   "terpene_ppt_median": 68.5,
+   "anion_median": 592
+  },
+  "치유데크로드, 소나무": {
+   "n": 3,
+   "terpene_ppt_median": 311.4,
+   "anion_median": 499
+  },
+  "편백": {
+   "n": 15,
+   "terpene_ppt_median": 161.1,
+   "anion_median": 415
+  },
+  "혼효림": {
+   "n": 3,
+   "terpene_ppt_median": 321.9,
+   "anion_median": 1399
+  },
+  "활엽수림": {
+   "n": 6,
+   "terpene_ppt_median": 23.1,
+   "anion_median": 670
+  }
+ },
+ "facilities": {
+  "F02": {
+   "facility_id": "F02",
+   "name": "국립산림치유원",
+   "type": "치유원",
+   "lat": 36.857915,
+   "lng": 128.471903,
+   "address": "경상북도 영주시 봉현면 테라피로 209",
+   "fixed": {
+    "terrain": {
+     "facility_id": "F02",
+     "name": "국립산림치유원",
+     "dem": "NGII 수치지형도 1:5000 TIN→5 m",
+     "r500": {
+      "valid_pct": 100.0,
+      "elev_mean": 454.5,
+      "elev_min": 354.2,
+      "elev_max": 575.0,
+      "slope_mean_deg": 20.5,
+      "slope_p50_deg": 20.1,
+      "gentle_pct_lt8deg": 6.4,
+      "steep_pct_gt25deg": 32.1,
+      "south_aspect_pct": 24.1
+     },
+     "r1000": {
+      "valid_pct": 100.0,
+      "elev_mean": 510.7,
+      "elev_min": 315.0,
+      "elev_max": 765.7,
+      "slope_mean_deg": 23.6,
+      "slope_p50_deg": 23.8,
+      "gentle_pct_lt8deg": 3.9,
+      "steep_pct_gt25deg": 44.8,
+      "south_aspect_pct": 20.9
+     },
+     "point_elev": 424.6
+    },
+    "canopy_1km": {
+     "tree": 81.8,
+     "built": 1.7,
+     "water": 0.0,
+     "green": 93.8,
+     "n": 45644
+    },
+    "phytoncide_2018": {
+     "n": 46,
+     "sites": [
+      "마실치유숲길 1번 쉼터(소나무)",
+      "마실치유숲길 잣나무숲(잣나무)",
+      "문드래미길(소나무)",
+      "솔향기치유숲길(잣나무)"
+     ],
+     "species": [
+      "소나무",
+      "잣나무"
+     ],
+     "terpene_ppt_median": 131.0,
+     "anion_median": 464,
+     "top_terpenes": {
+      "α-Pinene": 44.5,
+      "β-Pinene": 11.5,
+      "Camphene": 25.6,
+      "Limonene": 1.2,
+      "Camphor": 11.8,
+      "Bornyl acetate": 1.1
+     },
+     "months": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12
+     ]
+    }
+   },
+   "climate": {
+    "station": {
+     "id": 272,
+     "name": "영주",
+     "type": "ASOS",
+     "dist_km": 4.29,
+     "dh_m": 219.8,
+     "lapse_adj_c": -1.43
+    },
+    "monthly": {
+     "1": {
+      "tavg": -3.9,
+      "tmax": 1.9,
+      "rh": 59.0,
+      "rain_day_pct": 9.0,
+      "hot_day_pct": 0.0,
+      "di": 32.9,
+      "ws": 3.3,
+      "n_days": 93
+     },
+     "2": {
+      "tavg": -0.7,
+      "tmax": 4.8,
+      "rh": 54.0,
+      "rain_day_pct": 12.0,
+      "hot_day_pct": 0.0,
+      "di": 37.9,
+      "ws": 3.6,
+      "n_days": 84
+     },
+     "3": {
+      "tavg": 6.3,
+      "tmax": 12.2,
+      "rh": 60.0,
+      "rain_day_pct": 19.0,
+      "hot_day_pct": 0.0,
+      "di": 46.6,
+      "ws": 2.5,
+      "n_days": 93
+     },
+     "4": {
+      "tavg": 11.4,
+      "tmax": 18.4,
+      "rh": 56.0,
+      "rain_day_pct": 19.0,
+      "hot_day_pct": 0.0,
+      "di": 53.8,
+      "ws": 2.5,
+      "n_days": 60
+     },
+     "5": {
+      "tavg": 15.2,
+      "tmax": 21.7,
+      "rh": 63.0,
+      "rain_day_pct": 25.0,
+      "hot_day_pct": 1.0,
+      "di": 59.0,
+      "ws": 2.5,
+      "n_days": 62
+     },
+     "6": {
+      "tavg": 19.9,
+      "tmax": 26.1,
+      "rh": 77.0,
+      "rain_day_pct": 31.0,
+      "hot_day_pct": 11.0,
+      "di": 66.4,
+      "ws": 1.6,
+      "n_days": 60
+     },
+     "7": {
+      "tavg": 23.6,
+      "tmax": 28.6,
+      "rh": 83.0,
+      "rain_day_pct": 39.0,
+      "hot_day_pct": 39.0,
+      "di": 72.8,
+      "ws": 1.4,
+      "n_days": 62
+     },
+     "8": {
+      "tavg": 22.1,
+      "tmax": 28.7,
+      "rh": 87.0,
+      "rain_day_pct": 33.0,
+      "hot_day_pct": 43.0,
+      "di": 70.7,
+      "ws": 1.2,
+      "n_days": 62
+     },
+     "9": {
+      "tavg": 17.9,
+      "tmax": 24.9,
+      "rh": 83.0,
+      "rain_day_pct": 25.0,
+      "hot_day_pct": 8.0,
+      "di": 63.7,
+      "ws": 1.5,
+      "n_days": 60
+     },
+     "10": {
+      "tavg": 11.5,
+      "tmax": 18.3,
+      "rh": 80.0,
+      "rain_day_pct": 22.0,
+      "hot_day_pct": 0.0,
+      "di": 53.5,
+      "ws": 1.7,
+      "n_days": 61
+     },
+     "11": {
+      "tavg": 5.7,
+      "tmax": 12.1,
+      "rh": 70.0,
+      "rain_day_pct": 15.0,
+      "hot_day_pct": 0.0,
+      "di": 45.1,
+      "ws": 2.5,
+      "n_days": 60
+     },
+     "12": {
+      "tavg": -2.8,
+      "tmax": 3.2,
+      "rh": 61.0,
+      "rain_day_pct": 10.0,
+      "hot_day_pct": 0.0,
+      "di": 33.8,
+      "ws": 3.7,
+      "n_days": 62
+     }
+    }
+   }
+  },
+  "F03": {
+   "facility_id": "F03",
+   "name": "국립횡성숲체원",
+   "type": "숲체원",
+   "lat": 37.536919,
+   "lng": 128.288531,
+   "address": "강원도 횡성군 둔내면 청태산로 777",
+   "fixed": {
+    "terrain": {
+     "facility_id": "F03",
+     "name": "국립횡성숲체원",
+     "dem": "NGII 수치지형도 1:5000 TIN→5 m",
+     "r500": {
+      "valid_pct": 100.0,
+      "elev_mean": 849.4,
+      "elev_min": 730.0,
+      "elev_max": 950.1,
+      "slope_mean_deg": 22.3,
+      "slope_p50_deg": 21.4,
+      "gentle_pct_lt8deg": 4.4,
+      "steep_pct_gt25deg": 36.7,
+      "south_aspect_pct": 49.4
+     },
+     "r1000": {
+      "valid_pct": 100.0,
+      "elev_mean": 830.2,
+      "elev_min": 679.8,
+      "elev_max": 1008.4,
+      "slope_mean_deg": 22.9,
+      "slope_p50_deg": 22.5,
+      "gentle_pct_lt8deg": 6.5,
+      "steep_pct_gt25deg": 41.4,
+      "south_aspect_pct": 36.2
+     },
+     "point_elev": 824.2
+    },
+    "canopy_1km": {
+     "tree": 95.5,
+     "built": 1.6,
+     "water": 0.0,
+     "green": 97.2,
+     "n": 46020
+    },
+    "phytoncide_2018": {
+     "n": 12,
+     "sites": [
+      "늘솔길(잣나무)",
+      "새소리길(낙엽송)",
+      "자작나무 숲(자작나무)",
+      "자작나무숲(자작나무)"
+     ],
+     "species": [
+      "낙엽송",
+      "자작나무",
+      "잣나무"
+     ],
+     "terpene_ppt_median": 90.3,
+     "anion_median": 678,
+     "top_terpenes": {
+      "α-Pinene": 26.5,
+      "β-Pinene": 10.2,
+      "Camphene": 27.8,
+      "Limonene": 2.7,
+      "Camphor": 10.5,
+      "Bornyl acetate": 1.5
+     },
+     "months": [
+      3,
+      6,
+      9,
+      10
+     ]
+    }
+   },
+   "climate": {
+    "station": {
+     "id": 660,
+     "name": "면온",
+     "type": "AWS",
+     "dist_km": 8.333,
+     "dh_m": 301.8,
+     "lapse_adj_c": -1.96
+    },
+    "monthly": {
+     "1": {
+      "tavg": -9.6,
+      "tmax": -2.3,
+      "rh": 72.0,
+      "rain_day_pct": 14.0,
+      "hot_day_pct": 0.0,
+      "di": 21.6,
+      "ws": 1.5,
+      "n_days": 93
+     },
+     "2": {
+      "tavg": -5.5,
+      "tmax": 0.6,
+      "rh": 64.0,
+      "rain_day_pct": 12.0,
+      "hot_day_pct": 0.0,
+      "di": 27.9,
+      "ws": 1.9,
+      "n_days": 84
+     },
+     "3": {
+      "tavg": 1.8,
+      "tmax": 8.5,
+      "rh": 65.0,
+      "rain_day_pct": 24.0,
+      "hot_day_pct": 0.0,
+      "di": 39.4,
+      "ws": 1.6,
+      "n_days": 93
+     },
+     "4": {
+      "tavg": 7.2,
+      "tmax": 15.3,
+      "rh": 60.0,
+      "rain_day_pct": 24.0,
+      "hot_day_pct": 0.0,
+      "di": 48.1,
+      "ws": 1.8,
+      "n_days": 60
+     },
+     "5": {
+      "tavg": 11.3,
+      "tmax": 18.8,
+      "rh": 64.0,
+      "rain_day_pct": 30.0,
+      "hot_day_pct": 0.0,
+      "di": 54.0,
+      "ws": 1.7,
+      "n_days": 62
+     },
+     "6": {
+      "tavg": 16.8,
+      "tmax": 23.5,
+      "rh": 78.0,
+      "rain_day_pct": 33.0,
+      "hot_day_pct": 2.0,
+      "di": 61.9,
+      "ws": 1.4,
+      "n_days": 60
+     },
+     "7": {
+      "tavg": 21.1,
+      "tmax": 26.6,
+      "rh": 83.0,
+      "rain_day_pct": 51.0,
+      "hot_day_pct": 15.0,
+      "di": 69.3,
+      "ws": 1.1,
+      "n_days": 62
+     },
+     "8": {
+      "tavg": 19.5,
+      "tmax": 26.1,
+      "rh": 87.0,
+      "rain_day_pct": 39.0,
+      "hot_day_pct": 12.0,
+      "di": 66.4,
+      "ws": 1.2,
+      "n_days": 62
+     },
+     "9": {
+      "tavg": 15.1,
+      "tmax": 22.4,
+      "rh": 82.0,
+      "rain_day_pct": 33.0,
+      "hot_day_pct": 1.0,
+      "di": 59.1,
+      "ws": 1.3,
+      "n_days": 60
+     },
+     "10": {
+      "tavg": 7.8,
+      "tmax": 15.4,
+      "rh": 82.0,
+      "rain_day_pct": 28.0,
+      "hot_day_pct": 0.0,
+      "di": 47.5,
+      "ws": 1.2,
+      "n_days": 62
+     },
+     "11": {
+      "tavg": 1.6,
+      "tmax": 8.8,
+      "rh": 76.0,
+      "rain_day_pct": 19.0,
+      "hot_day_pct": 0.0,
+      "di": 38.1,
+      "ws": 1.4,
+      "n_days": 60
+     },
+     "12": {
+      "tavg": -8.2,
+      "tmax": -0.9,
+      "rh": 72.0,
+      "rain_day_pct": 13.0,
+      "hot_day_pct": 0.0,
+      "di": 23.8,
+      "ws": 1.7,
+      "n_days": 62
+     }
+    }
+   }
+  },
+  "F04": {
+   "facility_id": "F04",
+   "name": "국립칠곡숲체원",
+   "type": "숲체원",
+   "lat": 36.063886,
+   "lng": 128.466003,
+   "address": "경상북도 칠곡군 유학로 532",
+   "fixed": {
+    "terrain": {
+     "facility_id": "F04",
+     "name": "국립칠곡숲체원",
+     "dem": "NGII 수치지형도 1:5000 TIN→5 m",
+     "r500": {
+      "valid_pct": 100.0,
+      "elev_mean": 298.6,
+      "elev_min": 185.0,
+      "elev_max": 445.1,
+      "slope_mean_deg": 25.0,
+      "slope_p50_deg": 26.0,
+      "gentle_pct_lt8deg": 3.9,
+      "steep_pct_gt25deg": 54.8,
+      "south_aspect_pct": 36.1
+     },
+     "r1000": {
+      "valid_pct": 100.0,
+      "elev_mean": 341.9,
+      "elev_min": 160.0,
+      "elev_max": 642.3,
+      "slope_mean_deg": 24.8,
+      "slope_p50_deg": 25.3,
+      "gentle_pct_lt8deg": 2.7,
+      "steep_pct_gt25deg": 51.2,
+      "south_aspect_pct": 40.7
+     },
+     "point_elev": 226.1
+    },
+    "canopy_1km": {
+     "tree": 96.9,
+     "built": 0.1,
+     "water": 0.1,
+     "green": 99.0,
+     "n": 45126
+    },
+    "phytoncide_2018": {
+     "n": 19,
+     "sites": [
+      "다누리길(참나무)",
+      "대화의숲(참나무속)",
+      "산소숲길(편백)",
+      "숲속캠핑장(참나무)",
+      "숲속캠핑장(참나무속)",
+      "유아숲체험원(참나무)"
+     ],
+     "species": [
+      "참나무",
+      "참나무속",
+      "편백"
+     ],
+     "terpene_ppt_median": 117.8,
+     "anion_median": 408,
+     "top_terpenes": {
+      "α-Pinene": 39.6,
+      "β-Pinene": 9.8,
+      "Camphene": 12.1,
+      "Limonene": 0.7,
+      "Camphor": 8.1,
+      "Bornyl acetate": 1.5
+     },
+     "months": [
+      2,
+      3,
+      4,
+      6,
+      8,
+      9,
+      10,
+      11
+     ]
+    }
+   },
+   "climate": {
+    "station": {
+     "id": 824,
+     "name": "가산",
+     "type": "AWS",
+     "dist_km": 4.672,
+     "dh_m": 112.6,
+     "lapse_adj_c": -0.73
+    },
+    "monthly": {
+     "1": {
+      "tavg": -2.0,
+      "tmax": 4.6,
+      "rh": 57.0,
+      "rain_day_pct": 7.0,
+      "hot_day_pct": 0.0,
+      "di": 35.6,
+      "ws": 2.1,
+      "n_days": 93
+     },
+     "2": {
+      "tavg": 0.9,
+      "tmax": 7.1,
+      "rh": 53.0,
+      "rain_day_pct": 12.0,
+      "hot_day_pct": 0.0,
+      "di": 40.1,
+      "ws": 2.4,
+      "n_days": 84
+     },
+     "3": {
+      "tavg": 8.2,
+      "tmax": 14.3,
+      "rh": 60.0,
+      "rain_day_pct": 18.0,
+      "hot_day_pct": 0.0,
+      "di": 49.3,
+      "ws": 2.0,
+      "n_days": 93
+     },
+     "4": {
+      "tavg": 13.1,
+      "tmax": 20.5,
+      "rh": 55.0,
+      "rain_day_pct": 23.0,
+      "hot_day_pct": 0.0,
+      "di": 56.1,
+      "ws": 2.2,
+      "n_days": 60
+     },
+     "5": {
+      "tavg": 17.2,
+      "tmax": 24.0,
+      "rh": 60.0,
+      "rain_day_pct": 26.0,
+      "hot_day_pct": 6.0,
+      "di": 61.8,
+      "ws": 2.2,
+      "n_days": 62
+     },
+     "6": {
+      "tavg": 22.1,
+      "tmax": 28.6,
+      "rh": 72.0,
+      "rain_day_pct": 28.0,
+      "hot_day_pct": 36.0,
+      "di": 69.5,
+      "ws": 1.8,
+      "n_days": 60
+     },
+     "7": {
+      "tavg": 25.4,
+      "tmax": 31.1,
+      "rh": 79.0,
+      "rain_day_pct": 38.0,
+      "hot_day_pct": 68.0,
+      "di": 75.3,
+      "ws": 1.5,
+      "n_days": 62
+     },
+     "8": {
+      "tavg": 24.2,
+      "tmax": 31.1,
+      "rh": 84.0,
+      "rain_day_pct": 39.0,
+      "hot_day_pct": 67.0,
+      "di": 73.8,
+      "ws": 1.5,
+      "n_days": 62
+     },
+     "9": {
+      "tavg": 19.5,
+      "tmax": 26.9,
+      "rh": 83.0,
+      "rain_day_pct": 29.0,
+      "hot_day_pct": 17.0,
+      "di": 66.3,
+      "ws": 1.3,
+      "n_days": 60
+     },
+     "10": {
+      "tavg": 13.1,
+      "tmax": 20.4,
+      "rh": 77.0,
+      "rain_day_pct": 21.0,
+      "hot_day_pct": 0.0,
+      "di": 56.1,
+      "ws": 1.4,
+      "n_days": 62
+     },
+     "11": {
+      "tavg": 7.3,
+      "tmax": 14.3,
+      "rh": 71.0,
+      "rain_day_pct": 14.0,
+      "hot_day_pct": 0.0,
+      "di": 47.5,
+      "ws": 1.7,
+      "n_days": 60
+     },
+     "12": {
+      "tavg": -0.9,
+      "tmax": 5.9,
+      "rh": 62.0,
+      "rain_day_pct": 6.0,
+      "hot_day_pct": 0.0,
+      "di": 36.3,
+      "ws": 2.3,
+      "n_days": 62
+     }
+    }
+   }
+  },
+  "F05": {
+   "facility_id": "F05",
+   "name": "국립장성숲체원",
+   "type": "숲체원",
+   "lat": 35.443961,
+   "lng": 126.751375,
+   "address": "전라남도 장성군 북이면 방장로 353",
+   "fixed": {
+    "terrain": {
+     "facility_id": "F05",
+     "name": "국립장성숲체원",
+     "dem": "NGII 수치지형도 1:5000 TIN→5 m",
+     "r500": {
+      "valid_pct": 100.0,
+      "elev_mean": 349.9,
+      "elev_min": 225.0,
+      "elev_max": 535.3,
+      "slope_mean_deg": 26.5,
+      "slope_p50_deg": 26.7,
+      "gentle_pct_lt8deg": 2.5,
+      "steep_pct_gt25deg": 57.9,
+      "south_aspect_pct": 31.8
+     },
+     "r1000": {
+      "valid_pct": 100.0,
+      "elev_mean": 404.6,
+      "elev_min": 196.0,
+      "elev_max": 647.7,
+      "slope_mean_deg": 27.7,
+      "slope_p50_deg": 28.9,
+      "gentle_pct_lt8deg": 3.7,
+      "steep_pct_gt25deg": 65.8,
+      "south_aspect_pct": 40.2
+     },
+     "point_elev": 277.2
+    },
+    "canopy_1km": {
+     "tree": 96.8,
+     "built": 0.6,
+     "water": 0.0,
+     "green": 98.2,
+     "n": 44807
+    },
+    "phytoncide_2018": {
+     "n": 4,
+     "sites": [
+      "맨발숲길(편백)"
+     ],
+     "species": [
+      "편백"
+     ],
+     "terpene_ppt_median": 169.3,
+     "anion_median": 309,
+     "top_terpenes": {
+      "α-Pinene": 56.4,
+      "β-Pinene": 10.2,
+      "Camphene": 31.0,
+      "Limonene": 1.0,
+      "Camphor": 34.0,
+      "Bornyl acetate": 5.0
+     },
+     "months": [
+      3,
+      4,
+      9,
+      10
+     ]
+    }
+   },
+   "climate": {
+    "station": {
+     "id": 251,
+     "name": "고창군",
+     "type": "ASOS",
+     "dist_km": 5.291,
+     "dh_m": 223.9,
+     "lapse_adj_c": -1.46
+    },
+    "monthly": {
+     "1": {
+      "tavg": -1.5,
+      "tmax": 4.0,
+      "rh": 70.0,
+      "rain_day_pct": 18.0,
+      "hot_day_pct": 0.0,
+      "di": 34.2,
+      "ws": 1.5,
+      "n_days": 93
+     },
+     "2": {
+      "tavg": 0.6,
+      "tmax": 6.1,
+      "rh": 64.0,
+      "rain_day_pct": 17.0,
+      "hot_day_pct": 0.0,
+      "di": 38.0,
+      "ws": 1.7,
+      "n_days": 84
+     },
+     "3": {
+      "tavg": 7.0,
+      "tmax": 13.3,
+      "rh": 65.0,
+      "rain_day_pct": 16.0,
+      "hot_day_pct": 0.0,
+      "di": 47.1,
+      "ws": 1.7,
+      "n_days": 93
+     },
+     "4": {
+      "tavg": 12.0,
+      "tmax": 19.1,
+      "rh": 61.0,
+      "rain_day_pct": 19.0,
+      "hot_day_pct": 0.0,
+      "di": 54.4,
+      "ws": 1.7,
+      "n_days": 60
+     },
+     "5": {
+      "tavg": 15.9,
+      "tmax": 22.5,
+      "rh": 64.0,
+      "rain_day_pct": 21.0,
+      "hot_day_pct": 1.0,
+      "di": 60.1,
+      "ws": 1.7,
+      "n_days": 62
+     },
+     "6": {
+      "tavg": 21.2,
+      "tmax": 27.0,
+      "rh": 74.0,
+      "rain_day_pct": 23.0,
+      "hot_day_pct": 13.0,
+      "di": 68.4,
+      "ws": 1.7,
+      "n_days": 60
+     },
+     "7": {
+      "tavg": 25.0,
+      "tmax": 29.9,
+      "rh": 78.0,
+      "rain_day_pct": 43.0,
+      "hot_day_pct": 56.0,
+      "di": 74.6,
+      "ws": 1.5,
+      "n_days": 62
+     },
+     "8": {
+      "tavg": 24.2,
+      "tmax": 30.3,
+      "rh": 81.0,
+      "rain_day_pct": 32.0,
+      "hot_day_pct": 61.0,
+      "di": 73.7,
+      "ws": 1.4,
+      "n_days": 62
+     },
+     "9": {
+      "tavg": 20.6,
+      "tmax": 27.1,
+      "rh": 76.0,
+      "rain_day_pct": 31.0,
+      "hot_day_pct": 19.0,
+      "di": 67.6,
+      "ws": 1.5,
+      "n_days": 60
+     },
+     "10": {
+      "tavg": 13.5,
+      "tmax": 20.3,
+      "rh": 73.0,
+      "rain_day_pct": 19.0,
+      "hot_day_pct": 0.0,
+      "di": 56.6,
+      "ws": 1.4,
+      "n_days": 62
+     },
+     "11": {
+      "tavg": 8.1,
+      "tmax": 14.1,
+      "rh": 74.0,
+      "rain_day_pct": 22.0,
+      "hot_day_pct": 0.0,
+      "di": 48.2,
+      "ws": 1.3,
+      "n_days": 60
+     },
+     "12": {
+      "tavg": -0.3,
+      "tmax": 5.7,
+      "rh": 72.0,
+      "rain_day_pct": 22.0,
+      "hot_day_pct": 0.0,
+      "di": 35.7,
+      "ws": 1.5,
+      "n_days": 62
+     }
+    }
+   }
+  },
+  "F06": {
+   "facility_id": "F06",
+   "name": "국립청도숲체원",
+   "type": "숲체원",
+   "lat": 35.649103,
+   "lng": 129.027947,
+   "address": "경상북도 청도군 운문면 운문로 755",
+   "fixed": {
+    "terrain": {
+     "facility_id": "F06",
+     "name": "국립청도숲체원",
+     "dem": "NGII 수치지형도 1:5000 TIN→5 m",
+     "r500": {
+      "valid_pct": 100.0,
+      "elev_mean": 512.4,
+      "elev_min": 419.0,
+      "elev_max": 667.7,
+      "slope_mean_deg": 25.8,
+      "slope_p50_deg": 27.1,
+      "gentle_pct_lt8deg": 4.3,
+      "steep_pct_gt25deg": 58.1,
+      "south_aspect_pct": 13.7
+     },
+     "r1000": {
+      "valid_pct": 100.0,
+      "elev_mean": 576.6,
+      "elev_min": 390.0,
+      "elev_max": 863.9,
+      "slope_mean_deg": 29.8,
+      "slope_p50_deg": 31.2,
+      "gentle_pct_lt8deg": 1.9,
+      "steep_pct_gt25deg": 75.4,
+      "south_aspect_pct": 21.1
+     },
+     "point_elev": 481.9
+    },
+    "canopy_1km": {
+     "tree": 98.2,
+     "built": 0.6,
+     "water": 0.0,
+     "green": 99.3,
+     "n": 44919
+    },
+    "phytoncide_2018": {
+     "n": 9,
+     "sites": [
+      "청도1(활엽수림)",
+      "청도2(서어나무)",
+      "청도3(활엽수림)"
+     ],
+     "species": [
+      "서어나무",
+      "활엽수림"
+     ],
+     "terpene_ppt_median": 25.5,
+     "anion_median": 800,
+     "top_terpenes": {
+      "α-Pinene": 8.2,
+      "β-Pinene": 2.3,
+      "Camphene": 4.8,
+      "Limonene": 1.2,
+      "Camphor": 2.1,
+      "Bornyl acetate": 0.0
+     },
+     "months": [
+      5,
+      9,
+      11
+     ]
+    }
+   },
+   "climate": {
+    "station": {
+     "id": 900,
+     "name": "두서",
+     "type": "AWS",
+     "dist_km": 10.932,
+     "dh_m": 366.5,
+     "lapse_adj_c": -2.38
+    },
+    "monthly": {
+     "1": {
+      "tavg": -1.5,
+      "tmax": 5.0,
+      "rh": 51.0,
+      "rain_day_pct": 8.0,
+      "hot_day_pct": 0.0,
+      "di": 37.6,
+      "ws": 2.5,
+      "n_days": 93
+     },
+     "2": {
+      "tavg": 1.0,
+      "tmax": 6.8,
+      "rh": 51.0,
+      "rain_day_pct": 16.0,
+      "hot_day_pct": 0.0,
+      "di": 40.7,
+      "ws": 2.6,
+      "n_days": 84
+     },
+     "3": {
+      "tavg": 6.9,
+      "tmax": 12.7,
+      "rh": 64.0,
+      "rain_day_pct": 19.0,
+      "hot_day_pct": 0.0,
+      "di": 47.1,
+      "ws": 2.2,
+      "n_days": 93
+     },
+     "4": {
+      "tavg": 10.7,
+      "tmax": 17.7,
+      "rh": 64.0,
+      "rain_day_pct": 20.0,
+      "hot_day_pct": 0.0,
+      "di": 52.4,
+      "ws": 2.3,
+      "n_days": 60
+     },
+     "5": {
+      "tavg": 15.2,
+      "tmax": 21.2,
+      "rh": 65.0,
+      "rain_day_pct": 24.0,
+      "hot_day_pct": 0.0,
+      "di": 59.0,
+      "ws": 2.0,
+      "n_days": 62
+     },
+     "6": {
+      "tavg": 19.3,
+      "tmax": 25.0,
+      "rh": 80.0,
+      "rain_day_pct": 29.0,
+      "hot_day_pct": 6.0,
+      "di": 65.7,
+      "ws": 1.8,
+      "n_days": 60
+     },
+     "7": {
+      "tavg": 23.0,
+      "tmax": 27.9,
+      "rh": 86.0,
+      "rain_day_pct": 28.0,
+      "hot_day_pct": 26.0,
+      "di": 72.2,
+      "ws": 1.4,
+      "n_days": 62
+     },
+     "8": {
+      "tavg": 22.7,
+      "tmax": 28.4,
+      "rh": 87.0,
+      "rain_day_pct": 39.0,
+      "hot_day_pct": 37.0,
+      "di": 71.7,
+      "ws": 1.7,
+      "n_days": 62
+     },
+     "9": {
+      "tavg": 18.5,
+      "tmax": 24.3,
+      "rh": 86.0,
+      "rain_day_pct": 32.0,
+      "hot_day_pct": 5.0,
+      "di": 64.7,
+      "ws": 1.9,
+      "n_days": 58
+     },
+     "10": {
+      "tavg": 12.5,
+      "tmax": 19.1,
+      "rh": 77.0,
+      "rain_day_pct": 21.0,
+      "hot_day_pct": 0.0,
+      "di": 55.2,
+      "ws": 1.9,
+      "n_days": 62
+     },
+     "11": {
+      "tavg": 7.4,
+      "tmax": 14.1,
+      "rh": 68.0,
+      "rain_day_pct": 9.0,
+      "hot_day_pct": 0.0,
+      "di": 47.7,
+      "ws": 1.8,
+      "n_days": 60
+     },
+     "12": {
+      "tavg": -0.4,
+      "tmax": 6.4,
+      "rh": 54.0,
+      "rain_day_pct": 6.0,
+      "hot_day_pct": 0.0,
+      "di": 38.4,
+      "ws": 2.7,
+      "n_days": 62
+     }
+    }
+   }
+  },
+  "F07": {
+   "facility_id": "F07",
+   "name": "국립대전숲체원",
+   "type": "숲체원",
+   "lat": 36.324217,
+   "lng": 127.291183,
+   "address": "대전광역시 유성구 성북로 154번길 748",
+   "fixed": {
+    "terrain": {
+     "facility_id": "F07",
+     "name": "국립대전숲체원",
+     "dem": "NGII 수치지형도 1:5000 TIN→5 m",
+     "r500": {
+      "valid_pct": 100.0,
+      "elev_mean": 228.1,
+      "elev_min": 148.0,
+      "elev_max": 337.2,
+      "slope_mean_deg": 19.6,
+      "slope_p50_deg": 19.5,
+      "gentle_pct_lt8deg": 8.0,
+      "steep_pct_gt25deg": 27.1,
+      "south_aspect_pct": 24.2
+     },
+     "r1000": {
+      "valid_pct": 100.0,
+      "elev_mean": 226.9,
+      "elev_min": 82.8,
+      "elev_max": 506.2,
+      "slope_mean_deg": 21.3,
+      "slope_p50_deg": 21.2,
+      "gentle_pct_lt8deg": 8.7,
+      "steep_pct_gt25deg": 36.8,
+      "south_aspect_pct": 25.5
+     },
+     "point_elev": 190.9
+    },
+    "canopy_1km": {
+     "tree": 95.7,
+     "built": 0.6,
+     "water": 0.0,
+     "green": 96.9,
+     "n": 45316
+    },
+    "phytoncide_2018": null
+   },
+   "climate": {
+    "station": {
+     "id": 636,
+     "name": "계룡",
+     "type": "AWS",
+     "dist_km": 4.686,
+     "dh_m": 62.3,
+     "lapse_adj_c": -0.4
+    },
+    "monthly": {
+     "1": {
+      "tavg": -3.2,
+      "tmax": 4.3,
+      "rh": 69.0,
+      "rain_day_pct": 14.0,
+      "hot_day_pct": 0.0,
+      "di": 31.9,
+      "ws": 1.1,
+      "n_days": 83
+     },
+     "2": {
+      "tavg": -0.4,
+      "tmax": 6.8,
+      "rh": 61.0,
+      "rain_day_pct": 13.0,
+      "hot_day_pct": 0.0,
+      "di": 37.1,
+      "ws": 1.6,
+      "n_days": 84
+     },
+     "3": {
+      "tavg": 6.5,
+      "tmax": 13.9,
+      "rh": 64.0,
+      "rain_day_pct": 19.0,
+      "hot_day_pct": 0.0,
+      "di": 46.6,
+      "ws": 1.4,
+      "n_days": 93
+     },
+     "4": {
+      "tavg": 11.7,
+      "tmax": 19.8,
+      "rh": 58.0,
+      "rain_day_pct": 22.0,
+      "hot_day_pct": 0.0,
+      "di": 54.2,
+      "ws": 1.5,
+      "n_days": 60
+     },
+     "5": {
+      "tavg": 15.4,
+      "tmax": 23.1,
+      "rh": 66.0,
+      "rain_day_pct": 28.0,
+      "hot_day_pct": 1.0,
+      "di": 59.3,
+      "ws": 1.4,
+      "n_days": 61
+     },
+     "6": {
+      "tavg": 21.3,
+      "tmax": 27.7,
+      "rh": 74.0,
+      "rain_day_pct": 29.0,
+      "hot_day_pct": 22.0,
+      "di": 68.5,
+      "ws": 1.3,
+      "n_days": 57
+     },
+     "7": {
+      "tavg": 25.0,
+      "tmax": 30.1,
+      "rh": 80.0,
+      "rain_day_pct": 46.0,
+      "hot_day_pct": 59.0,
+      "di": 74.7,
+      "ws": 1.0,
+      "n_days": 62
+     },
+     "8": {
+      "tavg": 23.9,
+      "tmax": 30.3,
+      "rh": 81.0,
+      "rain_day_pct": 33.0,
+      "hot_day_pct": 62.0,
+      "di": 73.3,
+      "ws": 1.2,
+      "n_days": 62
+     },
+     "9": {
+      "tavg": 20.2,
+      "tmax": 26.5,
+      "rh": 76.0,
+      "rain_day_pct": 31.0,
+      "hot_day_pct": 14.0,
+      "di": 66.9,
+      "ws": 1.3,
+      "n_days": 59
+     },
+     "10": {
+      "tavg": 12.3,
+      "tmax": 20.4,
+      "rh": 79.0,
+      "rain_day_pct": 22.0,
+      "hot_day_pct": 1.0,
+      "di": 54.8,
+      "ws": 1.0,
+      "n_days": 62
+     },
+     "11": {
+      "tavg": 6.4,
+      "tmax": 14.2,
+      "rh": 75.0,
+      "rain_day_pct": 21.0,
+      "hot_day_pct": 0.0,
+      "di": 45.6,
+      "ws": 1.0,
+      "n_days": 59
+     },
+     "12": {
+      "tavg": -2.2,
+      "tmax": 5.5,
+      "rh": 71.0,
+      "rain_day_pct": 17.0,
+      "hot_day_pct": 0.0,
+      "di": 32.8,
+      "ws": 1.2,
+      "n_days": 61
+     }
+    }
+   }
+  },
+  "F08": {
+   "facility_id": "F08",
+   "name": "국립양평치유의숲",
+   "type": "치유의숲",
+   "lat": 37.461006,
+   "lng": 127.718225,
+   "address": "경기도 양평군 양동면 황거길 262-10",
+   "fixed": {
+    "terrain": {
+     "facility_id": "F08",
+     "name": "국립양평치유의숲",
+     "dem": "NGII 수치지형도 1:5000 TIN→5 m",
+     "r500": {
+      "valid_pct": 100.0,
+      "elev_mean": 282.7,
+      "elev_min": 200.0,
+      "elev_max": 397.4,
+      "slope_mean_deg": 23.8,
+      "slope_p50_deg": 24.3,
+      "gentle_pct_lt8deg": 5.7,
+      "steep_pct_gt25deg": 46.8,
+      "south_aspect_pct": 36.5
+     },
+     "r1000": {
+      "valid_pct": 100.0,
+      "elev_mean": 311.3,
+      "elev_min": 175.0,
+      "elev_max": 466.9,
+      "slope_mean_deg": 23.8,
+      "slope_p50_deg": 24.7,
+      "gentle_pct_lt8deg": 7.4,
+      "steep_pct_gt25deg": 48.8,
+      "south_aspect_pct": 32.1
+     },
+     "point_elev": 237.0
+    },
+    "canopy_1km": {
+     "tree": 97.3,
+     "built": 0.3,
+     "water": 0.0,
+     "green": 98.7,
+     "n": 45980
+    },
+    "phytoncide_2018": {
+     "n": 9,
+     "sites": [
+      "국립양평치유의숲1(소나무)",
+      "국립양평치유의숲2(소나무)",
+      "국립양평치유의숲3(잣나무)"
+     ],
+     "species": [
+      "소나무",
+      "잣나무"
+     ],
+     "terpene_ppt_median": 217.0,
+     "anion_median": 647,
+     "top_terpenes": {
+      "α-Pinene": 97.2,
+      "β-Pinene": 21.1,
+      "Camphene": 60.1,
+      "Limonene": 1.9,
+      "Camphor": 11.2,
+      "Bornyl acetate": 5.0
+     },
+     "months": [
+      7,
+      10
+     ]
+    }
+   },
+   "climate": {
+    "station": {
+     "id": 547,
+     "name": "양동",
+     "type": "AWS",
+     "dist_km": 5.97,
+     "dh_m": 138.3,
+     "lapse_adj_c": -0.9
+    },
+    "monthly": {
+     "1": {
+      "tavg": -6.3,
+      "tmax": 2.2,
+      "rh": 80.0,
+      "rain_day_pct": 14.0,
+      "hot_day_pct": 0.0,
+      "di": 25.2,
+      "ws": 0.9,
+      "n_days": 93
+     },
+     "2": {
+      "tavg": -2.4,
+      "tmax": 5.9,
+      "rh": 72.0,
+      "rain_day_pct": 11.0,
+      "hot_day_pct": 0.0,
+      "di": 32.6,
+      "ws": 1.2,
+      "n_days": 84
+     },
+     "3": {
+      "tavg": 5.3,
+      "tmax": 13.8,
+      "rh": 73.0,
+      "rain_day_pct": 19.0,
+      "hot_day_pct": 0.0,
+      "di": 44.1,
+      "ws": 1.2,
+      "n_days": 93
+     },
+     "4": {
+      "tavg": 11.0,
+      "tmax": 20.1,
+      "rh": 71.0,
+      "rain_day_pct": 25.0,
+      "hot_day_pct": 0.0,
+      "di": 52.8,
+      "ws": 1.4,
+      "n_days": 60
+     },
+     "5": {
+      "tavg": 14.9,
+      "tmax": 23.4,
+      "rh": 78.0,
+      "rain_day_pct": 28.0,
+      "hot_day_pct": 3.0,
+      "di": 58.7,
+      "ws": 1.2,
+      "n_days": 62
+     },
+     "6": {
+      "tavg": 20.7,
+      "tmax": 28.2,
+      "rh": 86.0,
+      "rain_day_pct": 29.0,
+      "hot_day_pct": 28.0,
+      "di": 68.5,
+      "ws": 1.1,
+      "n_days": 60
+     },
+     "7": {
+      "tavg": 25.0,
+      "tmax": 30.8,
+      "rh": 91.0,
+      "rain_day_pct": 42.0,
+      "hot_day_pct": 67.0,
+      "di": 76.0,
+      "ws": 0.9,
+      "n_days": 62
+     },
+     "8": {
+      "tavg": 23.3,
+      "tmax": 30.7,
+      "rh": 93.0,
+      "rain_day_pct": 39.0,
+      "hot_day_pct": 66.0,
+      "di": 73.4,
+      "ws": 1.0,
+      "n_days": 62
+     },
+     "9": {
+      "tavg": 18.9,
+      "tmax": 27.1,
+      "rh": 89.0,
+      "rain_day_pct": 32.0,
+      "hot_day_pct": 22.0,
+      "di": 65.5,
+      "ws": 1.0,
+      "n_days": 60
+     },
+     "10": {
+      "tavg": 11.7,
+      "tmax": 20.1,
+      "rh": 88.0,
+      "rain_day_pct": 25.0,
+      "hot_day_pct": 0.0,
+      "di": 53.6,
+      "ws": 0.8,
+      "n_days": 57
+     },
+     "11": {
+      "tavg": 4.6,
+      "tmax": 13.3,
+      "rh": 84.0,
+      "rain_day_pct": 15.0,
+      "hot_day_pct": 0.0,
+      "di": 42.0,
+      "ws": 0.9,
+      "n_days": 59
+     },
+     "12": {
+      "tavg": -5.2,
+      "tmax": 3.4,
+      "rh": 81.0,
+      "rain_day_pct": 12.0,
+      "hot_day_pct": 0.0,
+      "di": 26.6,
+      "ws": 0.9,
+      "n_days": 62
+     }
+    }
+   }
+  },
+  "F09": {
+   "facility_id": "F09",
+   "name": "국립대관령치유의숲",
+   "type": "치유의숲",
+   "lat": 37.707447,
+   "lng": 128.799017,
+   "address": "강원도 강릉시 성산면 대관령옛길 127-42",
+   "fixed": {
+    "terrain": {
+     "facility_id": "F09",
+     "name": "국립대관령치유의숲",
+     "dem": "NGII 수치지형도 1:5000 TIN→5 m",
+     "r500": {
+      "valid_pct": 100.0,
+      "elev_mean": 308.1,
+      "elev_min": 189.1,
+      "elev_max": 461.0,
+      "slope_mean_deg": 21.5,
+      "slope_p50_deg": 21.2,
+      "gentle_pct_lt8deg": 5.4,
+      "steep_pct_gt25deg": 34.9,
+      "south_aspect_pct": 2.7
+     },
+     "r1000": {
+      "valid_pct": 100.0,
+      "elev_mean": 327.4,
+      "elev_min": 135.0,
+      "elev_max": 569.1,
+      "slope_mean_deg": 23.6,
+      "slope_p50_deg": 23.5,
+      "gentle_pct_lt8deg": 4.4,
+      "steep_pct_gt25deg": 43.9,
+      "south_aspect_pct": 12.0
+     },
+     "point_elev": 263.7
+    },
+    "canopy_1km": {
+     "tree": 98.5,
+     "built": 0.3,
+     "water": 0.0,
+     "green": 99.3,
+     "n": 46144
+    },
+    "phytoncide_2018": {
+     "n": 9,
+     "sites": [
+      "대관령1(사이숲길, 상수리나무)",
+      "대관령2(치유데크로드, 소나무)",
+      "대관령3(솔향치유숲길, 소나무)"
+     ],
+     "species": [
+      "사이숲길, 상수리나무",
+      "솔향치유숲길, 소나무",
+      "치유데크로드, 소나무"
+     ],
+     "terpene_ppt_median": 156.5,
+     "anion_median": 590,
+     "top_terpenes": {
+      "α-Pinene": 75.0,
+      "β-Pinene": 35.7,
+      "Camphene": 35.8,
+      "Limonene": 1.0,
+      "Camphor": 17.4,
+      "Bornyl acetate": 1.0
+     },
+     "months": [
+      6,
+      9,
+      11
+     ]
+    }
+   },
+   "climate": {
+    "station": {
+     "id": 678,
+     "name": "강릉성산",
+     "type": "AWS",
+     "dist_km": 2.644,
+     "dh_m": -179.5,
+     "lapse_adj_c": 1.17
+    },
+    "monthly": {
+     "1": {
+      "tavg": -1.2,
+      "tmax": 3.4,
+      "rh": 50.0,
+      "rain_day_pct": 10.0,
+      "hot_day_pct": 0.0,
+      "di": 37.9,
+      "ws": 2.1,
+      "n_days": 92
+     },
+     "2": {
+      "tavg": 1.3,
+      "tmax": 5.6,
+      "rh": 52.0,
+      "rain_day_pct": 11.0,
+      "hot_day_pct": 0.0,
+      "di": 40.7,
+      "ws": 2.2,
+      "n_days": 82
+     },
+     "3": {
+      "tavg": 7.8,
+      "tmax": 11.8,
+      "rh": 58.0,
+      "rain_day_pct": 25.0,
+      "hot_day_pct": 0.0,
+      "di": 48.5,
+      "ws": 1.8,
+      "n_days": 92
+     },
+     "4": {
+      "tavg": 12.8,
+      "tmax": 18.4,
+      "rh": 56.0,
+      "rain_day_pct": 23.0,
+      "hot_day_pct": 0.0,
+      "di": 55.3,
+      "ws": 2.2,
+      "n_days": 59
+     },
+     "5": {
+      "tavg": 16.5,
+      "tmax": 21.9,
+      "rh": 59.0,
+      "rain_day_pct": 27.0,
+      "hot_day_pct": 2.0,
+      "di": 60.5,
+      "ws": 2.2,
+      "n_days": 62
+     },
+     "6": {
+      "tavg": 19.7,
+      "tmax": 25.5,
+      "rh": 82.0,
+      "rain_day_pct": 32.0,
+      "hot_day_pct": 8.0,
+      "di": 66.3,
+      "ws": 1.3,
+      "n_days": 60
+     },
+     "7": {
+      "tavg": 23.3,
+      "tmax": 28.3,
+      "rh": 90.0,
+      "rain_day_pct": 34.0,
+      "hot_day_pct": 31.0,
+      "di": 73.0,
+      "ws": 0.6,
+      "n_days": 62
+     },
+     "8": {
+      "tavg": 22.7,
+      "tmax": 28.2,
+      "rh": 86.0,
+      "rain_day_pct": 42.0,
+      "hot_day_pct": 39.0,
+      "di": 71.6,
+      "ws": 1.1,
+      "n_days": 62
+     },
+     "9": {
+      "tavg": 18.6,
+      "tmax": 24.2,
+      "rh": 86.0,
+      "rain_day_pct": 43.0,
+      "hot_day_pct": 5.0,
+      "di": 64.9,
+      "ws": 0.8,
+      "n_days": 60
+     },
+     "10": {
+      "tavg": 13.4,
+      "tmax": 18.4,
+      "rh": 75.0,
+      "rain_day_pct": 34.0,
+      "hot_day_pct": 0.0,
+      "di": 56.3,
+      "ws": 1.3,
+      "n_days": 62
+     },
+     "11": {
+      "tavg": 9.2,
+      "tmax": 13.6,
+      "rh": 57.0,
+      "rain_day_pct": 16.0,
+      "hot_day_pct": 0.0,
+      "di": 50.9,
+      "ws": 1.8,
+      "n_days": 60
+     },
+     "12": {
+      "tavg": -0.0,
+      "tmax": 5.1,
+      "rh": 50.0,
+      "rain_day_pct": 11.0,
+      "hot_day_pct": 0.0,
+      "di": 39.5,
+      "ws": 2.6,
+      "n_days": 62
+     }
+    }
+   }
+  },
+  "F10": {
+   "facility_id": "F10",
+   "name": "국립대운산치유의숲",
+   "type": "치유의숲",
+   "lat": 35.390147,
+   "lng": 129.236339,
+   "address": "울산광역시 울주군 온양읍 대운상대길 225-92",
+   "fixed": {
+    "terrain": {
+     "facility_id": "F10",
+     "name": "국립대운산치유의숲",
+     "dem": "NGII 수치지형도 1:5000 TIN→5 m",
+     "r500": {
+      "valid_pct": 100.0,
+      "elev_mean": 155.3,
+      "elev_min": 70.5,
+      "elev_max": 283.7,
+      "slope_mean_deg": 28.9,
+      "slope_p50_deg": 31.7,
+      "gentle_pct_lt8deg": 6.6,
+      "steep_pct_gt25deg": 71.3,
+      "south_aspect_pct": 28.1
+     },
+     "r1000": {
+      "valid_pct": 100.0,
+      "elev_mean": 189.9,
+      "elev_min": 55.0,
+      "elev_max": 377.8,
+      "slope_mean_deg": 28.7,
+      "slope_p50_deg": 30.9,
+      "gentle_pct_lt8deg": 5.1,
+      "steep_pct_gt25deg": 69.0,
+      "south_aspect_pct": 24.8
+     },
+     "point_elev": 105.9
+    },
+    "canopy_1km": {
+     "tree": 98.9,
+     "built": 0.1,
+     "water": 0.0,
+     "green": 99.8,
+     "n": 44768
+    },
+    "phytoncide_2018": {
+     "n": 9,
+     "sites": [
+      "명품숲길(굴참나무)",
+      "치유숲길(편백)",
+      "풀향기길(소나무)"
+     ],
+     "species": [
+      "굴참나무",
+      "소나무",
+      "편백"
+     ],
+     "terpene_ppt_median": 111.8,
+     "anion_median": 555,
+     "top_terpenes": {
+      "α-Pinene": 54.7,
+      "β-Pinene": 19.4,
+      "Camphene": 2.3,
+      "Limonene": 2.1,
+      "Camphor": 7.3,
+      "Bornyl acetate": 0.8
+     },
+     "months": [
+      4,
+      9,
+      11
+     ]
+    }
+   },
+   "climate": {
+    "station": {
+     "id": 924,
+     "name": "간절곶",
+     "type": "AWS",
+     "dist_km": 11.771,
+     "dh_m": 90.1,
+     "lapse_adj_c": -0.59
+    },
+    "monthly": {
+     "1": {
+      "tavg": 3.3,
+      "tmax": 7.7,
+      "rh": 42.0,
+      "rain_day_pct": 9.0,
+      "hot_day_pct": 0.0,
+      "di": 44.8,
+      "ws": 3.1,
+      "n_days": 91
+     },
+     "2": {
+      "tavg": 5.1,
+      "tmax": 8.8,
+      "rh": 45.0,
+      "rain_day_pct": 19.0,
+      "hot_day_pct": 0.0,
+      "di": 46.7,
+      "ws": 3.4,
+      "n_days": 84
+     },
+     "3": {
+      "tavg": 10.3,
+      "tmax": 12.9,
+      "rh": 62.0,
+      "rain_day_pct": 23.0,
+      "hot_day_pct": 0.0,
+      "di": 52.2,
+      "ws": 3.8,
+      "n_days": 93
+     },
+     "4": {
+      "tavg": 13.2,
+      "tmax": 16.1,
+      "rh": 64.0,
+      "rain_day_pct": 21.0,
+      "hot_day_pct": 0.0,
+      "di": 56.2,
+      "ws": 4.0,
+      "n_days": 60
+     },
+     "5": {
+      "tavg": 16.2,
+      "tmax": 19.1,
+      "rh": 70.0,
+      "rain_day_pct": 21.0,
+      "hot_day_pct": 0.0,
+      "di": 60.7,
+      "ws": 3.3,
+      "n_days": 62
+     },
+     "6": {
+      "tavg": 19.4,
+      "tmax": 22.4,
+      "rh": 85.0,
+      "rain_day_pct": 26.0,
+      "hot_day_pct": 0.0,
+      "di": 66.3,
+      "ws": 4.0,
+      "n_days": 60
+     },
+     "7": {
+      "tavg": 23.8,
+      "tmax": 25.8,
+      "rh": 88.0,
+      "rain_day_pct": 27.0,
+      "hot_day_pct": 3.0,
+      "di": 73.7,
+      "ws": 3.0,
+      "n_days": 62
+     },
+     "8": {
+      "tavg": 23.8,
+      "tmax": 27.5,
+      "rh": 84.0,
+      "rain_day_pct": 30.0,
+      "hot_day_pct": 10.0,
+      "di": 73.3,
+      "ws": 3.4,
+      "n_days": 62
+     },
+     "9": {
+      "tavg": 22.0,
+      "tmax": 25.4,
+      "rh": 75.0,
+      "rain_day_pct": 31.0,
+      "hot_day_pct": 3.0,
+      "di": 69.8,
+      "ws": 4.4,
+      "n_days": 60
+     },
+     "10": {
+      "tavg": 17.0,
+      "tmax": 20.9,
+      "rh": 64.0,
+      "rain_day_pct": 22.0,
+      "hot_day_pct": 0.0,
+      "di": 62.1,
+      "ws": 3.4,
+      "n_days": 62
+     },
+     "11": {
+      "tavg": 12.6,
+      "tmax": 16.1,
+      "rh": 53.0,
+      "rain_day_pct": 11.0,
+      "hot_day_pct": 0.0,
+      "di": 55.8,
+      "ws": 2.8,
+      "n_days": 60
+     },
+     "12": {
+      "tavg": 4.0,
+      "tmax": 9.2,
+      "rh": 42.0,
+      "rain_day_pct": 6.0,
+      "hot_day_pct": 0.0,
+      "di": 45.6,
+      "ws": 2.8,
+      "n_days": 62
+     }
+    }
+   }
+  },
+  "F11": {
+   "facility_id": "F11",
+   "name": "국립김천치유의숲",
+   "type": "치유의숲",
+   "lat": 35.851858,
+   "lng": 128.002414,
+   "address": "경상북도 김천시 증산면 수도길 1237-89",
+   "fixed": {
+    "terrain": {
+     "facility_id": "F11",
+     "name": "국립김천치유의숲",
+     "dem": "NGII 수치지형도 1:5000 TIN→5 m",
+     "r500": {
+      "valid_pct": 100.0,
+      "elev_mean": 799.2,
+      "elev_min": 675.0,
+      "elev_max": 919.2,
+      "slope_mean_deg": 24.5,
+      "slope_p50_deg": 24.9,
+      "gentle_pct_lt8deg": 4.1,
+      "steep_pct_gt25deg": 49.6,
+      "south_aspect_pct": 19.1
+     },
+     "r1000": {
+      "valid_pct": 100.0,
+      "elev_mean": 842.9,
+      "elev_min": 625.0,
+      "elev_max": 1104.5,
+      "slope_mean_deg": 24.7,
+      "slope_p50_deg": 25.2,
+      "gentle_pct_lt8deg": 4.1,
+      "steep_pct_gt25deg": 50.5,
+      "south_aspect_pct": 16.4
+     },
+     "point_elev": 759.3
+    },
+    "canopy_1km": {
+     "tree": 94.3,
+     "built": 0.5,
+     "water": 0.0,
+     "green": 97.8,
+     "n": 45043
+    },
+    "phytoncide_2018": null
+   },
+   "climate": {
+    "station": {
+     "id": 809,
+     "name": "대덕",
+     "type": "AWS",
+     "dist_km": 9.522,
+     "dh_m": 557.8,
+     "lapse_adj_c": -3.63
+    },
+    "monthly": {
+     "1": {
+      "tavg": -5.2,
+      "tmax": 1.9,
+      "rh": 61.0,
+      "rain_day_pct": 8.0,
+      "hot_day_pct": 0.0,
+      "di": 30.5,
+      "ws": 1.6,
+      "n_days": 93
+     },
+     "2": {
+      "tavg": -2.4,
+      "tmax": 4.3,
+      "rh": 55.0,
+      "rain_day_pct": 13.0,
+      "hot_day_pct": 0.0,
+      "di": 35.2,
+      "ws": 1.8,
+      "n_days": 84
+     },
+     "3": {
+      "tavg": 4.3,
+      "tmax": 11.5,
+      "rh": 61.0,
+      "rain_day_pct": 16.0,
+      "hot_day_pct": 0.0,
+      "di": 43.7,
+      "ws": 1.7,
+      "n_days": 93
+     },
+     "4": {
+      "tavg": 9.3,
+      "tmax": 17.4,
+      "rh": 56.0,
+      "rain_day_pct": 23.0,
+      "hot_day_pct": 0.0,
+      "di": 50.9,
+      "ws": 1.8,
+      "n_days": 60
+     },
+     "5": {
+      "tavg": 13.3,
+      "tmax": 20.7,
+      "rh": 64.0,
+      "rain_day_pct": 25.0,
+      "hot_day_pct": 0.0,
+      "di": 56.2,
+      "ws": 1.8,
+      "n_days": 61
+     },
+     "6": {
+      "tavg": 18.1,
+      "tmax": 25.1,
+      "rh": 77.0,
+      "rain_day_pct": 25.0,
+      "hot_day_pct": 6.0,
+      "di": 63.6,
+      "ws": 1.6,
+      "n_days": 60
+     },
+     "7": {
+      "tavg": 21.6,
+      "tmax": 27.3,
+      "rh": 78.0,
+      "rain_day_pct": 35.0,
+      "hot_day_pct": 17.0,
+      "di": 69.3,
+      "ws": 1.3,
+      "n_days": 62
+     },
+     "8": {
+      "tavg": 20.2,
+      "tmax": 27.3,
+      "rh": 85.0,
+      "rain_day_pct": 41.0,
+      "hot_day_pct": 28.0,
+      "di": 67.4,
+      "ws": 1.3,
+      "n_days": 62
+     },
+     "9": {
+      "tavg": 15.7,
+      "tmax": 23.1,
+      "rh": 85.0,
+      "rain_day_pct": 34.0,
+      "hot_day_pct": 3.0,
+      "di": 60.1,
+      "ws": 1.2,
+      "n_days": 60
+     },
+     "10": {
+      "tavg": 9.2,
+      "tmax": 17.0,
+      "rh": 79.0,
+      "rain_day_pct": 24.0,
+      "hot_day_pct": 0.0,
+      "di": 49.8,
+      "ws": 1.2,
+      "n_days": 62
+     },
+     "11": {
+      "tavg": 3.6,
+      "tmax": 11.5,
+      "rh": 71.0,
+      "rain_day_pct": 19.0,
+      "hot_day_pct": 0.0,
+      "di": 41.6,
+      "ws": 1.3,
+      "n_days": 60
+     },
+     "12": {
+      "tavg": -3.9,
+      "tmax": 3.3,
+      "rh": 63.0,
+      "rain_day_pct": 5.0,
+      "hot_day_pct": 0.0,
+      "di": 31.9,
+      "ws": 1.8,
+      "n_days": 62
+     }
+    }
+   }
+  },
+  "F12": {
+   "facility_id": "F12",
+   "name": "국립제천치유의숲",
+   "type": "치유의숲",
+   "lat": 37.012864,
+   "lng": 128.244742,
+   "address": "충청북도 제천시 청풍면 학현소야로 590",
+   "fixed": {
+    "terrain": {
+     "facility_id": "F12",
+     "name": "국립제천치유의숲",
+     "dem": "NGII 수치지형도 1:5000 TIN→5 m",
+     "r500": {
+      "valid_pct": 100.0,
+      "elev_mean": 517.2,
+      "elev_min": 407.0,
+      "elev_max": 637.4,
+      "slope_mean_deg": 25.2,
+      "slope_p50_deg": 25.3,
+      "gentle_pct_lt8deg": 2.5,
+      "steep_pct_gt25deg": 51.5,
+      "south_aspect_pct": 31.5
+     },
+     "r1000": {
+      "valid_pct": 100.0,
+      "elev_mean": 535.4,
+      "elev_min": 340.0,
+      "elev_max": 765.8,
+      "slope_mean_deg": 25.4,
+      "slope_p50_deg": 25.4,
+      "gentle_pct_lt8deg": 2.6,
+      "steep_pct_gt25deg": 51.9,
+      "south_aspect_pct": 27.2
+     },
+     "point_elev": 531.3
+    },
+    "canopy_1km": {
+     "tree": 89.5,
+     "built": 0.9,
+     "water": 0.0,
+     "green": 98.6,
+     "n": 45703
+    },
+    "phytoncide_2018": null
+   },
+   "climate": {
+    "station": {
+     "id": 621,
+     "name": "수산",
+     "type": "AWS",
+     "dist_km": 5.168,
+     "dh_m": 388.1,
+     "lapse_adj_c": -2.52
+    },
+    "monthly": {
+     "1": {
+      "tavg": -5.9,
+      "tmax": 0.8,
+      "rh": 66.0,
+      "rain_day_pct": 11.0,
+      "hot_day_pct": 0.0,
+      "di": 28.5,
+      "ws": 1.6,
+      "n_days": 92
+     },
+     "2": {
+      "tavg": -2.8,
+      "tmax": 3.9,
+      "rh": 59.0,
+      "rain_day_pct": 11.0,
+      "hot_day_pct": 0.0,
+      "di": 33.2,
+      "ws": 1.7,
+      "n_days": 84
+     },
+     "3": {
+      "tavg": 4.5,
+      "tmax": 11.6,
+      "rh": 61.0,
+      "rain_day_pct": 23.0,
+      "hot_day_pct": 0.0,
+      "di": 43.8,
+      "ws": 1.5,
+      "n_days": 92
+     },
+     "4": {
+      "tavg": 9.9,
+      "tmax": 18.4,
+      "rh": 61.0,
+      "rain_day_pct": 21.0,
+      "hot_day_pct": 0.0,
+      "di": 52.0,
+      "ws": 1.6,
+      "n_days": 60
+     },
+     "5": {
+      "tavg": 13.8,
+      "tmax": 21.8,
+      "rh": 60.0,
+      "rain_day_pct": 29.0,
+      "hot_day_pct": 0.0,
+      "di": 58.2,
+      "ws": 1.5,
+      "n_days": 62
+     },
+     "6": {
+      "tavg": 19.2,
+      "tmax": 26.6,
+      "rh": 74.0,
+      "rain_day_pct": 33.0,
+      "hot_day_pct": 16.0,
+      "di": 65.8,
+      "ws": 1.2,
+      "n_days": 60
+     },
+     "7": {
+      "tavg": 23.1,
+      "tmax": 29.2,
+      "rh": 83.0,
+      "rain_day_pct": 44.0,
+      "hot_day_pct": 46.0,
+      "di": 72.4,
+      "ws": 1.0,
+      "n_days": 61
+     },
+     "8": {
+      "tavg": 21.5,
+      "tmax": 28.9,
+      "rh": 86.0,
+      "rain_day_pct": 36.0,
+      "hot_day_pct": 47.0,
+      "di": 69.8,
+      "ws": 1.0,
+      "n_days": 62
+     },
+     "9": {
+      "tavg": 17.3,
+      "tmax": 25.3,
+      "rh": 83.0,
+      "rain_day_pct": 28.0,
+      "hot_day_pct": 11.0,
+      "di": 62.7,
+      "ws": 1.1,
+      "n_days": 58
+     },
+     "10": {
+      "tavg": 10.4,
+      "tmax": 17.9,
+      "rh": 83.0,
+      "rain_day_pct": 28.0,
+      "hot_day_pct": 0.0,
+      "di": 51.6,
+      "ws": 1.2,
+      "n_days": 62
+     },
+     "11": {
+      "tavg": 4.5,
+      "tmax": 11.5,
+      "rh": 75.0,
+      "rain_day_pct": 16.0,
+      "hot_day_pct": 0.0,
+      "di": 42.8,
+      "ws": 1.6,
+      "n_days": 59
+     },
+     "12": {
+      "tavg": -4.7,
+      "tmax": 2.0,
+      "rh": 70.0,
+      "rain_day_pct": 14.0,
+      "hot_day_pct": 0.0,
+      "di": 29.4,
+      "ws": 1.9,
+      "n_days": 62
+     }
+    }
+   }
+  },
+  "F13": {
+   "facility_id": "F13",
+   "name": "국립예산치유의숲",
+   "type": "치유의숲",
+   "lat": 36.703122,
+   "lng": 126.859478,
+   "address": "충청남도 예산군 예산읍 치유숲길 203-31",
+   "fixed": {
+    "terrain": {
+     "facility_id": "F13",
+     "name": "국립예산치유의숲",
+     "dem": "NGII 수치지형도 1:5000 TIN→5 m",
+     "r500": {
+      "valid_pct": 100.0,
+      "elev_mean": 222.5,
+      "elev_min": 94.0,
+      "elev_max": 370.1,
+      "slope_mean_deg": 30.1,
+      "slope_p50_deg": 30.7,
+      "gentle_pct_lt8deg": 1.2,
+      "steep_pct_gt25deg": 77.9,
+      "south_aspect_pct": 27.5
+     },
+     "r1000": {
+      "valid_pct": 100.0,
+      "elev_mean": 236.3,
+      "elev_min": 65.0,
+      "elev_max": 434.3,
+      "slope_mean_deg": 28.4,
+      "slope_p50_deg": 28.7,
+      "gentle_pct_lt8deg": 1.5,
+      "steep_pct_gt25deg": 67.3,
+      "south_aspect_pct": 19.6
+     },
+     "point_elev": 140.4
+    },
+    "canopy_1km": {
+     "tree": 98.5,
+     "built": 0.1,
+     "water": 0.0,
+     "green": 99.9,
+     "n": 45500
+    },
+    "phytoncide_2018": null
+   },
+   "climate": {
+    "station": {
+     "id": 628,
+     "name": "예산",
+     "type": "AWS",
+     "dist_km": 5.35,
+     "dh_m": 113.6,
+     "lapse_adj_c": -0.74
+    },
+    "monthly": {
+     "1": {
+      "tavg": -2.3,
+      "tmax": 3.2,
+      "rh": 69.0,
+      "rain_day_pct": 15.0,
+      "hot_day_pct": 0.0,
+      "di": 33.2,
+      "ws": 1.4,
+      "n_days": 93
+     },
+     "2": {
+      "tavg": 0.6,
+      "tmax": 5.9,
+      "rh": 63.0,
+      "rain_day_pct": 13.0,
+      "hot_day_pct": 0.0,
+      "di": 38.2,
+      "ws": 1.8,
+      "n_days": 84
+     },
+     "3": {
+      "tavg": 7.2,
+      "tmax": 13.3,
+      "rh": 65.0,
+      "rain_day_pct": 15.0,
+      "hot_day_pct": 0.0,
+      "di": 47.5,
+      "ws": 1.8,
+      "n_days": 92
+     },
+     "4": {
+      "tavg": 12.8,
+      "tmax": 19.5,
+      "rh": 59.0,
+      "rain_day_pct": 19.0,
+      "hot_day_pct": 0.0,
+      "di": 55.7,
+      "ws": 2.0,
+      "n_days": 59
+     },
+     "5": {
+      "tavg": 17.0,
+      "tmax": 23.0,
+      "rh": 65.0,
+      "rain_day_pct": 25.0,
+      "hot_day_pct": 0.0,
+      "di": 61.7,
+      "ws": 2.1,
+      "n_days": 59
+     },
+     "6": {
+      "tavg": 22.0,
+      "tmax": 27.6,
+      "rh": 77.0,
+      "rain_day_pct": 23.0,
+      "hot_day_pct": 18.0,
+      "di": 69.8,
+      "ws": 1.9,
+      "n_days": 60
+     },
+     "7": {
+      "tavg": 26.0,
+      "tmax": 30.5,
+      "rh": 81.0,
+      "rain_day_pct": 38.0,
+      "hot_day_pct": 61.0,
+      "di": 76.5,
+      "ws": 1.4,
+      "n_days": 62
+     },
+     "8": {
+      "tavg": 24.5,
+      "tmax": 30.4,
+      "rh": 84.0,
+      "rain_day_pct": 34.0,
+      "hot_day_pct": 63.0,
+      "di": 74.5,
+      "ws": 1.6,
+      "n_days": 62
+     },
+     "9": {
+      "tavg": 21.0,
+      "tmax": 27.1,
+      "rh": 79.0,
+      "rain_day_pct": 31.0,
+      "hot_day_pct": 17.0,
+      "di": 68.5,
+      "ws": 1.6,
+      "n_days": 60
+     },
+     "10": {
+      "tavg": 13.9,
+      "tmax": 20.2,
+      "rh": 78.0,
+      "rain_day_pct": 23.0,
+      "hot_day_pct": 0.0,
+      "di": 57.4,
+      "ws": 1.5,
+      "n_days": 62
+     },
+     "11": {
+      "tavg": 8.1,
+      "tmax": 13.8,
+      "rh": 77.0,
+      "rain_day_pct": 23.0,
+      "hot_day_pct": 0.0,
+      "di": 48.2,
+      "ws": 1.5,
+      "n_days": 60
+     },
+     "12": {
+      "tavg": -1.2,
+      "tmax": 4.8,
+      "rh": 73.0,
+      "rain_day_pct": 19.0,
+      "hot_day_pct": 0.0,
+      "di": 34.2,
+      "ws": 1.4,
+      "n_days": 62
+     }
+    }
+   }
+  },
+  "F14": {
+   "facility_id": "F14",
+   "name": "국립곡성치유의숲",
+   "type": "치유의숲",
+   "lat": 35.310436,
+   "lng": 127.248889,
+   "address": "전라남도 곡성군 곡성읍 청계동로 519",
+   "fixed": {
+    "terrain": {
+     "facility_id": "F14",
+     "name": "국립곡성치유의숲",
+     "dem": "NGII 수치지형도 1:5000 TIN→5 m",
+     "r500": {
+      "valid_pct": 100.0,
+      "elev_mean": 174.9,
+      "elev_min": 60.0,
+      "elev_max": 370.1,
+      "slope_mean_deg": 30.0,
+      "slope_p50_deg": 30.8,
+      "gentle_pct_lt8deg": 3.8,
+      "steep_pct_gt25deg": 70.0,
+      "south_aspect_pct": 11.3
+     },
+     "r1000": {
+      "valid_pct": 100.0,
+      "elev_mean": 204.3,
+      "elev_min": 55.0,
+      "elev_max": 515.2,
+      "slope_mean_deg": 26.0,
+      "slope_p50_deg": 27.8,
+      "gentle_pct_lt8deg": 11.6,
+      "steep_pct_gt25deg": 59.2,
+      "south_aspect_pct": 12.2
+     },
+     "point_elev": 112.4
+    },
+    "canopy_1km": {
+     "tree": 92.1,
+     "built": 0.5,
+     "water": 3.3,
+     "green": 95.0,
+     "n": 44743
+    },
+    "phytoncide_2018": null
+   },
+   "climate": {
+    "station": {
+     "id": 768,
+     "name": "곡성",
+     "type": "AWS",
+     "dist_km": 4.081,
+     "dh_m": 21.4,
+     "lapse_adj_c": -0.14
+    },
+    "monthly": {
+     "1": {
+      "tavg": -0.6,
+      "tmax": 6.2,
+      "rh": 68.0,
+      "rain_day_pct": 12.0,
+      "hot_day_pct": 0.0,
+      "di": 35.9,
+      "ws": 1.6,
+      "n_days": 91
+     },
+     "2": {
+      "tavg": 1.8,
+      "tmax": 8.6,
+      "rh": 63.0,
+      "rain_day_pct": 19.0,
+      "hot_day_pct": 0.0,
+      "di": 39.9,
+      "ws": 1.7,
+      "n_days": 83
+     },
+     "3": {
+      "tavg": 8.8,
+      "tmax": 16.0,
+      "rh": 64.0,
+      "rain_day_pct": 20.0,
+      "hot_day_pct": 0.0,
+      "di": 50.0,
+      "ws": 1.6,
+      "n_days": 93
+     },
+     "4": {
+      "tavg": 13.7,
+      "tmax": 21.6,
+      "rh": 57.0,
+      "rain_day_pct": 21.0,
+      "hot_day_pct": 0.0,
+      "di": 57.0,
+      "ws": 1.6,
+      "n_days": 60
+     },
+     "5": {
+      "tavg": 17.5,
+      "tmax": 24.9,
+      "rh": 63.0,
+      "rain_day_pct": 23.0,
+      "hot_day_pct": 8.0,
+      "di": 62.4,
+      "ws": 1.5,
+      "n_days": 62
+     },
+     "6": {
+      "tavg": 22.9,
+      "tmax": 29.2,
+      "rh": 75.0,
+      "rain_day_pct": 27.0,
+      "hot_day_pct": 41.0,
+      "di": 71.0,
+      "ws": 1.5,
+      "n_days": 56
+     },
+     "7": {
+      "tavg": 26.1,
+      "tmax": 31.6,
+      "rh": 82.0,
+      "rain_day_pct": 39.0,
+      "hot_day_pct": 73.0,
+      "di": 76.7,
+      "ws": 1.3,
+      "n_days": 62
+     },
+     "8": {
+      "tavg": 25.4,
+      "tmax": 32.2,
+      "rh": 85.0,
+      "rain_day_pct": 36.0,
+      "hot_day_pct": 81.0,
+      "di": 76.1,
+      "ws": 1.1,
+      "n_days": 61
+     },
+     "9": {
+      "tavg": 21.3,
+      "tmax": 28.8,
+      "rh": 82.0,
+      "rain_day_pct": 33.0,
+      "hot_day_pct": 34.0,
+      "di": 69.1,
+      "ws": 1.3,
+      "n_days": 57
+     },
+     "10": {
+      "tavg": 14.1,
+      "tmax": 22.4,
+      "rh": 78.0,
+      "rain_day_pct": 19.0,
+      "hot_day_pct": 3.0,
+      "di": 57.6,
+      "ws": 1.2,
+      "n_days": 62
+     },
+     "11": {
+      "tavg": 8.0,
+      "tmax": 15.9,
+      "rh": 79.0,
+      "rain_day_pct": 24.0,
+      "hot_day_pct": 0.0,
+      "di": 47.8,
+      "ws": 1.2,
+      "n_days": 60
+     },
+     "12": {
+      "tavg": -0.1,
+      "tmax": 7.5,
+      "rh": 75.0,
+      "rain_day_pct": 15.0,
+      "hot_day_pct": 0.0,
+      "di": 35.5,
+      "ws": 1.6,
+      "n_days": 62
+     }
+    }
+   }
+  }
+ }
+}

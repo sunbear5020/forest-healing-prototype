@@ -736,3 +736,54 @@ input[type="range"]::-moz-range-thumb {
 @media (max-width: 700px) {
   .bar-layers { grid-template-columns: 1fr; }
 }
+
+/* ───────── 맞춤 추천 엔진 카드(engine/ui.js) ───────── */
+.engine-card { padding: 22px; margin-bottom: 18px; }
+.engine-card h2 { font-family: var(--font-serif); color: var(--green); margin: 2px 0 6px; font-size: 21px; }
+.engine-card .eyebrow { margin: 0; font-size: 12px; letter-spacing: .04em; color: var(--moss); font-weight: 600; }
+.eg-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 12px; }
+.eg-box { border: 1px solid var(--line); border-radius: var(--radius-sm); padding: 12px 14px; margin: 0; background: var(--cream-2); min-width: 0; }
+.eg-box legend { font-weight: 700; color: var(--green); padding: 0 6px; font-size: 14px; }
+.eg-check { display: grid; grid-template-columns: 1fr 96px 64px; align-items: center; gap: 8px; padding: 4px 0; border-bottom: 1px dashed var(--line-soft); }
+.eg-check label b { display: block; font-size: 14px; }
+.eg-check label span { font-size: 12px; color: var(--muted); }
+.eg-check input { width: 100%; accent-color: var(--green-2); }
+.eg-check output { font-size: 12px; color: var(--ink-soft); text-align: right; }
+.eg-inline { display: flex; gap: 6px; align-items: center; font-size: 13px; margin-top: 8px; }
+.eg-field { display: flex; flex-direction: column; gap: 4px; font-size: 13px; color: var(--ink-soft); margin-bottom: 8px; }
+.eg-field select { font: inherit; padding: 6px 8px; border: 1px solid var(--line); border-radius: 8px; background: #fff; }
+.eg-origin { display: flex; gap: 6px; flex-wrap: wrap; }
+.eg-origin select { flex: 1 1 110px; min-width: 0; }
+.primary-btn { margin-top: 10px; width: 100%; padding: 11px; border: 0; border-radius: 10px; background: var(--green); color: #F7F4E8; font: inherit; font-weight: 700; cursor: pointer; }
+.primary-btn:hover { background: var(--green-2); }
+#eg-out { margin-top: 14px; }
+.eg-alert { border: 1px solid var(--ochre); background: #FFF6E5; border-radius: 10px; padding: 10px 14px; margin-bottom: 10px; font-size: 14px; }
+.eg-alert.urgent { border-color: var(--clay); background: #FCEDE7; }
+.eg-alert ul { margin: 6px 0 0; padding-left: 18px; }
+.eg-list { list-style: none; padding: 0; margin: 8px 0; display: grid; gap: 10px; }
+.eg-item { border: 1px solid var(--line); border-radius: var(--radius-sm); padding: 12px 14px; background: var(--paper); }
+.eg-item-head { display: grid; grid-template-columns: 34px 1fr auto; gap: 10px; align-items: center; }
+.eg-rank { width: 30px; height: 30px; border-radius: 50%; display: grid; place-items: center; background: var(--green); color: #fff; font-weight: 700; }
+.eg-sub { display: block; color: var(--muted); font-size: 12px; }
+.eg-score { text-align: right; }
+.eg-score b { font-size: 22px; color: var(--green); font-family: var(--font-serif); display: block; line-height: 1; }
+.eg-score small { font-size: 11px; color: var(--muted); }
+.eg-badge { font-size: 11px; padding: 1px 7px; border-radius: 999px; margin-left: 4px; white-space: nowrap; }
+.b-model { background: var(--sage-soft); color: var(--green); }
+.b-similar { background: #F3E9D6; color: #7A5A21; }
+.b-lit { background: #EEE; color: #555; }
+.eg-bars { display: flex; gap: 12px; flex-wrap: wrap; font-size: 12px; color: var(--ink-soft); margin: 8px 0 4px; }
+.eg-item details summary, .eg-excl summary, .eg-notes summary, .eg-alt-wrap summary { cursor: pointer; font-size: 13px; color: var(--green-2); }
+.eg-reasons { font-size: 13px; color: var(--ink-soft); padding-left: 18px; }
+.eg-alt { border: 1px solid var(--sage); background: #F4F8EE; border-radius: var(--radius-sm); padding: 10px 14px; margin: 10px 0; font-size: 14px; }
+.eg-alt h3 { margin: 0 0 4px; font-size: 15px; color: var(--green); }
+.eg-alt ul { padding-left: 18px; }
+.eg-region { font-size: 13px; }
+.eg-notes ul { font-size: 12px; color: var(--ink-soft); padding-left: 18px; }
+.eg-params { width: 100%; border-collapse: collapse; font-size: 12px; }
+.eg-params td, .eg-params th { border-bottom: 1px solid var(--line-soft); padding: 4px 6px; text-align: left; vertical-align: top; }
+@media (max-width: 860px) {
+  .eg-grid { grid-template-columns: 1fr; }
+  .engine-card { padding: 16px; }
+  .eg-check { grid-template-columns: 1fr 80px 56px; }
+}

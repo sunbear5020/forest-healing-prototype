@@ -1,0 +1,32 @@
+# 숲결 엔진 ③층(실황 편차) 자료 갱신: 기상청 단기예보 + 에어코리아 PM2.5 → data/env_today.json
+# 필요: 저장소 Settings → Secrets and variables → Actions 에 DATA_GO_KR_KEY 등록(공공데이터포털 인증키)
+# API 키는 Secrets에만 있고, 공개되는 것은 결과 JSON뿐이다.
+name: env-daily
+on:
+  schedule:
+    - cron: '40 20 * * *'   # 05:40 KST (02시 발표 이후)
+    - cron: '40 8 * * *'    # 17:40 KST (14시 발표 이후)
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: 예보·대기질 스냅샷 생성
+        env:
+          DATA_GO_KR_KEY: ${{ secrets.DATA_GO_KR_KEY }}
+        run: python scripts/fetch_env_today.py
+      - name: 엔진 시험
+        run: node tests/engine.test.mjs
+      - name: 변경 시 커밋
+        run: |
+          git config user.name "soopgyeol-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add data/env_today.json
+          git diff --cached --quiet || git commit -m "env_today 자동 갱신 $(TZ=Asia/Seoul date +'%Y-%m-%d %H:%M')"
+          git push
