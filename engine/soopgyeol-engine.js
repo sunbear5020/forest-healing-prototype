@@ -23,7 +23,7 @@
 }(typeof self !== 'undefined' ? self : this, function () {
   'use strict';
 
-  var VERSION = '0.1.0';
+  var VERSION = '0.2.0';
 
   /* ---------------------------------------------------------------------
      계수표 — basis: rule(공공 기준) / literature / model / demo(시연값)
@@ -44,7 +44,8 @@
     parkCanopyMin:  { value: 30, basis: 'demo', note: '공원 수관 피복 30% 이상. 3-30-300 규칙의 30%를 공원 단위에 차용(원래는 동네 단위 기준)' },
     parkRadiusKm:   { value: [2, 5, 10], basis: 'demo', note: '근처 공원 탐색 반경(부족하면 넓힘)' },
     gentleBarrier:  { value: 8, basis: 'demo', note: '무장애 선호: 반경 0.5 km 완경사(8° 미만) 비율이 이 값(%) 미만이면 감점(무장애 데크 정보가 없는 시설)' },
-    mcDraws:        { value: 400, basis: 'demo', note: '순위 범위 계산 반복 수' }
+    mcDraws:        { value: 400, basis: 'demo', note: '순위 범위 계산 반복 수' },
+    fdr:            { value: 0.05, basis: 'rule', note: '효과모형 환경항 다중비교 보정(Benjamini-Hochberg) 기준 q' }
   };
 
   /* 자가점검 영역 ↔ 근거 영역 */
@@ -194,18 +195,44 @@
     return v;
   }
 
-  /* 환경 항(효과모형 env_terms 중 p<0.05이고 날짜별로 달라지는 항만) */
+  /* 환경 항 다중비교 보정(Benjamini-Hochberg). 효과모형은 환경변수 × 결과영역을 여러 개 검정했으므로
+     개별 p<0.05만으로 쓰면 우연히 걸린 항을 반영하게 된다. 보정 q<0.05인 항만 반영한다. */
+  var _bhCache = { model: null, q: null };
+  function bhQ(model) {
+    if (_bhCache.model === model) return _bhCache.q;
+    var terms = (model.env_terms || []).map(function (t, i) { return { i: i, p: typeof t.p === 'number' ? t.p : 1 }; });
+    var m = terms.length, q = new Array(m);
+    terms.sort(function (a, b) { return a.p - b.p; });
+    var prev = 1;
+    for (var k = m - 1; k >= 0; k--) { prev = Math.min(prev, terms[k].p * m / (k + 1)); q[terms[k].i] = Math.min(1, prev); }
+    _bhCache = { model: model, q: q };
+    return q;
+  }
+  function envTermAudit(ctx) {
+    var model = ctx.evidence && ctx.evidence.model;
+    if (!model || !model.env_terms) return null;
+    var q = bhQ(model);
+    var nominal = model.env_terms.filter(function (t) { return t.p < 0.05; }).length;
+    var kept = model.env_terms.filter(function (t, i) { return q[i] < PARAMS.fdr.value; });
+    return { tested: model.env_terms.length, nominalP05: nominal, keptAfterFDR: kept.length,
+             kept: kept.map(function (t) { return t.var + ':' + t.outcome; }),
+             note: '환경항 ' + model.env_terms.length + '개 검정 중 p<0.05는 ' + nominal + '개, BH 보정(q<' + PARAMS.fdr.value + ') 후 ' + kept.length + '개' +
+                   (kept.length ? ' 반영' : ' → 환경항은 효과 점수에 반영하지 않음(탐색 결과로만 보고)') };
+  }
+
+  /* 환경 항(효과모형 env_terms 중 BH 보정 q<0.05이고 날짜별로 달라지는 항만) */
   function envTermShift(domain, dayEnv, climMonth, ctx) {
     var model = ctx.evidence && ctx.evidence.model;
     if (!model || !dayEnv) return { shift: 0, used: [] };
     var D = DOMAINS[domain], shift = 0, used = [];
-    (model.env_terms || []).forEach(function (t) {
-      if (!(t.p < 0.05)) return;
+    var q = bhQ(model);
+    (model.env_terms || []).forEach(function (t, i) {
+      if (!(q[i] < PARAMS.fdr.value)) return;
       if (t.outcome !== 'all' && t.outcome !== D.model) return;
-      if (t.var === 'wet' && dayEnv.rain) { shift += t.b; used.push('강수일 ' + (t.b > 0 ? '+' : '') + t.b.toFixed(2) + ' SD(탐색 수준, p=' + t.p.toFixed(3) + ')'); }
+      if (t.var === 'wet' && dayEnv.rain) { shift += t.b; used.push('강수일 ' + (t.b > 0 ? '+' : '') + t.b.toFixed(2) + ' SD(p=' + t.p.toFixed(3) + ', q=' + q[i].toFixed(3) + ')'); }
       if (t.var === 'tmean_anom' && dayEnv.tmean != null && climMonth && climMonth.tavg != null) {
         var an = dayEnv.tmean - climMonth.tavg;
-        shift += t.b * an; used.push('기온 편차 ' + an.toFixed(1) + '℃ × ' + t.b + ' SD(탐색 수준)');
+        shift += t.b * an; used.push('기온 편차 ' + an.toFixed(1) + '℃ × ' + t.b + ' SD(q=' + q[i].toFixed(3) + ')');
       }
     });
     return { shift: shift, used: used };
@@ -441,8 +468,19 @@
     }
     var protoById = {};
     (ctx.protoForests || []).forEach(function (f) { protoById[f.id] = f; });
+    var warnings = [];
+    if (!ctx.sites || !ctx.sites.length) warnings.push('시설 목록이 비어 있어 추천할 수 없음');
+    if (!ctx.evidence || !ctx.evidence.model) warnings.push('설문 효과모형을 읽지 못함 → 효과 점수는 문헌 사전값만 사용');
+    if (!input.envOverride && !(ctx.envToday && ctx.envToday.sites)) warnings.push('예보 스냅샷을 읽지 못함 → 월평균 기후로만 판단');
+    Object.keys(input.check || {}).forEach(function (k) {
+      var v = input.check[k];
+      if (!DOMAINS[k]) warnings.push('알 수 없는 자가점검 항목 무시: ' + k);
+      else if (!(v >= 0 && v <= 4)) warnings.push('자가점검 ' + k + ' 값 ' + v + '를 0~4 범위로 고침');
+    });
+    // 입력 시설 순서가 결과에 영향을 주지 않도록 ID 순으로 고정
+    var siteList = (ctx.sites || []).slice().sort(function (a, b) { return a.id < b.id ? -1 : a.id > b.id ? 1 : 0; });
 
-    var evals = (ctx.sites || []).map(function (site) {
+    var evals = siteList.map(function (site) {
       var proto = site.protoId ? protoById[site.protoId] : null;
       var env = dayEnvironment(site, date, month, ctx, input.envOverride);
       var byDomain = {}, eNum = 0, eW = 0, envUsed = [];
@@ -460,6 +498,7 @@
         : basisSet.every(function (b) { return b === 'model'; }) ? 'model'
         : basisSet.some(function (b) { return b === 'model'; }) ? 'mixed'
         : basisSet.some(function (b) { return b === 'similar'; }) ? 'similar' : 'literature';
+      if (env.source === 'none') warnings.push(site.name + ': 기상 자료 없음(환경 점수 중립값)');
       var v = envFit(site, profile, env, ctx, proto, walk);
       var a = access(site, origin, input.maxHours, ctx);
       var effScore = effectSD == null ? null : clamp(100 * effectSD / PARAMS.effectScale.value, 0, 100);
@@ -486,7 +525,7 @@
     // 4. 순위 범위(몬테카를로)
     var pool = evals.filter(function (e) { return e.eligible; });
     var rng = mulberry32(input.seed || 20271);
-    var N = PARAMS.mcDraws.value, ranks = pool.map(function () { return []; });
+    var N = PARAMS.mcDraws.value, ranks = pool.map(function () { return []; }), totals = pool.map(function () { return []; });
     for (var it = 0; it < N && pool.length; it++) {
       var draws = pool.map(function (e) {
         if (e.effectSD == null) return total(e);
@@ -497,13 +536,15 @@
         });
         return total(e, clamp(100 * (num / den) / PARAMS.effectScale.value, 0, 100));
       });
-      var order = draws.map(function (v, i) { return [v, i]; }).sort(function (a, b) { return b[0] - a[0]; });
+      draws.forEach(function (v, i) { totals[i].push(v); });
+      var order = draws.map(function (v, i) { return [v, i]; }).sort(function (a, b) { return b[0] - a[0] || a[1] - b[1]; });
       order.forEach(function (o, r) { ranks[o[1]].push(r + 1); });
     }
     pool.forEach(function (e, i) {
       e.rankRange = ranks[i].length ? [Math.round(quantile(ranks[i], 0.1)), Math.round(quantile(ranks[i], 0.9))] : null;
+      e.totalRange = totals[i].length ? [round(quantile(totals[i], 0.1), 0), round(quantile(totals[i], 0.9), 0)] : null;
     });
-    pool.sort(function (a, b) { return b.total - a.total; });
+    pool.sort(function (a, b) { return b.total - a.total || (a.site.id < b.site.id ? -1 : 1); });
     pool.forEach(function (e, i) { e.rank = i + 1; });
     var top = pool.slice(0, input.topN || 5);
     top.forEach(function (e) {
@@ -519,11 +560,28 @@
       '시설 간 효과 차이에는 그 시설에서 운영된 사업·대상군 구성 차이가 섞여 있습니다. 환경 때문이라고 해석하면 안 됩니다.',
       '효과측정 자료가 없는 시설은 측정기관 중앙값을 똑같이 쓰고 범위를 넓게 둡니다. 효과로는 구분되지 않으며 환경·접근으로 순위가 정해집니다.',
       '수면·호흡기 목적은 결과 척도가 없어 효과를 계산하지 않고, 환경 노출(대기질·피톤치드·수관 피복)만 반영합니다(근거 수준 낮음).',
-      '환경 적합·접근 점수의 계수는 대부분 시연값입니다(PARAMS 참조).'
-    ].concat((ctx.evidence && ctx.evidence.model && ctx.evidence.model.notes) || []);
+      '환경 적합·접근 점수의 계수는 대부분 시연값입니다(PARAMS 참조).',
+      '종합 점수 범위와 순위 범위는 효과 구간만 반영한 10~90% 범위입니다. 환경·접근 계수의 불확실성은 들어 있지 않습니다.'
+    ].concat(envTermAudit(ctx) ? [envTermAudit(ctx).note] : []).concat((ctx.evidence && ctx.evidence.model && ctx.evidence.model.notes) || []);
 
+    var em = ctx.evidence && ctx.evidence.model;
+    var config = {
+      engine: VERSION, seed: input.seed || 20271, mcDraws: N, paramsHash: hashStr(JSON.stringify(PARAMS)),
+      weights: W,
+      data: {
+        effectModel: em ? { version: em.version, fitted_at: em.fitted_at, n_rows: em.n_rows } : null,
+        evidenceBuilt: ctx.evidence && ctx.evidence._meta ? ctx.evidence._meta.built : null,
+        facilityEnvBuilt: ctx.facilityEnv && ctx.facilityEnv._meta ? ctx.facilityEnv._meta.built : null,
+        envToday: ctx.envToday ? { generated_at: ctx.envToday.generated_at, forecast_base: ctx.envToday.forecast_base } : null,
+        nSites: siteList.length, nParks: ctx.parks ? ctx.parks.length : null, nForests: ctx.forests ? ctx.forests.length : null
+      },
+      envSource: input.envOverride ? 'scenario' : 'forecast/climate'
+    };
     return {
       version: VERSION,
+      config: config,
+      warnings: warnings,
+      evidenceAudit: { envTerms: envTermAudit(ctx) },
       input: { purpose: input.purpose, walk: walk, maxHours: input.maxHours || 3, canVisit: input.canVisit !== false, month: month, date: date,
                origin: origin ? { approx: origin.approx || null, region: origin.region || null, sigungu: origin.sigungu || null } : null },
       weights: W, safety: safety, profile: profile,
@@ -535,6 +593,12 @@
       notes: notes,
       params: PARAMS
     };
+  }
+
+  function hashStr(str) {   // 설정 변경 추적용 짧은 해시(FNV-1a 32bit)
+    var h = 0x811c9dc5;
+    for (var i = 0; i < str.length; i++) { h ^= str.charCodeAt(i); h = Math.imul(h, 0x01000193); }
+    return ('00000000' + (h >>> 0).toString(16)).slice(-8);
   }
 
   function buildReasons(e, profile) {
