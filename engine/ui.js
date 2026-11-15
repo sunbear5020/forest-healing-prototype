@@ -102,6 +102,7 @@
         rain: document.getElementById('rain').checked, wind: document.getElementById('wind-on').checked ? 15 : 2
       };
     }
+    if (window.SoopExt && typeof window.SoopExt.readInput === 'function') Object.assign(input, window.SoopExt.readInput());
     return input;
   }
 
@@ -150,6 +151,7 @@
       Object.keys(r.params).map(function (k) { var p = r.params[k]; return '<tr><td>' + esc(p.note) + '</td><td>' + esc(JSON.stringify(p.value)) + '</td><td>' +
         ({ rule: '공공 기준', literature: '문헌', model: '모형', demo: '시연값' }[p.basis]) + '</td></tr>'; }).join('') + '</tbody></table>' + configLine(r.config) + '</details>';
     document.getElementById('eg-out').innerHTML = h;
+    if (window.SoopExt && typeof window.SoopExt.afterRender === 'function') window.SoopExt.afterRender(r, document.getElementById('eg-out'));
   }
 
   function configLine(c) {
@@ -207,6 +209,7 @@
 
   window.SoopLoader.loadContext('data/').then(function (c) {
     ctx = c; fillRegions();
+    if (window.SoopExt && typeof window.SoopExt.init === 'function') window.SoopExt.init(ctx);
     var et = c.envToday;
     if (et && et.generated_at) {
       var s = mount.querySelector('.eg-head .summary');

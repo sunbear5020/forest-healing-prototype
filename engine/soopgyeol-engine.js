@@ -578,6 +578,20 @@
       e.reasons = buildReasons(e, profile);
     });
 
+    // 선택 확장: 외부에서 프로그램 순위 모형을 주면(ctx.programRanker) 시설별 운영 프로그램을 모형 순위로 보여 줌.
+    // 공개판에는 모형이 없으며, 있을 때만 동작한다.
+    var programRanking = null;
+    if (typeof ctx.programRanker === 'function') {
+      try {
+        programRanking = ctx.programRanker(input, ctx);
+        var norm = function (x) { return String(x || '').replace(/\s|\(.*?\)/g, ''); };
+        top.forEach(function (e) {
+          var nm = norm(e.site.name);
+          e.programs.model = programRanking.programs.filter(function (p) { return norm(p.org).indexOf(nm) >= 0; }).slice(0, 3);
+        });
+      } catch (err) { warnings.push('프로그램 순위 모형 실행 실패: ' + err.message); programRanking = null; }
+    }
+
     var showAlt = input.canVisit === false || top.length === 0 || safety.level === 'urgent';
     // 대체 경로용 출발지 날씨: 시나리오 입력이 있으면 그 값, 없으면 출발지에서 가장 가까운 시설의 방문일 환경으로 근사
     var nearestEval = origin && origin.lat != null ? evals.slice().sort(function (a, b) { return haversineKm(origin, a.site) - haversineKm(origin, b.site); })[0] : null;
@@ -615,6 +629,7 @@
       weights: W, safety: safety, profile: profile,
       context: { region: regionContext(origin, ctx) },
       recommendations: top,
+      programRanking: programRanking,
       others: pool.slice(top.length).map(function (e) { return { id: e.site.id, name: e.site.name, total: e.total, rank: e.rank }; }),
       excluded: evals.filter(function (e) { return !e.eligible; }).map(function (e) { return { id: e.site.id, name: e.site.name, reasons: e.excluded, access: e.access }; }),
       alternatives: Object.assign(alt, { prominent: showAlt }),
