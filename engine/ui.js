@@ -176,7 +176,7 @@
         (a.forestParks && a.forestParks.length ? a.forestParks.map(function (p) { return '<li>' + esc(p.name) + ' ' + p.km + 'km · 수관 ' + p.tree_pct + '% · ' + p.area_ha + 'ha</li>'; }).join('')
           : '<li>반경 40 km 안에 조건에 맞는 공원이 없습니다.</li>') + '</ul></li>';
       if (a.urbanForest) h += '<li><b>도시숲</b> <small>' + esc(a.urbanForest.note) + '</small></li>';
-      h += '<li><b>가까운 산림</b>(자연휴양림·치유의숲)<ul>' + a.forests.map(function (f) { return '<li>' + esc(f.name) + ' ' + f.km + 'km <small>' + esc(f.kind || '') + '</small></li>'; }).join('') + '</ul></li>';
+      h += '<li><b>가까운 산림</b>(자연휴양림·치유의숲)<ul>' + a.forests.map(function (f) { return '<li>' + esc(f.name) + ' ' + f.km + 'km <small>' + esc(f.kind || '') + (f.program ? ' · ' + esc(f.program) : '') + '</small></li>'; }).join('') + '</ul></li>';
     }
     return h + '</ol></div>';
   }

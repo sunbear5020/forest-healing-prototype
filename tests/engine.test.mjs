@@ -134,6 +134,8 @@ t('관광 연계: 추천 시설마다 10 km 안 관광 목록(최대 5곳)', () 
 t('시설 지역 건강지표: 맥락만 표시하고 점수는 그대로', () => {
   const a = E.recommend(base, ctx), b = E.recommend(base, { ...ctx, facilityRegionHealth: null });
   assert.deepEqual(a.recommendations.map((e) => e.total), b.recommendations.map((e) => e.total));
-  a.recommendations.forEach((e) => { assert.ok(e.links.regionHealth && e.links.regionHealth.items.length >= 2); assert.ok(e.links.regionHealth.caution.includes('인과')); });
+  const withRH = a.recommendations.filter((e) => !e.site.id.startsWith('hf_'));   // 2026-11-16 추가한 공립·사립 치유의숲(hf_*)은 시군구 지표 미수집
+  withRH.forEach((e) => { assert.ok(e.links.regionHealth && e.links.regionHealth.items.length >= 2); assert.ok(e.links.regionHealth.caution.includes('인과')); });
+  a.recommendations.filter((e) => e.site.id.startsWith('hf_')).forEach((e) => assert.ok(!e.links.regionHealth || e.links.regionHealth.items));
 });
 console.log(`\n${n} tests passed`);

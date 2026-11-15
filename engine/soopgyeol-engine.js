@@ -454,7 +454,8 @@
       res.parkNote = '수관 피복률은 공원 대표 좌표 중심의 원형 근사(ESA WorldCover 2021) 추정값이며, 수종 정보는 아직 결합하지 않았습니다.';
     }
     var fl = [];
-    (ctx.forests || []).forEach(function (f) { fl.push({ name: f.name, kind: f.kind, km: round(haversineKm(origin, f), 1), tree_pct_1km: f.tree_pct_1km, addr: f.addr, phone: f.phone, lat: f.lat, lng: f.lng }); });
+    (ctx.forests || []).forEach(function (f) { fl.push({ name: f.name, kind: f.kind, km: round(haversineKm(origin, f), 1), tree_pct_1km: f.tree_pct_1km, addr: f.addr, phone: f.phone, lat: f.lat, lng: f.lng,
+                                               program: f.kind === '자연휴양림' ? '산림치유 프로그램 미운영(숲 환경만 이용, 효과 점수 계산 안 함)' : null }); });
     (ctx.sites || []).forEach(function (s) { fl.push({ name: s.name, kind: s.kind, km: round(haversineKm(origin, s), 1), addr: s.address, lat: s.lat, lng: s.lng, isSite: true }); });
     var kept = [];
     fl.sort(function (a, b) { return a.km - b.km; }).forEach(function (f) {
