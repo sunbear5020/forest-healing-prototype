@@ -244,7 +244,7 @@
      3-b. 방문일 환경(③층 실황 → 없으면 ②층 월평균)
      --------------------------------------------------------------------- */
   function dayEnvironment(site, date, month, ctx, override) {
-    var fe = ctx.facilityEnv && site.facilityId && ctx.facilityEnv.facilities[site.facilityId];
+    var fe = ctx.facilityEnv && (site.envKey || site.facilityId) && ctx.facilityEnv.facilities[site.envKey || site.facilityId];
     var clim = fe && fe.climate && fe.climate.monthly ? fe.climate.monthly[String(month)] || fe.climate.monthly[month] : null;
     if (override) {
       return { source: 'scenario', label: '화면 시나리오 입력값',
@@ -276,7 +276,7 @@
      --------------------------------------------------------------------- */
   function envFit(site, profile, env, ctx, proto, walk) {
     var notes = [], hazards = [], score = 70, basis = [];
-    var fe = ctx.facilityEnv && site.facilityId && ctx.facilityEnv.facilities[site.facilityId];
+    var fe = ctx.facilityEnv && (site.envKey || site.facilityId) && ctx.facilityEnv.facilities[site.envKey || site.facilityId];
     var indoor = proto ? (proto.shelter || 0) >= 60 : false;
     var w = profile.weights;
 

@@ -184,7 +184,8 @@
    "address": "경기 양평군 단월면",
    "region": "수도권",
    "operator": "공립·기타",
-   "modelKey": null
+   "modelKey": null,
+   "envKey": "saneum"
   },
   {
    "id": "jangseong",
@@ -197,7 +198,8 @@
    "address": "전남 장성군 서삼면",
    "region": "전라",
    "operator": "공립·기타",
-   "modelKey": null
+   "modelKey": null,
+   "envKey": "jangseong"
   },
   {
    "id": "seogwipo",
@@ -210,7 +212,8 @@
    "address": "제주 서귀포시 산록남로 2271",
    "region": "제주",
    "operator": "공립·기타",
-   "modelKey": null
+   "modelKey": null,
+   "envKey": "seogwipo"
   },
   {
    "id": "hwasun",
@@ -223,7 +226,8 @@
    "address": "전남 화순군 화순읍",
    "region": "전라",
    "operator": "공립·기타",
-   "modelKey": null
+   "modelKey": null,
+   "envKey": "hwasun"
   },
   {
    "id": "namhae",
@@ -236,7 +240,8 @@
    "address": "경남 남해군 삼동면",
    "region": "경상",
    "operator": "공립·기타",
-   "modelKey": null
+   "modelKey": null,
+   "envKey": "namhae"
   }
  ]
 }
