@@ -20,8 +20,17 @@
   };
 
   const TOP_N = 5;
-  const LAPSE = 0.6;           // ℃ / 100m
-  const LAPSE_EFF = 0.85;      // 숲 내부 체감 보정
+  // 표고 보정은 연구설계 3.4절의 표준 기온감률(data.js LAPSE_RATE, 0.65℃/100m)을 쓴다.
+  // 이전 판의 '숲 내부 체감 보정 0.85'는 근거가 없어 뺐다.
+  const DEMO = '<span class="demo-tag" title="문헌·모형 근거 전의 시연값">시연값</span>';
+  function evidenceBadge(key) {
+    const ev = EVIDENCE_LEVELS[key];
+    return ev ? `<span class="ev-badge ev-${key}" title="${ev.desc}">${ev.short}</span>` : '';
+  }
+  function purposeEvidenceBadge(key) {
+    const pe = PURPOSE_EVIDENCE[key];
+    return pe ? `<span class="pe-badge pe-${pe.key}" title="${pe.desc}">${pe.label}</span>` : '';
+  }
 
   /* ───────────── 유틸 ───────────── */
   const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
@@ -34,7 +43,7 @@
   function expand(x, power) { return clamp(100 * Math.pow(clamp(x, 0, 100) / 100, power), 0, 100); }
 
   function effectiveTemp(f) {
-    return state.env.temp - (f.elevation.base / 100) * LAPSE * LAPSE_EFF;
+    return state.env.temp - (f.elevation.base / 100) * LAPSE_RATE;
   }
 
   /* =======================================================================
@@ -265,7 +274,7 @@
     } else if (env.temp >= 27) {
       out.push(`기온 ${env.temp}℃·습도 ${env.humidity}% 조건에서 표고 보정 체감기온 <b>${eff.toFixed(1)}℃</b>, 수관울폐도 <b>${f.canopy}</b>로 한낮 직사광선을 가려 열쾌적성 <b>${round(r.weather.comfort)}점</b>입니다.`);
     } else {
-      out.push(`기온 ${env.temp}℃·습도 ${env.humidity}%가 열쾌적 구간(18~23℃)에 가까워 기상적합도 <b>${round(r.weather.score)}점</b>입니다.`);
+      out.push(`기온 ${env.temp}℃·습도 ${env.humidity}%가 시연용 열쾌적 구간(18~23℃)에 가까워 기상적합도 <b>${round(r.weather.score)}점</b>입니다(구간·감점 계수는 ${DEMO}).`);
     }
 
     // ② 대기·강수
@@ -280,7 +289,7 @@
     // ③ 임상도
     const top3 = f.species.slice(0, 3).map((s) => `${s.name} ${s.pct}%`).join(' · ');
     const mainFactors = f.factors.slice(0, 3).join('·');
-    out.push(`주임상 <b>${f.forestType}</b>(${top3}) ${f.ageClass}, 수관울폐도 <b>${f.canopy}</b> — ${mainFactors} 인자가 ${purposeLabel} 목적과 맞물려 임상도 매칭 <b>${round(r.stand.score)}점</b>입니다.`);
+    out.push(`주임상 <b>${f.forestType}</b>(${top3}) ${f.ageClass}, 수관울폐도 <b>${f.canopy}</b> — 수종에서 기대되는 ${mainFactors} 인자를 ${purposeLabel} 목적에 대응시켜 임상도 매칭 <b>${round(r.stand.score)}점</b>입니다(인자 가점은 ${DEMO}).`);
 
     // ④ 지역환경
     const h = r.region.hours;
@@ -313,6 +322,7 @@
       `<button class="opt" role="radio" data-purpose="${p.key}" aria-checked="${state.purpose === p.key}">
         <span class="ico" aria-hidden="true">${p.icon}</span>
         <span class="txt"><b>${p.label}</b><small>${p.desc}</small></span>
+        ${purposeEvidenceBadge(p.key)}
       </button>`
     ).join('');
 
@@ -391,6 +401,28 @@
     </div>`;
   }
 
+  /* 연구설계 5장 보완 2: '예측 효과' 층과 '접근·편의' 층을 나눠 보여 준다 */
+  function barsHTML(r) {
+    return `<div class="bar-layers">
+      <div class="bar-layer">
+        <p class="layer-cap">예측 효과 층 <small>최종 서비스에서 모형 예측값으로 대체 · 현재 ${DEMO}</small></p>
+        <div class="bars bars-effect">
+          ${bar('기상적합도', r.weather.score)}
+          ${bar('임상도 매칭', r.stand.score)}
+          ${bar('목적 적합도', r.purpose.score)}
+        </div>
+      </div>
+      <div class="bar-layer">
+        <p class="layer-cap">접근·편의 층 <small>규칙 기반 유지</small></p>
+        <div class="bars bars-access">
+          ${bar('지역환경', r.region.score)}
+        </div>
+      </div>
+    </div>`;
+  }
+
+  const TAG_LABEL = { stress: '스트레스', sleep: '수면', respiratory: '호흡기·면역', family: '가족·시니어', vitality: '활력' };
+
   function settingBadge(setting) {
     const map = { '실외': 'out', '실내': 'in', '실내외': 'mix' };
     return `<span class="p-badge ${map[setting] || ''}">${setting}</span>`;
@@ -447,6 +479,7 @@
             <h3 class="card-title">${f.name}</h3>
             <p class="card-sub">
               <span class="badge ${f.operator === '국립' ? 'national' : 'public'}">${f.operator}</span>
+              ${evidenceBadge(f.evidence)}
               <span>${f.sido} ${f.sigungu}</span>
               <span>·</span>
               <span>${f.org}</span>
@@ -458,12 +491,7 @@
           </div>
         </div>
         <div class="tags">${tags}</div>
-        <div class="bars">
-          ${bar('기상적합도', r.weather.score)}
-          ${bar('지역환경', r.region.score)}
-          ${bar('임상도 매칭', r.stand.score)}
-          ${bar('목적 적합도', r.purpose.score)}
-        </div>
+        ${barsHTML(r)}
         <div class="prog-list">${progHTML}</div>
         <div class="reason">
           <h4>🌱 왜 이곳이 추천되었나요?</h4>
@@ -497,10 +525,25 @@
     el('#summary').innerHTML =
       `<b>${state.region}</b> 출발 · <b>${PURPOSES[state.purpose].label}</b> · <b>${WALK_PREFS[state.walk].label}</b> · ` +
       `${state.env.temp}℃/${state.env.humidity}%/PM2.5 ${PM_LEVELS[state.env.pm].label}${state.env.rain ? '·강수' : ''} 조건으로 ` +
-      `${FORESTS.length}곳을 평가했습니다. 1위 <b>${first.forest.short}</b> ${round(first.total)}점, ` +
+      `시연 점수를 계산한 ${FORESTS.length}곳을 평가했습니다(1차 범위 ${SERVICE_SCOPE.target}개 기관 중 프로필 구축 전 시설은 아래 별도 표시). 1위 <b>${first.forest.short}</b> ${round(first.total)}점, ` +
       `${top.length}위 <b>${last.forest.short}</b> ${round(last.total)}점 (차이 ${round(first.total - last.total)}점).`;
 
     el('#results').innerHTML = top.map((r) => cardHTML(r, animate)).join('');
+    el('#purpose-evidence').innerHTML =
+      `${purposeEvidenceBadge(state.purpose)} ${PURPOSE_EVIDENCE[state.purpose].desc}. 현재 점수는 모두 ${DEMO}입니다.`;
+    renderPending();
+  }
+
+  /* 1차 범위(16개 기관) 중 시설 프로필을 아직 만들지 않은 시설 */
+  function renderPending() {
+    const box = el('#pending-list');
+    if (!box) return;
+    box.innerHTML = PENDING_FACILITIES.map((p) => `<li>
+        <b>${p.name}</b> <span class="pid">${p.facilityId}</span>
+        <span class="paddr">${p.region} · ${p.address}</span>
+        <span class="pnote">${p.phyto === 'posted' ? '피톤치드 공개 측정자료 게시 확인' : '피톤치드 공개자료 미확인'}</span>
+      </li>`).join('') +
+      `<li class="unknown"><b>미확인 ${SERVICE_SCOPE.unknown}곳</b><span class="paddr">${SERVICE_SCOPE.note}</span></li>`;
   }
 
   /* =======================================================================
@@ -534,7 +577,7 @@
 
   function fitKorea() {
     if (!map) return;
-    const bounds = L.latLngBounds(FORESTS.map((f) => [f.lat, f.lng]));
+    const bounds = L.latLngBounds(FORESTS.concat(PENDING_FACILITIES).map((f) => [f.lat, f.lng]));
     map.fitBounds(bounds, { padding: [26, 26] });
     // 제주~강원 전 구간을 한 화면에 두되, 너무 축소되어 반도가 작아지지 않게 하한 줌을 둔다
     if (map.getZoom() < 6.3) map.setView(bounds.getCenter(), 6.3);
@@ -583,6 +626,17 @@
       m.addTo(markerLayer);
       markers[f.id] = m;
     });
+
+    PENDING_FACILITIES.forEach((p) => {
+      L.marker([p.lat, p.lng], {
+        icon: L.divIcon({ className: 'pin-wrap', html: '<span class="pin pending"><span></span></span>', iconSize: [14, 14], iconAnchor: [7, 7] }),
+        title: `${p.name} (프로필 구축 전)`
+      }).bindPopup(
+        `<div class="pop-name">${p.name}</div>
+         <div class="pop-meta">${p.address}</div>
+         <div class="pop-meta">1차 범위 기관 · 시설 프로필 구축 전이라 점수를 계산하지 않았습니다.</div>`
+      ).addTo(markerLayer);
+    });
   }
 
   function renderMapFallback() {
@@ -595,6 +649,11 @@
         const x = ((f.lng - 125.6) / (129.6 - 125.6)) * 100;
         const y = ((38.4 - f.lat) / (38.4 - 33.1)) * 100;
         return `<span class="fb-dot ${isTop ? 'top' : ''}" style="left:${x}%;top:${y}%" title="${f.name}">${isTop ? r.rank : ''}</span>`;
+      }).join('')}
+      ${PENDING_FACILITIES.map((p) => {
+        const x = ((p.lng - 125.6) / (129.6 - 125.6)) * 100;
+        const y = ((38.4 - p.lat) / (38.4 - 33.1)) * 100;
+        return `<span class="fb-dot pending" style="left:${x}%;top:${y}%" title="${p.name}(프로필 구축 전)"></span>`;
       }).join('')}
     </div>`;
   }
@@ -637,6 +696,7 @@
     } else {
       notes.push(`<div class="wnote"><b>건조·화기</b>습도 ${env.humidity}%. 목재 데크와 낙엽이 많은 구간에서는 취사·화기 사용이 금지되며, 수분 섭취를 자주 하세요.</div>`);
     }
+    notes.push(`<p class="ev-note">유의사항 문구와 기준 온도는 ${DEMO}이며, 서비스 공개 전 발주기관 검토를 거칩니다.</p>`);
     return notes.join('');
   }
 
@@ -661,7 +721,8 @@
           <span class="pi-meta">${settingBadge(p.setting)}<span>${p.minutes}분</span><span>난이도 ${p.difficulty}</span><span>${p.target}</span></span>
         </div>
         <div class="pi-act">${p.activities}</div>
-        ${p.indoorAlt ? `<div class="pi-alt">↳ 기상 악화 시 대체: ${p.indoorAlt}</div>` : ''}
+        <div class="pi-tags">목적 태그 ${p.tags.map((t) => `<span class="tag">${TAG_LABEL[t] || t}</span>`).join('')}</div>
+        <div class="pi-alt">↳ 악천후 대체: ${p.indoorAlt ? p.indoorAlt : (p.setting === '실외' ? '<span class="missing">미정(자료 확인 필요)</span>' : '해당 없음(실내·실내외 프로그램)')}</div>
       </div>`).join('');
 
     el('#detail-body').innerHTML = `
@@ -684,12 +745,7 @@
         </div>
       </div>
 
-      <div class="bars" style="margin:4px 0 6px">
-        ${bar('기상적합도', r.weather.score)}
-        ${bar('지역환경', r.region.score)}
-        ${bar('임상도 매칭', r.stand.score)}
-        ${bar('목적 적합도', r.purpose.score)}
-      </div>
+      ${barsHTML(r)}
 
       <div class="detail-facts">
         <dl class="fact"><dt>운영 주체</dt><dd>${f.operator} · ${f.org}</dd></dl>
@@ -698,7 +754,11 @@
         <dl class="fact"><dt>접근성</dt><dd>${f.access} · ${state.region}에서 ${r.region.hours}시간</dd></dl>
         <dl class="fact"><dt>운영 시기</dt><dd>${f.seasons}</dd></dl>
         <dl class="fact"><dt>실내 시설</dt><dd>${f.indoorFacilities}</dd></dl>
+        <dl class="fact"><dt>무장애 여부</dt><dd>${f.barrierFree ? '있음 · ' + f.barrierNote : '미확인'}</dd></dl>
+        <dl class="fact"><dt>근거 수준</dt><dd>${EVIDENCE_LEVELS[f.evidence].label}${f.facilityId ? ' · 시설ID ' + f.facilityId : ''}</dd></dl>
       </div>
+      ${f.mapNote ? `<p class="ev-note">시설 대응 메모: ${f.mapNote}</p>` : ''}
+      <p class="ev-note">${EVIDENCE_LEVELS[f.evidence].desc} 지형·접근성·무장애·실내 시설은 기관 공개자료 기준이며, 지형 구분은 착수 후 수치표고모형 경사로 다시 산출합니다.</p>
 
       <p style="font-size:12.6px;color:var(--ink-soft);line-height:1.75">${f.feature}</p>
 
@@ -711,6 +771,7 @@
           <div>
             <p style="font-size:11.6px;color:var(--muted);margin-bottom:6px">기대 치유 인자</p>
             <div class="chip-row">${f.factors.map((x) => `<span class="tag env">${x}</span>`).join('')}</div>
+            <p class="ev-note"><b>피톤치드 근거 수준</b> ${PHYTONCIDE_EVIDENCE[f.phyto]} ${PHYTONCIDE_EVIDENCE.common} 음이온 측정자료는 확인하지 못했습니다.</p>
             <p style="font-size:11.6px;color:var(--muted);margin:12px 0 6px">지형 · 접근</p>
             <p style="font-size:12px;color:var(--ink-soft);line-height:1.65">${f.terrainNote}<br />${f.barrierFree ? '무장애: ' + f.barrierNote : '무장애 데크로드 미확인'}</p>
           </div>
@@ -938,8 +999,16 @@
   /* =======================================================================
      11. 시작
      ======================================================================= */
+  function renderDemoParams() {
+    const tb = el('#demo-params');
+    if (!tb) return;
+    tb.innerHTML = DEMO_PARAMS.map((d) =>
+      `<tr><th scope="row">${d.name}</th><td>${d.value}</td><td>${d.plan}</td></tr>`).join('');
+  }
+
   function init() {
     renderControls();
+    renderDemoParams();
     // 초기 순위 기준선 (delta가 처음부터 튀지 않도록)
     computeAll();
     state.prevRank = {};

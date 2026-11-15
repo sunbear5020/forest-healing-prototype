@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>숲결 (Soopgyeol) — 산림치유 맞춤 추천 | 경상국립대 인간환경연구실</title>
-<meta name="description" content="숲결(Soopgyeol) — 기상환경·지역환경·임상도·치유목적 4축으로 전국 치유의 숲 12곳과 산림치유 프로그램을 추천하는 대국민 서비스 프로토타입" />
+<meta name="description" content="숲결(Soopgyeol) — 기상환경·지역환경·임상도·치유목적으로 산림치유 시설과 프로그램을 추천하는 대국민 서비스 프로토타입(2027 연구계획 반영판, 점수는 시연값)" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&family=Noto+Serif+KR:wght@500;600;700&display=swap" />
@@ -41,15 +41,15 @@
     <p class="eyebrow">경상국립대학교 산림환경자원학과 · 인간환경연구실(HEL&amp;FEI) 프로토타입</p>
     <h1>오늘의 숲을,<br /><span>당신의 몸과 마음에 맞게.</span></h1>
     <p class="lede">
-      기상환경 · 지역환경 · 임상도 · 치유목적 네 개의 축으로 전국 <strong>치유의 숲 12곳</strong>을 평가해
-      지금 조건에 가장 잘 맞는 숲과 <strong>산림치유 프로그램</strong>을 제안합니다.
-      왼쪽 조건을 바꾸면 추천 순위가 실시간으로 달라집니다.
+      기상환경 · 지역환경 · 임상도 · 치유목적 네 개의 축으로 산림치유 시설을 평가해
+      지금 조건에 맞는 숲과 <strong>산림치유 프로그램</strong>을 제안합니다.
+      서비스 1차 범위는 <strong>효과측정 자료가 있는 16개 기관</strong>이며, 이 화면의 점수는 연구 결과가 나오기 전의 <strong>시연값</strong>입니다.
     </p>
     <ul class="hero-meta">
-      <li><b>12</b><span>치유의 숲</span></li>
+      <li><b>16</b><span>1차 범위 기관</span></li>
+      <li><b>12</b><span>시연 점수 시설</span></li>
       <li><b>37</b><span>등록 프로그램</span></li>
-      <li><b>4</b><span>추천 축</span></li>
-      <li><b>4</b><span>기상 시나리오</span></li>
+      <li><b>0</b><span>수집하는 개인정보</span></li>
     </ul>
   </div>
   <div class="hero-ridge" aria-hidden="true"></div>
@@ -69,7 +69,7 @@
     </section>
 
     <section class="panel-block">
-      <div class="block-title"><span class="step">2</span> 치유 목적</div>
+      <div class="block-title"><span class="step">2</span> 치유 목적 <em>근거 유형 표시</em></div>
       <div class="option-list" id="purpose-group" role="radiogroup" aria-label="치유 목적"></div>
     </section>
 
@@ -79,7 +79,7 @@
     </section>
 
     <section class="panel-block weather-block">
-      <div class="block-title"><span class="step">4</span> 기상·대기환경 시뮬레이터</div>
+      <div class="block-title"><span class="step">4</span> 기상·대기환경 시뮬레이터 <em>최종 서비스는 평년값·예보로 자동 입력</em></div>
       <div class="preset-grid" id="preset-group"></div>
 
       <div class="slider-row">
@@ -119,6 +119,7 @@
 
   <!-- ───────────────── 결과 영역 ───────────────── -->
   <section class="main-col" aria-label="추천 결과">
+    <section class="card engine-card" id="engine-card" aria-label="내 상태 맞춤 추천"></section>
     <div class="card map-card">
       <div class="map-head">
         <div>
@@ -128,6 +129,7 @@
         <div class="map-legend">
           <span><i class="dot top"></i>TOP 5</span>
           <span><i class="dot rest"></i>그 외</span>
+          <span><i class="dot pending"></i>프로필 구축 전</span>
         </div>
       </div>
       <div class="map-layout">
@@ -145,6 +147,7 @@
       <div>
         <h2>추천 치유의 숲 <span id="result-count" class="count-pill">TOP 5</span></h2>
         <p id="summary" class="summary"></p>
+        <p id="purpose-evidence" class="summary purpose-evidence"></p>
       </div>
     </div>
 
@@ -155,9 +158,19 @@
 
     <div id="results" class="results"></div>
 
+    <section class="card pending-card" aria-labelledby="pending-title">
+      <h2 id="pending-title">1차 범위 중 프로필 구축 전 시설</h2>
+      <p class="summary">
+        서비스 1차 범위는 2026 효과측정 자료의 운영기관 16개입니다. 아래 시설은 이름·주소·좌표(공공데이터포털 진흥원 소속기관정보)만 넣었고,
+        임상·지형·프로그램 정보를 정리하기 전이라 점수를 계산하지 않습니다. 16개 기관 명단은 2026 통합데이터와 대조해 확정합니다.
+      </p>
+      <ul class="pending-list" id="pending-list"></ul>
+    </section>
+
     <p class="disclaimer">
-      본 화면은 연구실 시연용 프로토타입입니다. 점수와 추천 문구는 공개 데이터에 기반한 가중치 모델의 계산 결과이며,
-      실제 기관의 예약·운영 정보는 방문 전 각 시설에 확인해야 합니다.
+      본 화면은 연구실 시연용 프로토타입입니다. 점수·가중치·감점 계수는 문헌과 모형 근거가 마련되기 전의 <b>시연값</b>이며,
+      2027 연구에서 예측모형과 반응곡선 결과로 교체합니다. 실제 기관의 예약·운영 정보는 방문 전 각 시설에 확인해야 합니다.
+      입력한 조건은 이 브라우저 안에서만 계산에 쓰이고, 저장하거나 외부로 보내지 않습니다.
     </p>
   </section>
 </main>
@@ -193,12 +206,12 @@
     <header class="modal-head">
       <p class="eyebrow">Algorithm &amp; Data</p>
       <h2 id="algo-title">기상환경 × 지역환경 × 임상도 × 치유목적</h2>
-      <p>네 축의 가중합으로 종합 적합도를 계산하고, 상위 숲에 프로그램을 매칭합니다. 가중치를 직접 조정해 순위 변화를 확인할 수 있습니다.</p>
+      <p>네 축의 가중합으로 종합 적합도를 계산하고, 상위 숲에 프로그램을 매칭합니다. 가중치 조절 막대는 <b>기관 시연용</b>이며, 모든 계수는 <span class="demo-tag">시연값</span>입니다.</p>
     </header>
 
     <div class="algo-body">
       <div class="formula-card">
-        <span class="formula-label">종합 적합도</span>
+        <span class="formula-label">종합 적합도 <span class="demo-tag">시연값</span></span>
         <p class="formula">S = <b id="w-w">0.32</b>·W + <b id="w-r">0.18</b>·R + <b id="w-s">0.22</b>·S<sub>stand</sub> + <b id="w-p">0.28</b>·P</p>
         <p class="formula-note">W 기상적합도 · R 지역환경 · S<sub>stand</sub> 임상도 매칭 · P 목적 적합도 (각 0~100점)</p>
       </div>
@@ -237,9 +250,9 @@
           <h3><span>W</span>기상적합도</h3>
           <p class="axis-src">기상청 단기예보 · 에어코리아 PM2.5</p>
           <ul>
-            <li>숲 체감기온 = 기온 − (표고/100 × 0.6℃ × 0.85) → 열쾌적 구간(18~23℃)과의 거리</li>
-            <li>습도 55% 기준 이탈 보정, 78% 이상 다습 가중 감점</li>
-            <li>PM2.5 좋음/보통/나쁨 → 100/72/28, 나쁨에는 실내 프로그램 보유·수관울폐도로 완충</li>
+            <li>표고 보정 기온 = 기온 − 표고/100 × 0.65℃(표준 기온감률, 연구설계 3.4절 제안값) → 열쾌적 구간(18~23℃)과의 거리 <span class="demo-tag">시연값</span></li>
+            <li>습도 55% 기준 이탈 보정, 78% 이상 다습 가중 감점 <span class="demo-tag">시연값</span></li>
+            <li>PM2.5 좋음/보통/나쁨 → 100/72/28, 나쁨에는 실내 프로그램 보유·수관울폐도로 완충 <span class="demo-tag">시연값</span></li>
             <li>강수 시 해당 숲의 <em>실내 대체 역량</em>(치유센터·숙박·움막)으로 강수 점수 산정</li>
           </ul>
         </article>
@@ -260,7 +273,7 @@
           <p class="axis-src">산림청 임상도 1:5,000 · 수종 구성비</p>
           <ul>
             <li>주임상(침엽수림/활엽수림/혼효림) × 치유목적 친화도 행렬</li>
-            <li>대표 수종의 산림치유 인자(피톤치드·음이온·경관·차광) 가중 합산</li>
+            <li>대표 수종에서 기대되는 치유 인자(피톤치드·음이온·경관·차광) 가중 합산 <span class="demo-tag">시연값</span> — 피톤치드는 시설별 공개 측정자료 유무를 상세 화면에 표시</li>
             <li>영급(장령림 가점)과 수관울폐도(상/중/하) 반영</li>
           </ul>
         </article>
@@ -269,7 +282,7 @@
           <h3><span>P</span>목적 적합도</h3>
           <p class="axis-src">프로그램 태그 · 대상 · 난이도</p>
           <ul>
-            <li>숲별 목적 프로파일(5개 목적 0~100) 기본값</li>
+            <li>숲별 목적 프로파일(5개 목적 0~100) 기본값 <span class="demo-tag">시연값</span> — 스트레스는 효과측정 자료 기반 모형, 나머지 4개 목적은 문헌 근거 기반으로 교체 예정</li>
             <li>해당 목적 태그를 가진 프로그램 수에 따른 가점</li>
             <li>보행 선호와 프로그램 난이도 정합성, 기상 악화 시 실내 프로그램 매칭</li>
           </ul>
@@ -314,6 +327,39 @@
       </div>
 
       <div class="algo-note">
+        <h3>시연값 목록 <small>(근거 확보 전, 2027 과업에서 교체)</small></h3>
+        <div class="table-scroll">
+          <table class="demo-table">
+            <thead><tr><th>항목</th><th>현재 값</th><th>교체 계획</th></tr></thead>
+            <tbody id="demo-params"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="algo-note">
+        <h3>2027 연구계획 대조 반영 현황</h3>
+        <div class="table-scroll">
+          <table class="demo-table">
+            <thead><tr><th>#</th><th>항목</th><th>이 판에서 한 것</th><th>남은 일</th></tr></thead>
+            <tbody>
+              <tr><td>1</td><td>치유 목적 5종</td><td>스트레스는 '효과측정 자료 기반', 나머지 4종은 '문헌 근거 기반'으로 표시</td><td>수면·호흡기·활력 척도 유무 확인, 문헌 근거표(D12) 연결</td></tr>
+              <tr><td>2</td><td>규칙 가중합</td><td>점수를 '예측 효과 층'과 '접근·편의 층'으로 나눠 표시, 가중치 막대는 시연용으로 유지</td><td>효과 층을 모형 예측값으로 대체</td></tr>
+              <tr><td>3</td><td>열쾌적·습도·PM2.5 계수</td><td>화면 전체에 '시연값' 표시, 기온감률을 0.65℃/100m로 통일</td><td>반응곡선(D9) 추정 후 교체</td></tr>
+              <tr><td>4</td><td>시설 범위</td><td>1차 범위 16개 기관 표시, 근거 수준(측정기관 후보·유사 시설 추정·프로필 구축 전) 부여, 진흥원 시설 6곳 추가</td><td>16개 기관 명단 대조, 미확인 3곳 확정, 6곳 시설 프로필 구축</td></tr>
+              <tr><td>5</td><td>프로그램 속성(D1)</td><td>난이도·실내외·목적 태그·악천후 대체를 상세 화면에 모두 표시</td><td>2026 자료 47개 프로그램과 대응표 작성</td></tr>
+              <tr><td>6</td><td>권역 이동시간</td><td>변경 없음(권역 대표값 유지)</td><td>공개 자료로 권역×시설 이동시간표 산출</td></tr>
+              <tr><td>7</td><td>무장애·지형·접근·실내 시설(D5)</td><td>상세 화면에 무장애 여부와 근거 수준을 추가</td><td>기관 공개자료 조사, 경사 기반 지형 구분</td></tr>
+              <tr><td>8</td><td>피톤치드·음이온</td><td>시설별 공개 측정자료 유무와 근거 수준 문구 표시</td><td>진흥원 게시 자료 수집·정리</td></tr>
+              <tr><td>9</td><td>지도</td><td>프로필 구축 전 시설도 회색 표시</td><td>시설 환경지표 공간자료(D5) 연결</td></tr>
+              <tr><td>10</td><td>기상 시뮬레이터</td><td>유지, '최종 서비스는 평년값·예보 자동 입력' 안내</td><td>추천 API의 환경 조건 입력과 연결</td></tr>
+              <tr><td>11</td><td>근거 문장·유의사항</td><td>시연값을 쓰는 문장에 표시</td><td>문장 생성 규칙 명세화, 발주기관 검토</td></tr>
+              <tr><td>12</td><td>질환·대상군 추천</td><td>변경 없음</td><td>대상군-목적 대응표(D12)</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="algo-note">
         <h3>모델 파라미터에 관한 안내</h3>
         <p>
           가중치·감점 계수는 문헌과 전문가 검토를 거쳐 조정해야 하는 <strong>초기 시연값</strong>입니다.
@@ -345,10 +391,13 @@
       <h3>이 프로토타입이 하는 일</h3>
       <ul class="about-list">
         <li><b>조건 입력</b> 출발 지역, 치유 목적, 보행·체력 선호, 기상·대기환경</li>
-        <li><b>12곳 평가</b> 전국 국립·공립 치유의 숲의 실데이터를 4축으로 점수화</li>
+        <li><b>시설 평가</b> 1차 범위 16개 기관을 목표로, 프로필을 정리한 12곳을 4축 시연값으로 점수화</li>
+        <li><b>근거 표시</b> 시설별 근거 수준과 치유 목적별 근거 유형(효과측정 자료 / 문헌)을 함께 표시</li>
         <li><b>프로그램 매칭</b> 비·미세먼지 나쁨에는 실내·저강도 프로그램으로 자동 전환</li>
         <li><b>근거 제시</b> 표고 보정 기온, 수종 구성, 이동시간 등 실제 수치로 추천 이유 설명</li>
       </ul>
+      <h3>개인정보</h3>
+      <p>로그인·회원가입이 없고, 입력한 조건은 브라우저 안에서 계산에만 쓰며 저장하거나 서버로 보내지 않습니다.</p>
       <h3>데이터 출처</h3>
       <ul class="about-list">
         <li>산림청 숲나들e(sooperang.go.kr), 한국산림복지진흥원(fowi.or.kr) — 시설·프로그램 정보</li>
@@ -356,6 +405,8 @@
         <li>산림청 임상도 — 주임상·수종·영급 (숲별 공개자료로 요약)</li>
         <li>기상청 단기예보, 에어코리아 — 기온·습도·강수·PM2.5 (시뮬레이터로 대체)</li>
         <li>주소 좌표: 카카오맵 지오코딩 / 표고: DEM 표고값</li>
+        <li>추가 6개 시설 좌표: 공공데이터포털 한국산림복지진흥원 소속기관정보(15061976)</li>
+        <li>피톤치드 공개 측정자료 유무: 한국산림복지진흥원 누리집 '피톤치드 측정결과' 게시판</li>
       </ul>
       <p class="about-foot">
         경상국립대학교 산림환경자원학과 인간환경연구실(HEL&amp;FEI) · 김건우 교수 연구실 시연용 프로토타입.
@@ -368,5 +419,8 @@
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script src="data.js"></script>
 <script src="app.js"></script>
+<script src="engine/soopgyeol-engine.js"></script>
+<script src="engine/loader.js"></script>
+<script src="engine/ui.js"></script>
 </body>
 </html>

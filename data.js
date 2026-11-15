@@ -856,3 +856,105 @@ const PM_LEVELS = {
   normal: { key: 'normal', label: '보통', value: '16~35㎍/㎥' },
   bad: { key: 'bad', label: '나쁨', value: '36㎍/㎥ 이상' }
 };
+
+/* =========================================================================
+   2027 연구계획 대응 메타데이터 (연구설계 5장 '프로토타입 대조와 반영')
+   -------------------------------------------------------------------------
+   · 서비스 1차 범위: 2026 효과측정 자료의 운영기관 16개 전체(2026-11-15 연구책임자 결정)
+   · 16개 기관의 정확한 명단은 2026 통합데이터와 대조하기 전이다.
+     진흥원 소속기관정보(공공데이터포털 15061976) 16행 중 프로그램 운영시설 후보 13곳(F02~F14)을
+     '효과측정 기관 후보'로 두고, 나머지 3곳은 '미확인'으로 남긴다(임의로 채우지 않음).
+   · facilityId는 연구설계/시설좌표_검수본.csv의 ID다.
+   ========================================================================= */
+
+const SERVICE_SCOPE = {
+  target: 16,              // 1차 범위 기관 수(효과측정 자료 보유 기관)
+  candidates: 13,          // 진흥원 소속기관 중 프로그램 운영시설 후보(F02~F14)
+  unknown: 3,              // 명단 대조 전이라 특정하지 않은 기관 수
+  note: '2026 통합데이터의 운영기관 16개와 진흥원 소속기관 목록의 대응은 착수 시 확인'
+};
+
+/* 근거 수준(연구설계 5장: 효과측정 자료 있음 / 유사 시설로 추정 / 학습 범위 밖) */
+const EVIDENCE_LEVELS = {
+  measured: {
+    key: 'measured', label: '효과측정 기관 후보', short: '측정기관 후보',
+    desc: '한국산림복지진흥원 소속 프로그램 운영시설로, 2026 효과측정 자료 보유 기관 후보입니다. 명단 대조는 착수 시 확인합니다.'
+  },
+  similar: {
+    key: 'similar', label: '유사 시설로 추정', short: '유사 시설 추정',
+    desc: '효과측정 자료 보유 기관이 아닌 것으로 보이는 시설입니다. 최종 서비스에서는 시설 프로필이 비슷한 기관의 결과로 추정합니다.'
+  },
+  pending: {
+    key: 'pending', label: '시설 프로필 구축 전', short: '프로필 구축 전',
+    desc: '1차 범위 기관이지만 임상·지형·프로그램 정보를 아직 정리하지 않아 점수를 계산하지 않습니다.'
+  }
+};
+
+/* 피톤치드 근거 수준
+   진흥원 누리집 '피톤치드 측정결과' 게시판(https://fowi.or.kr/user/bbs/bbsList.do?bbsManageId=61)
+   게시물 137건(2019-04-09 게시, 2018년 측정으로 추정). 측정값은 아직 서비스에 반영하지 않았다. */
+const PHYTONCIDE_EVIDENCE = {
+  posted: '진흥원 공개 측정자료 게시 확인(2018년 측정 추정, 1회성). 측정값은 아직 반영하지 않았습니다.',
+  none: '이 시설의 공개 측정자료는 확인하지 못했습니다. 수종에서 기대되는 인자로만 표시합니다.',
+  common: '피톤치드·음이온 농도와 치유 효과의 관계는 본 연구에서 아직 추정하지 않았습니다.'
+};
+
+/* 프로토타입 12곳 ↔ 진흥원 소속기관 ID, 근거 수준, 피톤치드 공개자료 여부 */
+const FACILITY_META = {
+  daslim:        { facilityId: 'F02', evidence: 'measured', phyto: 'posted' },
+  saneum:        { facilityId: null,  evidence: 'similar',  phyto: 'none' },
+  daegwallyeong: { facilityId: 'F09', evidence: 'measured', phyto: 'posted' },
+  cheongtaesan:  { facilityId: 'F03', evidence: 'measured', phyto: 'posted',
+                   mapNote: '청태산 치유의 숲을 국립횡성숲체원(F03)과 같은 시설로 보았음(좌표 차 약 160m, 대응 확인 필요)' },
+  jangseong:     { facilityId: null,  evidence: 'similar',  phyto: 'none',
+                   mapNote: '축령산 장성 편백 치유의 숲(공립)은 국립장성숲체원(F05)과 다른 시설' },
+  seogwipo:      { facilityId: null,  evidence: 'similar',  phyto: 'none' },
+  jecheon:       { facilityId: 'F12', evidence: 'measured', phyto: 'none' },
+  daeunsan:      { facilityId: 'F10', evidence: 'measured', phyto: 'posted' },
+  chilgok:       { facilityId: 'F04', evidence: 'measured', phyto: 'posted' },
+  yesan:         { facilityId: 'F13', evidence: 'measured', phyto: 'none' },
+  hwasun:        { facilityId: null,  evidence: 'similar',  phyto: 'none' },
+  namhae:        { facilityId: null,  evidence: 'similar',  phyto: 'posted',
+                   mapNote: '피톤치드 게시물은 국립남해편백자연휴양림 기준' }
+};
+FORESTS.forEach((f) => Object.assign(f, FACILITY_META[f.id] || { facilityId: null, evidence: 'similar', phyto: 'none' }));
+
+/* 1차 범위 중 시설 프로필을 아직 만들지 않은 6곳
+   이름·주소·좌표만 공공데이터포털 15061976(연구설계/시설좌표_검수본.csv)에서 옮겼다.
+   F11 좌표는 2026-11-15 카카오맵 기준 갱신값. 권역은 주소로 분류.
+   임상·지형·표고·프로그램은 비워 둔다(자료 구축 후 입력). */
+const PENDING_FACILITIES = [
+  { facilityId: 'F05', name: '국립장성숲체원', region: '전라', address: '전라남도 장성군 북이면 방장로 353', lat: 35.443961, lng: 126.751375, phyto: 'posted' },
+  { facilityId: 'F06', name: '국립청도숲체원', region: '경상', address: '경상북도 청도군 운문면 운문로 755', lat: 35.649103, lng: 129.027947, phyto: 'posted' },
+  { facilityId: 'F07', name: '국립대전숲체원', region: '충청', address: '대전광역시 유성구 성북로 154번길 748', lat: 36.324217, lng: 127.291183, phyto: 'none' },
+  { facilityId: 'F08', name: '국립양평치유의숲', region: '수도권', address: '경기도 양평군 양동면 황거길 262-10', lat: 37.461006, lng: 127.718225, phyto: 'posted' },
+  { facilityId: 'F11', name: '국립김천치유의숲', region: '경상', address: '경상북도 김천시 증산면 수도길 1237-89', lat: 35.851374, lng: 128.002227, phyto: 'none' },
+  { facilityId: 'F14', name: '국립곡성치유의숲', region: '전라', address: '전라남도 곡성군 곡성읍 청계동로 519', lat: 35.310436, lng: 127.248889, phyto: 'none' }
+].map((p) => Object.assign(p, { evidence: 'pending' }));
+
+/* 치유 목적별 근거 유형(연구설계 5장 보완 1)
+   스트레스: 효과측정 자료(스트레스 척도)로 만드는 2027 예측모형의 대상
+   그 외: 진흥원 자료에 해당 척도가 확인되지 않아 문헌 근거(D12)와 프로그램 태그로 점수를 만들 예정 */
+const PURPOSE_EVIDENCE = {
+  stress:      { key: 'model',      label: '효과측정 자료 기반', desc: '2027 예측모형(스트레스 감소) 적용 대상' },
+  sleep:       { key: 'literature', label: '문헌 근거 기반',     desc: '문헌 근거와 프로그램 태그로 산정 예정' },
+  respiratory: { key: 'literature', label: '문헌 근거 기반',     desc: '문헌 근거와 프로그램 태그로 산정 예정' },
+  family:      { key: 'literature', label: '문헌 근거 기반',     desc: '문헌 근거와 프로그램 태그로 산정 예정' },
+  vitality:    { key: 'literature', label: '문헌 근거 기반',     desc: '문헌 근거와 프로그램 태그로 산정 예정' }
+};
+
+/* 근거 없이 정한 규칙 계수 — 화면에 '시연값'으로 표시한다.
+   2027 과업에서 반응곡선(D9)·예측모형 결과로 교체할 대상(연구설계 5장 보완 2·3). */
+const DEMO_PARAMS = [
+  { name: '종합 가중치 W·R·S·P', value: '0.32 · 0.18 · 0.22 · 0.28', plan: '효과 층은 모형 예측값으로 대체, 조절 막대는 기관 시연용으로 유지' },
+  { name: '열쾌적 구간', value: '18~23℃(중심 21℃), 1℃당 4.2점 감점, 26℃ 초과·5℃ 미만 추가 감점', plan: '반응곡선 추정 후 교체. 문헌 메타분석에서는 기온-효과 관계가 확인되지 않음' },
+  { name: '습도 기준', value: '55% 중심, 78% 이상 다습 추가 감점', plan: '반응곡선 추정 후 교체' },
+  { name: 'PM2.5 등급 점수', value: '좋음 100 · 보통 72 · 나쁨 28', plan: '반응곡선 추정 후 교체' },
+  { name: '기상 하위 비중', value: '열쾌적 0.40 · 습도 0.14 · 대기 0.26 · 강수·강풍 0.20', plan: '모형 기여도로 교체' },
+  { name: '실내 대체 역량(shelter)', value: '시설별 0~100 큐레이션 값', plan: '실내 시설 목록(D5) 조사 후 산출 규칙 명세화' },
+  { name: '임상×목적 친화도, 치유 인자 가점', value: '행렬 76~96, 인자별 0~11점', plan: '문헌 근거(D12)로 교체' },
+  { name: '시설별 목적 프로파일', value: '시설×목적 78~94 큐레이션 값', plan: '스트레스는 모형 예측값, 그 외 목적은 문헌 근거로 교체' }
+];
+
+/* 표고 보정 기온감률: 연구설계 3.4절의 표준 기온감률(제안값, 계절·역전층에 따라 달라지는 근사) */
+const LAPSE_RATE = 0.65;   // ℃ / 100 m

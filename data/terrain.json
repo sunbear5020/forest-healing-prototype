@@ -1,0 +1,373 @@
+{
+ "_meta": {
+  "source": "국토지리정보원 수치지형도(1:5,000 등고선·표고점) → TIN → 5 m DEM, 사용자 실험실 구축(2026-11-15)",
+  "method": "시설 좌표 반경 0.5/1 km 셀 요약. 경사는 중앙차분. 8°≈14%(완만), 25° 초과=급경사.",
+  "caveat": "시설 좌표는 대표점(센터)이며 숲길 전체를 대표하지 않음. F04·F05 등 일부 도엽 결손."
+ },
+ "facilities": {
+  "F02": {
+   "facility_id": "F02",
+   "name": "국립산림치유원",
+   "dem": "NGII 수치지형도 1:5000 TIN→5 m",
+   "r500": {
+    "valid_pct": 100.0,
+    "elev_mean": 454.5,
+    "elev_min": 354.2,
+    "elev_max": 575.0,
+    "slope_mean_deg": 20.5,
+    "slope_p50_deg": 20.1,
+    "gentle_pct_lt8deg": 6.4,
+    "steep_pct_gt25deg": 32.1,
+    "south_aspect_pct": 24.1
+   },
+   "r1000": {
+    "valid_pct": 100.0,
+    "elev_mean": 510.7,
+    "elev_min": 315.0,
+    "elev_max": 765.7,
+    "slope_mean_deg": 23.6,
+    "slope_p50_deg": 23.8,
+    "gentle_pct_lt8deg": 3.9,
+    "steep_pct_gt25deg": 44.8,
+    "south_aspect_pct": 20.9
+   },
+   "point_elev": 424.6
+  },
+  "F03": {
+   "facility_id": "F03",
+   "name": "국립횡성숲체원",
+   "dem": "NGII 수치지형도 1:5000 TIN→5 m",
+   "r500": {
+    "valid_pct": 100.0,
+    "elev_mean": 849.4,
+    "elev_min": 730.0,
+    "elev_max": 950.1,
+    "slope_mean_deg": 22.3,
+    "slope_p50_deg": 21.4,
+    "gentle_pct_lt8deg": 4.4,
+    "steep_pct_gt25deg": 36.7,
+    "south_aspect_pct": 49.4
+   },
+   "r1000": {
+    "valid_pct": 100.0,
+    "elev_mean": 830.2,
+    "elev_min": 679.8,
+    "elev_max": 1008.4,
+    "slope_mean_deg": 22.9,
+    "slope_p50_deg": 22.5,
+    "gentle_pct_lt8deg": 6.5,
+    "steep_pct_gt25deg": 41.4,
+    "south_aspect_pct": 36.2
+   },
+   "point_elev": 824.2
+  },
+  "F04": {
+   "facility_id": "F04",
+   "name": "국립칠곡숲체원",
+   "dem": "NGII 수치지형도 1:5000 TIN→5 m",
+   "r500": {
+    "valid_pct": 100.0,
+    "elev_mean": 298.6,
+    "elev_min": 185.0,
+    "elev_max": 445.1,
+    "slope_mean_deg": 25.0,
+    "slope_p50_deg": 26.0,
+    "gentle_pct_lt8deg": 3.9,
+    "steep_pct_gt25deg": 54.8,
+    "south_aspect_pct": 36.1
+   },
+   "r1000": {
+    "valid_pct": 100.0,
+    "elev_mean": 341.9,
+    "elev_min": 160.0,
+    "elev_max": 642.3,
+    "slope_mean_deg": 24.8,
+    "slope_p50_deg": 25.3,
+    "gentle_pct_lt8deg": 2.7,
+    "steep_pct_gt25deg": 51.2,
+    "south_aspect_pct": 40.7
+   },
+   "point_elev": 226.1
+  },
+  "F05": {
+   "facility_id": "F05",
+   "name": "국립장성숲체원",
+   "dem": "NGII 수치지형도 1:5000 TIN→5 m",
+   "r500": {
+    "valid_pct": 100.0,
+    "elev_mean": 349.9,
+    "elev_min": 225.0,
+    "elev_max": 535.3,
+    "slope_mean_deg": 26.5,
+    "slope_p50_deg": 26.7,
+    "gentle_pct_lt8deg": 2.5,
+    "steep_pct_gt25deg": 57.9,
+    "south_aspect_pct": 31.8
+   },
+   "r1000": {
+    "valid_pct": 100.0,
+    "elev_mean": 404.6,
+    "elev_min": 196.0,
+    "elev_max": 647.7,
+    "slope_mean_deg": 27.7,
+    "slope_p50_deg": 28.9,
+    "gentle_pct_lt8deg": 3.7,
+    "steep_pct_gt25deg": 65.8,
+    "south_aspect_pct": 40.2
+   },
+   "point_elev": 277.2
+  },
+  "F06": {
+   "facility_id": "F06",
+   "name": "국립청도숲체원",
+   "dem": "NGII 수치지형도 1:5000 TIN→5 m",
+   "r500": {
+    "valid_pct": 100.0,
+    "elev_mean": 512.4,
+    "elev_min": 419.0,
+    "elev_max": 667.7,
+    "slope_mean_deg": 25.8,
+    "slope_p50_deg": 27.1,
+    "gentle_pct_lt8deg": 4.3,
+    "steep_pct_gt25deg": 58.1,
+    "south_aspect_pct": 13.7
+   },
+   "r1000": {
+    "valid_pct": 100.0,
+    "elev_mean": 576.6,
+    "elev_min": 390.0,
+    "elev_max": 863.9,
+    "slope_mean_deg": 29.8,
+    "slope_p50_deg": 31.2,
+    "gentle_pct_lt8deg": 1.9,
+    "steep_pct_gt25deg": 75.4,
+    "south_aspect_pct": 21.1
+   },
+   "point_elev": 481.9
+  },
+  "F07": {
+   "facility_id": "F07",
+   "name": "국립대전숲체원",
+   "dem": "NGII 수치지형도 1:5000 TIN→5 m",
+   "r500": {
+    "valid_pct": 100.0,
+    "elev_mean": 228.1,
+    "elev_min": 148.0,
+    "elev_max": 337.2,
+    "slope_mean_deg": 19.6,
+    "slope_p50_deg": 19.5,
+    "gentle_pct_lt8deg": 8.0,
+    "steep_pct_gt25deg": 27.1,
+    "south_aspect_pct": 24.2
+   },
+   "r1000": {
+    "valid_pct": 100.0,
+    "elev_mean": 226.9,
+    "elev_min": 82.8,
+    "elev_max": 506.2,
+    "slope_mean_deg": 21.3,
+    "slope_p50_deg": 21.2,
+    "gentle_pct_lt8deg": 8.7,
+    "steep_pct_gt25deg": 36.8,
+    "south_aspect_pct": 25.5
+   },
+   "point_elev": 190.9
+  },
+  "F08": {
+   "facility_id": "F08",
+   "name": "국립양평치유의숲",
+   "dem": "NGII 수치지형도 1:5000 TIN→5 m",
+   "r500": {
+    "valid_pct": 100.0,
+    "elev_mean": 282.7,
+    "elev_min": 200.0,
+    "elev_max": 397.4,
+    "slope_mean_deg": 23.8,
+    "slope_p50_deg": 24.3,
+    "gentle_pct_lt8deg": 5.7,
+    "steep_pct_gt25deg": 46.8,
+    "south_aspect_pct": 36.5
+   },
+   "r1000": {
+    "valid_pct": 100.0,
+    "elev_mean": 311.3,
+    "elev_min": 175.0,
+    "elev_max": 466.9,
+    "slope_mean_deg": 23.8,
+    "slope_p50_deg": 24.7,
+    "gentle_pct_lt8deg": 7.4,
+    "steep_pct_gt25deg": 48.8,
+    "south_aspect_pct": 32.1
+   },
+   "point_elev": 237.0
+  },
+  "F09": {
+   "facility_id": "F09",
+   "name": "국립대관령치유의숲",
+   "dem": "NGII 수치지형도 1:5000 TIN→5 m",
+   "r500": {
+    "valid_pct": 100.0,
+    "elev_mean": 308.1,
+    "elev_min": 189.1,
+    "elev_max": 461.0,
+    "slope_mean_deg": 21.5,
+    "slope_p50_deg": 21.2,
+    "gentle_pct_lt8deg": 5.4,
+    "steep_pct_gt25deg": 34.9,
+    "south_aspect_pct": 2.7
+   },
+   "r1000": {
+    "valid_pct": 100.0,
+    "elev_mean": 327.4,
+    "elev_min": 135.0,
+    "elev_max": 569.1,
+    "slope_mean_deg": 23.6,
+    "slope_p50_deg": 23.5,
+    "gentle_pct_lt8deg": 4.4,
+    "steep_pct_gt25deg": 43.9,
+    "south_aspect_pct": 12.0
+   },
+   "point_elev": 263.7
+  },
+  "F10": {
+   "facility_id": "F10",
+   "name": "국립대운산치유의숲",
+   "dem": "NGII 수치지형도 1:5000 TIN→5 m",
+   "r500": {
+    "valid_pct": 100.0,
+    "elev_mean": 155.3,
+    "elev_min": 70.5,
+    "elev_max": 283.7,
+    "slope_mean_deg": 28.9,
+    "slope_p50_deg": 31.7,
+    "gentle_pct_lt8deg": 6.6,
+    "steep_pct_gt25deg": 71.3,
+    "south_aspect_pct": 28.1
+   },
+   "r1000": {
+    "valid_pct": 100.0,
+    "elev_mean": 189.9,
+    "elev_min": 55.0,
+    "elev_max": 377.8,
+    "slope_mean_deg": 28.7,
+    "slope_p50_deg": 30.9,
+    "gentle_pct_lt8deg": 5.1,
+    "steep_pct_gt25deg": 69.0,
+    "south_aspect_pct": 24.8
+   },
+   "point_elev": 105.9
+  },
+  "F11": {
+   "facility_id": "F11",
+   "name": "국립김천치유의숲",
+   "dem": "NGII 수치지형도 1:5000 TIN→5 m",
+   "r500": {
+    "valid_pct": 100.0,
+    "elev_mean": 799.2,
+    "elev_min": 675.0,
+    "elev_max": 919.2,
+    "slope_mean_deg": 24.5,
+    "slope_p50_deg": 24.9,
+    "gentle_pct_lt8deg": 4.1,
+    "steep_pct_gt25deg": 49.6,
+    "south_aspect_pct": 19.1
+   },
+   "r1000": {
+    "valid_pct": 100.0,
+    "elev_mean": 842.9,
+    "elev_min": 625.0,
+    "elev_max": 1104.5,
+    "slope_mean_deg": 24.7,
+    "slope_p50_deg": 25.2,
+    "gentle_pct_lt8deg": 4.1,
+    "steep_pct_gt25deg": 50.5,
+    "south_aspect_pct": 16.4
+   },
+   "point_elev": 759.3
+  },
+  "F12": {
+   "facility_id": "F12",
+   "name": "국립제천치유의숲",
+   "dem": "NGII 수치지형도 1:5000 TIN→5 m",
+   "r500": {
+    "valid_pct": 100.0,
+    "elev_mean": 517.2,
+    "elev_min": 407.0,
+    "elev_max": 637.4,
+    "slope_mean_deg": 25.2,
+    "slope_p50_deg": 25.3,
+    "gentle_pct_lt8deg": 2.5,
+    "steep_pct_gt25deg": 51.5,
+    "south_aspect_pct": 31.5
+   },
+   "r1000": {
+    "valid_pct": 100.0,
+    "elev_mean": 535.4,
+    "elev_min": 340.0,
+    "elev_max": 765.8,
+    "slope_mean_deg": 25.4,
+    "slope_p50_deg": 25.4,
+    "gentle_pct_lt8deg": 2.6,
+    "steep_pct_gt25deg": 51.9,
+    "south_aspect_pct": 27.2
+   },
+   "point_elev": 531.3
+  },
+  "F13": {
+   "facility_id": "F13",
+   "name": "국립예산치유의숲",
+   "dem": "NGII 수치지형도 1:5000 TIN→5 m",
+   "r500": {
+    "valid_pct": 100.0,
+    "elev_mean": 222.5,
+    "elev_min": 94.0,
+    "elev_max": 370.1,
+    "slope_mean_deg": 30.1,
+    "slope_p50_deg": 30.7,
+    "gentle_pct_lt8deg": 1.2,
+    "steep_pct_gt25deg": 77.9,
+    "south_aspect_pct": 27.5
+   },
+   "r1000": {
+    "valid_pct": 100.0,
+    "elev_mean": 236.3,
+    "elev_min": 65.0,
+    "elev_max": 434.3,
+    "slope_mean_deg": 28.4,
+    "slope_p50_deg": 28.7,
+    "gentle_pct_lt8deg": 1.5,
+    "steep_pct_gt25deg": 67.3,
+    "south_aspect_pct": 19.6
+   },
+   "point_elev": 140.4
+  },
+  "F14": {
+   "facility_id": "F14",
+   "name": "국립곡성치유의숲",
+   "dem": "NGII 수치지형도 1:5000 TIN→5 m",
+   "r500": {
+    "valid_pct": 100.0,
+    "elev_mean": 174.9,
+    "elev_min": 60.0,
+    "elev_max": 370.1,
+    "slope_mean_deg": 30.0,
+    "slope_p50_deg": 30.8,
+    "gentle_pct_lt8deg": 3.8,
+    "steep_pct_gt25deg": 70.0,
+    "south_aspect_pct": 11.3
+   },
+   "r1000": {
+    "valid_pct": 100.0,
+    "elev_mean": 204.3,
+    "elev_min": 55.0,
+    "elev_max": 515.2,
+    "slope_mean_deg": 26.0,
+    "slope_p50_deg": 27.8,
+    "gentle_pct_lt8deg": 11.6,
+    "steep_pct_gt25deg": 59.2,
+    "south_aspect_pct": 12.2
+   },
+   "point_elev": 112.4
+  }
+ }
+}

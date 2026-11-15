@@ -1,0 +1,1249 @@
+{
+"_meta": {
+"source": "질병관리청 지역사회건강조사 2025, KOSIS(orgId 177) DT_H_MENTAL_STRESS·DT_H_MENTAL_DEPRESS, 표준화율(%)",
+"retrieved": "2026-11-15",
+"links": [
+"https://kosis.kr/statHtml/statHtml.do?orgId=177&tblId=DT_H_MENTAL_STRESS",
+"https://kosis.kr/statHtml/statHtml.do?orgId=177&tblId=DT_H_MENTAL_DEPRESS"
+],
+"use": "지역 맥락 표시 전용. 개인 상태 점수나 시설 효과에 넣지 않음(생태학적 오류 방지)."
+},
+"regions": {
+"서울특별시": {
+"stress": 26.3,
+"depress": 7.0,
+"sigungu": {
+"강남구": {
+"stress": 29.0,
+"depress": 7.4
+},
+"강동구": {
+"stress": 25.1,
+"depress": 6.3
+},
+"강북구": {
+"stress": 29.1,
+"depress": 4.9
+},
+"강서구": {
+"stress": 29.0,
+"depress": 7.9
+},
+"관악구": {
+"stress": 25.3,
+"depress": 9.6
+},
+"광진구": {
+"stress": 23.7,
+"depress": 6.3
+},
+"구로구": {
+"stress": 25.2,
+"depress": 7.8
+},
+"금천구": {
+"stress": 28.7,
+"depress": 8.2
+},
+"노원구": {
+"stress": 27.5,
+"depress": 6.9
+},
+"도봉구": {
+"stress": 26.4,
+"depress": 6.4
+},
+"동대문구": {
+"stress": 22.1,
+"depress": 6.5
+},
+"동작구": {
+"stress": 28.5,
+"depress": 9.4
+},
+"마포구": {
+"stress": 32.0,
+"depress": 9.3
+},
+"서대문구": {
+"stress": 30.4,
+"depress": 7.1
+},
+"서초구": {
+"stress": 27.0,
+"depress": 4.8
+},
+"성동구": {
+"stress": 30.4,
+"depress": 5.6
+},
+"성북구": {
+"stress": 19.9,
+"depress": 5.1
+},
+"송파구": {
+"stress": 26.1,
+"depress": 8.9
+},
+"양천구": {
+"stress": 25.7,
+"depress": 6.0
+},
+"영등포구": {
+"stress": 23.7,
+"depress": 7.4
+},
+"용산구": {
+"stress": 13.8,
+"depress": 2.6
+},
+"은평구": {
+"stress": 26.4,
+"depress": 4.9
+},
+"종로구": {
+"stress": 26.4,
+"depress": 9.1
+},
+"중구": {
+"stress": 24.8,
+"depress": 3.6
+},
+"중랑구": {
+"stress": 24.7,
+"depress": 6.2
+}
+}
+},
+"부산광역시": {
+"stress": 22.2,
+"depress": 5.5,
+"sigungu": {
+"강서구": {
+"stress": 20.8,
+"depress": 3.1
+},
+"금정구": {
+"stress": 23.6,
+"depress": 5.6
+},
+"기장군": {
+"stress": 23.3,
+"depress": 3.9
+},
+"남구": {
+"stress": 20.1,
+"depress": 3.0
+},
+"동구": {
+"stress": 27.0,
+"depress": 5.5
+},
+"동래구": {
+"stress": 20.7,
+"depress": 5.7
+},
+"부산진구": {
+"stress": 20.5,
+"depress": 4.7
+},
+"북구": {
+"stress": 19.3,
+"depress": 5.1
+},
+"사상구": {
+"stress": 22.4,
+"depress": 6.0
+},
+"사하구": {
+"stress": 18.6,
+"depress": 4.8
+},
+"서구": {
+"stress": 28.5,
+"depress": 5.0
+},
+"수영구": {
+"stress": 23.6,
+"depress": 6.1
+},
+"연제구": {
+"stress": 26.7,
+"depress": 8.5
+},
+"영도구": {
+"stress": 28.1,
+"depress": 6.1
+},
+"중구": {
+"stress": 18.3,
+"depress": 1.6
+},
+"해운대구": {
+"stress": 23.2,
+"depress": 7.7
+}
+}
+},
+"대구광역시": {
+"stress": 24.3,
+"depress": 6.0,
+"sigungu": {
+"남구": {
+"stress": 23.2,
+"depress": 6.2
+},
+"달서구": {
+"stress": 24.8,
+"depress": 7.5
+},
+"달성군": {
+"stress": 20.9,
+"depress": 3.1
+},
+"동구": {
+"stress": 22.1,
+"depress": 8.1
+},
+"북구": {
+"stress": 27.9,
+"depress": 6.9
+},
+"서구": {
+"stress": 19.7,
+"depress": 3.7
+},
+"수성구": {
+"stress": 23.9,
+"depress": 4.0
+},
+"중구": {
+"stress": 33.1,
+"depress": 7.0
+},
+"군위군": {
+"stress": 18.1,
+"depress": 7.3
+}
+}
+},
+"인천광역시": {
+"stress": 25.6,
+"depress": 6.4,
+"sigungu": {
+"강화군": {
+"stress": 22.0,
+"depress": 2.3
+},
+"계양구": {
+"stress": 24.2,
+"depress": 3.3
+},
+"미추홀구": {
+"stress": 28.4,
+"depress": 7.3
+},
+"남동구": {
+"stress": 25.8,
+"depress": 4.8
+},
+"동구": {
+"stress": 26.7,
+"depress": 6.0
+},
+"부평구": {
+"stress": 24.0,
+"depress": 5.6
+},
+"서구": {
+"stress": 25.7,
+"depress": 9.7
+},
+"연수구": {
+"stress": 26.1,
+"depress": 5.7
+},
+"옹진군": {
+"stress": 24.3,
+"depress": 5.2
+},
+"중구": {
+"stress": 25.4,
+"depress": 7.0
+}
+}
+},
+"광주광역시": {
+"stress": 22.1,
+"depress": 3.4,
+"sigungu": {
+"광산구": {
+"stress": 24.1,
+"depress": 2.7
+},
+"남구": {
+"stress": 13.1,
+"depress": 2.6
+},
+"동구": {
+"stress": 19.4,
+"depress": 3.6
+},
+"북구": {
+"stress": 20.4,
+"depress": 3.2
+},
+"서구": {
+"stress": 29.0,
+"depress": 5.3
+}
+}
+},
+"대전광역시": {
+"stress": 24.4,
+"depress": 6.4,
+"sigungu": {
+"대덕구": {
+"stress": 27.8,
+"depress": 6.4
+},
+"동구": {
+"stress": 28.0,
+"depress": 5.2
+},
+"서구": {
+"stress": 22.3,
+"depress": 5.6
+},
+"유성구": {
+"stress": 22.0,
+"depress": 5.9
+},
+"중구": {
+"stress": 26.4,
+"depress": 9.6
+}
+}
+},
+"울산광역시": {
+"stress": 24.5,
+"depress": 6.6,
+"sigungu": {
+"남구": {
+"stress": 23.9,
+"depress": 6.3
+},
+"동구": {
+"stress": 24.5,
+"depress": 6.8
+},
+"북구": {
+"stress": 24.1,
+"depress": 4.3
+},
+"울주군": {
+"stress": 24.8,
+"depress": 8.8
+},
+"중구": {
+"stress": 25.0,
+"depress": 7.3
+}
+}
+},
+"세종특별자치시": {
+"stress": 24.7,
+"depress": 5.5,
+"sigungu": {
+"세종시": {
+"stress": 24.7,
+"depress": 5.5
+}
+}
+},
+"경기도": {
+"stress": 25.7,
+"depress": 6.6,
+"sigungu": {
+"가평군": {
+"stress": 20.0,
+"depress": 5.0
+},
+"고양시": {
+"stress": 26.3,
+"depress": 6.0,
+"children": {
+"덕양구": {
+"stress": 26.6,
+"depress": 5.5
+},
+"일산동구": {
+"stress": 25.3,
+"depress": 5.6
+},
+"일산서구": {
+"stress": 26.7,
+"depress": 7.1
+}
+}
+},
+"과천시": {
+"stress": 23.3,
+"depress": 7.7
+},
+"구리시": {
+"stress": 25.1,
+"depress": 6.5
+},
+"김포시": {
+"stress": 27.1,
+"depress": 6.5
+},
+"남양주시": {
+"stress": 27.4,
+"depress": 8.1,
+"children": {
+"남양주": {
+"stress": 28.7,
+"depress": 7.5
+},
+"남양주 풍양": {
+"stress": 25.0,
+"depress": 9.3
+}
+}
+},
+"동두천시": {
+"stress": 24.5,
+"depress": 9.4
+},
+"부천시": {
+"stress": 26.9,
+"depress": 5.8,
+"children": {
+"소사구": {
+"stress": 23.9,
+"depress": 4.4
+},
+"오정구": {
+"stress": 28.1,
+"depress": 6.6
+},
+"원미구": {
+"stress": 28.0,
+"depress": 6.3
+}
+}
+},
+"양주시": {
+"stress": 29.8,
+"depress": 8.0
+},
+"양평군": {
+"stress": 27.4,
+"depress": 5.4
+},
+"여주시": {
+"stress": 21.0,
+"depress": 5.0
+},
+"연천군": {
+"stress": 29.1,
+"depress": 6.4
+},
+"의정부시": {
+"stress": 22.5,
+"depress": 5.6
+},
+"이천시": {
+"stress": 27.9,
+"depress": 4.5
+},
+"파주시": {
+"stress": 25.5,
+"depress": 6.5
+},
+"포천시": {
+"stress": 22.6,
+"depress": 5.3
+},
+"하남시": {
+"stress": 29.0,
+"depress": 9.5
+},
+"광명시": {
+"stress": 19.3,
+"depress": 2.1
+},
+"광주시": {
+"stress": 23.3,
+"depress": 6.7
+},
+"군포시": {
+"stress": 24.6,
+"depress": 4.2
+},
+"성남시": {
+"stress": 25.6,
+"depress": 8.0,
+"children": {
+"분당구": {
+"stress": 24.6,
+"depress": 7.0
+},
+"수정구": {
+"stress": 27.2,
+"depress": 10.1
+},
+"중원구": {
+"stress": 26.0,
+"depress": 8.5
+}
+}
+},
+"수원시": {
+"stress": 25.5,
+"depress": 5.5,
+"children": {
+"권선구": {
+"stress": 26.5,
+"depress": 5.8
+},
+"영통구": {
+"stress": 23.2,
+"depress": 3.9
+},
+"장안구": {
+"stress": 26.7,
+"depress": 5.6
+},
+"팔달구": {
+"stress": 26.9,
+"depress": 8.1
+}
+}
+},
+"시흥시": {
+"stress": 24.5,
+"depress": 6.2
+},
+"안산시": {
+"stress": 28.7,
+"depress": 8.3,
+"children": {
+"단원구": {
+"stress": 28.2,
+"depress": 7.0
+},
+"상록구": {
+"stress": 29.3,
+"depress": 9.4
+}
+}
+},
+"안성시": {
+"stress": 29.2,
+"depress": 8.6
+},
+"안양시": {
+"stress": 24.8,
+"depress": 7.0,
+"children": {
+"동안구": {
+"stress": 24.2,
+"depress": 6.5
+},
+"만안구": {
+"stress": 25.5,
+"depress": 7.9
+}
+}
+},
+"오산시": {
+"stress": 28.5,
+"depress": 7.2
+},
+"용인시": {
+"stress": 23.1,
+"depress": 6.7,
+"children": {
+"기흥구": {
+"stress": 19.2,
+"depress": 7.7
+},
+"수지구": {
+"stress": 24.8,
+"depress": 5.6
+},
+"처인구": {
+"stress": 27.2,
+"depress": 6.9
+}
+}
+},
+"의왕시": {
+"stress": 25.9,
+"depress": 5.7
+},
+"평택시": {
+"stress": 25.8,
+"depress": 7.5,
+"children": {
+"송탄": {
+"stress": 27.8,
+"depress": 8.1
+},
+"평택": {
+"stress": 24.5,
+"depress": 7.2
+}
+}
+},
+"화성시": {
+"stress": 25.4,
+"depress": 6.3,
+"children": {
+"서부": {
+"stress": 28.4,
+"depress": 8.4
+},
+"동탄": {
+"stress": 24.7,
+"depress": 6.2
+},
+"동부": {
+"stress": 22.3,
+"depress": 4.0
+}
+}
+}
+}
+},
+"강원특별자치도": {
+"stress": 24.7,
+"depress": 6.9,
+"sigungu": {
+"강릉시": {
+"stress": 23.6,
+"depress": 6.6
+},
+"고성군": {
+"stress": 20.6,
+"depress": 6.7
+},
+"동해시": {
+"stress": 22.6,
+"depress": 4.2
+},
+"삼척시": {
+"stress": 23.8,
+"depress": 7.7
+},
+"속초시": {
+"stress": 17.3,
+"depress": 4.1
+},
+"양구군": {
+"stress": 24.2,
+"depress": 6.9
+},
+"양양군": {
+"stress": 20.5,
+"depress": 7.8
+},
+"영월군": {
+"stress": 22.2,
+"depress": 5.9
+},
+"원주시": {
+"stress": 29.0,
+"depress": 9.4
+},
+"인제군": {
+"stress": 23.7,
+"depress": 4.1
+},
+"정선군": {
+"stress": 20.3,
+"depress": 5.6
+},
+"철원군": {
+"stress": 24.4,
+"depress": 5.0
+},
+"춘천시": {
+"stress": 24.9,
+"depress": 6.4
+},
+"태백시": {
+"stress": 23.4,
+"depress": 4.9
+},
+"평창군": {
+"stress": 26.0,
+"depress": 9.6
+},
+"홍천군": {
+"stress": 23.1,
+"depress": 7.8
+},
+"화천군": {
+"stress": 22.9,
+"depress": 4.7
+},
+"횡성군": {
+"stress": 26.9,
+"depress": 6.6
+}
+}
+},
+"충청북도": {
+"stress": 24.2,
+"depress": 5.9,
+"sigungu": {
+"괴산군": {
+"stress": 23.4,
+"depress": 6.0
+},
+"단양군": {
+"stress": 23.7,
+"depress": 8.7
+},
+"보은군": {
+"stress": 23.6,
+"depress": 6.8
+},
+"영동군": {
+"stress": 29.4,
+"depress": 3.6
+},
+"옥천군": {
+"stress": 21.8,
+"depress": 4.5
+},
+"음성군": {
+"stress": 28.9,
+"depress": 8.0
+},
+"제천시": {
+"stress": 26.1,
+"depress": 7.5
+},
+"증평군": {
+"stress": 24.0,
+"depress": 6.7
+},
+"진천군": {
+"stress": 29.1,
+"depress": 7.0
+},
+"충주시": {
+"stress": 24.3,
+"depress": 6.0
+},
+"청주시": {
+"stress": 23.1,
+"depress": 5.3,
+"children": {
+"상당구": {
+"stress": 21.7,
+"depress": 7.3
+},
+"서원구": {
+"stress": 30.4,
+"depress": 5.4
+},
+"흥덕구": {
+"stress": 18.5,
+"depress": 3.6
+},
+"청원구": {
+"stress": 24.8,
+"depress": 5.9
+}
+}
+}
+}
+},
+"충청남도": {
+"stress": 24.2,
+"depress": 7.0,
+"sigungu": {
+"계룡시": {
+"stress": 19.5,
+"depress": 2.1
+},
+"공주시": {
+"stress": 21.4,
+"depress": 6.0
+},
+"금산군": {
+"stress": 25.0,
+"depress": 6.8
+},
+"논산시": {
+"stress": 21.1,
+"depress": 3.9
+},
+"당진시": {
+"stress": 22.1,
+"depress": 5.7
+},
+"보령시": {
+"stress": 20.4,
+"depress": 5.4
+},
+"부여군": {
+"stress": 22.3,
+"depress": 5.3
+},
+"서산시": {
+"stress": 23.1,
+"depress": 8.6
+},
+"서천군": {
+"stress": 22.1,
+"depress": 3.0
+},
+"아산시": {
+"stress": 25.9,
+"depress": 12.2
+},
+"예산군": {
+"stress": 27.6,
+"depress": 6.7
+},
+"천안시": {
+"stress": 25.0,
+"depress": 6.3,
+"children": {
+"서북구": {
+"stress": 26.1,
+"depress": 6.0
+},
+"동남구": {
+"stress": 23.2,
+"depress": 6.7
+}
+}
+},
+"청양군": {
+"stress": 24.8,
+"depress": 1.2
+},
+"태안군": {
+"stress": 25.3,
+"depress": 8.5
+},
+"홍성군": {
+"stress": 24.1,
+"depress": 5.6
+}
+}
+},
+"전북특별자치도": {
+"stress": 21.7,
+"depress": 6.2,
+"sigungu": {
+"고창군": {
+"stress": 22.6,
+"depress": 6.1
+},
+"군산시": {
+"stress": 27.1,
+"depress": 5.0
+},
+"김제시": {
+"stress": 23.1,
+"depress": 5.0
+},
+"남원시": {
+"stress": 22.3,
+"depress": 4.9
+},
+"무주군": {
+"stress": 26.1,
+"depress": 3.6
+},
+"부안군": {
+"stress": 24.1,
+"depress": 3.4
+},
+"순창군": {
+"stress": 19.4,
+"depress": 2.2
+},
+"완주군": {
+"stress": 15.6,
+"depress": 2.4
+},
+"익산시": {
+"stress": 23.2,
+"depress": 8.2
+},
+"임실군": {
+"stress": 25.1,
+"depress": 6.2
+},
+"장수군": {
+"stress": 21.9,
+"depress": 4.4
+},
+"전주시": {
+"stress": 18.9,
+"depress": 6.6
+},
+"정읍시": {
+"stress": 23.9,
+"depress": 7.5
+},
+"진안군": {
+"stress": 25.3,
+"depress": 8.5
+}
+}
+},
+"전라남도": {
+"stress": 22.3,
+"depress": 4.4,
+"sigungu": {
+"강진군": {
+"stress": 20.9,
+"depress": 4.2
+},
+"고흥군": {
+"stress": 14.4,
+"depress": 2.5
+},
+"곡성군": {
+"stress": 22.1,
+"depress": 2.5
+},
+"광양시": {
+"stress": 22.3,
+"depress": 6.2
+},
+"구례군": {
+"stress": 22.3,
+"depress": 2.8
+},
+"나주시": {
+"stress": 26.5,
+"depress": 4.2
+},
+"담양군": {
+"stress": 18.1,
+"depress": 4.2
+},
+"목포시": {
+"stress": 27.9,
+"depress": 4.5
+},
+"무안군": {
+"stress": 22.6,
+"depress": 4.2
+},
+"보성군": {
+"stress": 26.7,
+"depress": 8.6
+},
+"순천시": {
+"stress": 22.0,
+"depress": 3.8
+},
+"신안군": {
+"stress": 19.2,
+"depress": 3.8
+},
+"여수시": {
+"stress": 18.0,
+"depress": 2.9
+},
+"영광군": {
+"stress": 19.9,
+"depress": 5.4
+},
+"영암군": {
+"stress": 25.9,
+"depress": 6.3
+},
+"완도군": {
+"stress": 24.3,
+"depress": 5.4
+},
+"장성군": {
+"stress": 19.4,
+"depress": 6.1
+},
+"장흥군": {
+"stress": 30.5,
+"depress": 3.4
+},
+"진도군": {
+"stress": 18.9,
+"depress": 4.6
+},
+"함평군": {
+"stress": 20.6,
+"depress": 4.2
+},
+"해남군": {
+"stress": 19.8,
+"depress": 6.8
+},
+"화순군": {
+"stress": 18.9,
+"depress": 3.3
+}
+}
+},
+"경상북도": {
+"stress": 21.7,
+"depress": 5.4,
+"sigungu": {
+"경산시": {
+"stress": 24.8,
+"depress": 9.1
+},
+"경주시": {
+"stress": 21.6,
+"depress": 5.2
+},
+"고령군": {
+"stress": 25.5,
+"depress": 6.5
+},
+"구미시": {
+"stress": 23.7,
+"depress": 7.2,
+"children": {
+"구미": {
+"stress": 24.0,
+"depress": 8.5
+},
+"선산": {
+"stress": 22.3,
+"depress": 3.1
+}
+}
+},
+"김천시": {
+"stress": 17.9,
+"depress": 6.0
+},
+"문경시": {
+"stress": 25.6,
+"depress": 3.7
+},
+"봉화군": {
+"stress": 18.7,
+"depress": 1.6
+},
+"상주시": {
+"stress": 20.7,
+"depress": 1.5
+},
+"성주군": {
+"stress": 19.4,
+"depress": 4.2
+},
+"안동시": {
+"stress": 21.9,
+"depress": 4.0
+},
+"영덕군": {
+"stress": 12.8,
+"depress": 3.4
+},
+"영양군": {
+"stress": 20.0,
+"depress": 3.7
+},
+"영주시": {
+"stress": 23.6,
+"depress": 6.9
+},
+"영천시": {
+"stress": 14.9,
+"depress": 4.2
+},
+"예천군": {
+"stress": 23.8,
+"depress": 1.1
+},
+"울릉군": {
+"stress": 21.5,
+"depress": 6.4
+},
+"울진군": {
+"stress": 15.0,
+"depress": 3.6
+},
+"의성군": {
+"stress": 14.5,
+"depress": 4.5
+},
+"청도군": {
+"stress": 22.0,
+"depress": 7.7
+},
+"청송군": {
+"stress": 19.0,
+"depress": 3.5
+},
+"칠곡군": {
+"stress": 16.5,
+"depress": 5.1
+},
+"포항시": {
+"stress": 21.8,
+"depress": 3.8,
+"children": {
+"남구": {
+"stress": 23.6,
+"depress": 6.1
+},
+"북구": {
+"stress": 20.2,
+"depress": 1.9
+}
+}
+}
+}
+},
+"경상남도": {
+"stress": 21.9,
+"depress": 5.0,
+"sigungu": {
+"거제시": {
+"stress": 16.3,
+"depress": 6.5
+},
+"거창군": {
+"stress": 24.5,
+"depress": 5.4
+},
+"고성군": {
+"stress": 28.7,
+"depress": 5.8
+},
+"김해시": {
+"stress": 18.7,
+"depress": 3.1
+},
+"남해군": {
+"stress": 22.1,
+"depress": 8.5
+},
+"창원시": {
+"stress": 24.1,
+"depress": 6.5,
+"children": {
+"마산": {
+"stress": 22.3,
+"depress": 8.8
+},
+"진해": {
+"stress": 21.5,
+"depress": 6.4
+},
+"창원": {
+"stress": 25.9,
+"depress": 4.9
+}
+}
+},
+"밀양시": {
+"stress": 21.2,
+"depress": 5.6
+},
+"사천시": {
+"stress": 23.7,
+"depress": 5.5
+},
+"산청군": {
+"stress": 19.1,
+"depress": 7.3
+},
+"양산시": {
+"stress": 21.0,
+"depress": 4.3
+},
+"의령군": {
+"stress": 15.5,
+"depress": 1.8
+},
+"진주시": {
+"stress": 23.7,
+"depress": 3.0
+},
+"창녕군": {
+"stress": 15.8,
+"depress": 1.1
+},
+"통영시": {
+"stress": 25.4,
+"depress": 5.5
+},
+"하동군": {
+"stress": 19.0,
+"depress": 6.1
+},
+"함안군": {
+"stress": 19.9,
+"depress": 6.7
+},
+"함양군": {
+"stress": 23.9,
+"depress": 7.5
+},
+"합천군": {
+"stress": 24.7,
+"depress": 2.1
+}
+}
+},
+"제주특별자치도": {
+"stress": 21.8,
+"depress": 3.7,
+"sigungu": {
+"서귀포시": {
+"stress": 23.8,
+"depress": 4.5,
+"children": {
+"서귀포": {
+"stress": 23.6,
+"depress": 4.7
+},
+"동부": {
+"stress": 22.5,
+"depress": 3.1
+},
+"서부": {
+"stress": 26.1,
+"depress": 6.0
+}
+}
+},
+"제주시": {
+"stress": 21.0,
+"depress": 3.4,
+"children": {
+"제주": {
+"stress": 20.1,
+"depress": 2.5
+},
+"동부": {
+"stress": 23.1,
+"depress": 6.2
+},
+"서부": {
+"stress": 25.6,
+"depress": 6.1
+}
+}
+}
+}
+}
+}
+}
