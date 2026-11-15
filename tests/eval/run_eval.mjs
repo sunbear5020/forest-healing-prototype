@@ -49,6 +49,12 @@ for (const c of cases()) {
   // H4: 프로그램 정보가 있는 추천만 분모(정보 없는 시설은 프로그램을 내지 않음) — §7 변경 기록 참조
   const withProg = recs.filter((e) => e.programs && e.programs.items.length);
   judge('H4', f.scenario !== 'normal' && withProg.length > 0, withProg.every((e) => e.programs.switchedIndoor), c.id, {});
+  // H5·H6: v0.2 가상 판정 후 추가한 v0.3 기준(§7). 사전 기준 아님
+  if (f.scenario === 'pm_bad' || f.scenario === 'rain') {
+    const ind = recs.map((e) => e.envDetail.indoor), fo = ind.indexOf(false);
+    judge('H5', recs.length > 1, fo < 0 || ind.slice(fo).every((x) => !x), c.id, { order: recs.map((e) => e.site.id + (e.envDetail.indoor ? '[실내]' : '')) });
+  }
+  judge('H6', ['wind', 'heat', 'pm_bad'].includes(f.scenario), !!alt.weather && alt.weather.outdoorOk === false, c.id, { weather: alt.weather || null });
   judge('A1', true, recs.every((e) => e.access.hours != null && e.access.hours <= f.maxHours), c.id, { hours: recs.map((e) => e.access.hours) });
   judge('A2', !f.canVisit, alt.prominent && (alt.parks || []).every((p) => p.tree_pct >= 30) && (alt.forests || []).length >= 1, c.id,
     { prominent: alt.prominent, parks: (alt.parks || []).map((p) => p.tree_pct), nForests: (alt.forests || []).length });
@@ -99,7 +105,7 @@ for (const c of cases()) {
   ov.overlap += eng.filter((x) => near.includes(x)).length;
 }
 const thresholds = { N1: 0.95 };
-const addedAfter = { S2b: '결과 확인 후 추가(§7). 사전 기준 아님' };
+const addedAfter = { S2b: '결과 확인 후 추가(§7). 사전 기준 아님', H5: 'v0.3 추가(가상 판정 후, §7). 사전 기준 아님', H6: 'v0.3 추가(가상 판정 후, §7). 사전 기준 아님' };
 const rows = Object.keys(C).sort().map((id) => {
   const { n, pass } = C[id], [lo, hi] = wilson(pass, n), th = thresholds[id] || 1;
   return { id, n, pass, rate: pass / n, ci95: [lo, hi], threshold: th, met: pass / n >= th, note: addedAfter[id] || null, failExamples: (fails[id] || []).slice(0, 5), nFail: (fails[id] || []).length };

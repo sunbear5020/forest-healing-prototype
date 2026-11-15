@@ -105,4 +105,19 @@ t('자료가 빠지면 조용히 넘어가지 않고 경고', () => {
   assert.ok(r.warnings.some((w) => w.includes('효과모형')));
   assert.ok(r.warnings.some((w) => w.includes('예보')));
 });
+t('v0.3: PM2.5 나쁨·비에는 실내 시설이 실외형보다 앞 순위', () => {
+  for (const pm of [{ pm: 'bad', rain: false }, { pm: 'good', rain: true }]) {
+    const r = E.recommend({ ...base, maxHours: 9, topN: 18, envOverride: { temp: 18, humidity: 50, wind: 2, ...pm } }, ctx);
+    const idx = r.recommendations.map((e) => e.envDetail.indoor);
+    const firstOut = idx.indexOf(false);
+    if (firstOut >= 0) assert.ok(idx.slice(firstOut).every((x) => !x), '실외형 뒤에 실내 시설이 오면 안 됨');
+  }
+});
+t('v0.3: 강풍·폭염이면 대체 경로에 실외 자제 안내', () => {
+  const r = E.recommend({ ...base, canVisit: false, envOverride: { temp: 15, humidity: 50, pm: 'good', rain: false, wind: 16 } }, ctx);
+  assert.equal(r.alternatives.weather.outdoorOk, false);
+  assert.ok(r.alternatives.weather.note.includes('강풍'));
+  const ok = E.recommend({ ...base, canVisit: false, envOverride: { temp: 20, humidity: 50, pm: 'good', rain: false, wind: 2 } }, ctx);
+  assert.equal(ok.alternatives.weather, undefined);
+});
 console.log(`\n${n} tests passed`);

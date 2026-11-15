@@ -160,7 +160,8 @@
   }
 
   function renderAlternatives(a) {
-    var h = '<div class="eg-alt"><h3>방문이 어려울 때</h3><ol>';
+    var h = '<div class="eg-alt"><h3>방문이 어려울 때</h3>' +
+      (a.weather ? '<p class="eg-alert' + (a.weather.outdoorOk ? '' : ' urgent') + '">' + esc(a.weather.note) + (a.weather.basis ? ' <small>(' + esc(a.weather.basis) + ')</small>' : '') + '</p>' : '') + '<ol>';
     h += '<li><b>' + esc(a.digital.title) + '</b> — ' + (a.digital.available && a.digital.url
       ? '<a href="' + esc(a.digital.url) + '" target="_blank" rel="noopener">바로 이용</a>' : esc(a.digital.status) + '. ' + esc(a.digital.note)) + '</li>';
     if (a.originNote) h += '<li>' + esc(a.originNote) + '</li>';

@@ -23,7 +23,7 @@
 }(typeof self !== 'undefined' ? self : this, function () {
   'use strict';
 
-  var VERSION = '0.2.0';
+  var VERSION = '0.3.0';
 
   /* ---------------------------------------------------------------------
      계수표 — basis: rule(공공 기준) / literature / model / demo(시연값)
@@ -45,7 +45,8 @@
     parkRadiusKm:   { value: [2, 5, 10], basis: 'demo', note: '근처 공원 탐색 반경(부족하면 넓힘)' },
     gentleBarrier:  { value: 8, basis: 'demo', note: '무장애 선호: 반경 0.5 km 완경사(8° 미만) 비율이 이 값(%) 미만이면 감점(무장애 데크 정보가 없는 시설)' },
     mcDraws:        { value: 400, basis: 'demo', note: '순위 범위 계산 반복 수' },
-    fdr:            { value: 0.05, basis: 'rule', note: '효과모형 환경항 다중비교 보정(Benjamini-Hochberg) 기준 q' }
+    fdr:            { value: 0.05, basis: 'rule', note: '효과모형 환경항 다중비교 보정(Benjamini-Hochberg) 기준 q' },
+    badWeatherIndoorFirst: { value: ['pm25', 'rain'], basis: 'demo', note: 'PM2.5 나쁨·비 예상일에는 실내 대체 시설이 있는 곳을 먼저(점수보다 앞선 순위 규칙). v0.2 가상 판정에서 드러난 약점 보완' }
   };
 
   /* 자가점검 영역 ↔ 근거 영역 */
@@ -423,6 +424,15 @@
       if (!dup) kept.push(f);
     });
     res.forests = kept.slice(0, 5);
+    var hz = opts.hazards || [];
+    var HZ = { wind: '강풍', heat: '폭염', pm25: 'PM2.5 나쁨', rain: '비' };
+    var severe = hz.filter(function (h) { return h === 'wind' || h === 'heat' || h === 'pm25'; });
+    if (hz.length) {
+      res.weather = { hazards: hz, basis: opts.hazardBasis || null, outdoorOk: severe.length === 0,
+        note: severe.length
+          ? '오늘은 ' + severe.map(function (h) { return HZ[h]; }).join('·') + ' 때문에 공원·산림 등 실외 활동을 권하지 않습니다. 실내에서 쓸 수 있는 디지털치료제(개발 중)나 실내 휴식을 먼저 고려하고, 공원·산림은 날씨가 나아진 뒤 이용하세요.'
+          : '비 예상: 공원·산림은 짧게, 미끄럼에 유의하세요.' };
+    }
     return res;
   }
 
@@ -510,7 +520,8 @@
       return {
         site: site, proto: proto, env: env, byDomain: byDomain, effectSD: effectSD, effectBasis: basis, envTermsUsed: envUsed,
         scores: { effect: effScore == null ? null : round(effScore, 0), env: round(v.score, 0), access: a.score },
-        envDetail: v, access: a, excluded: exclude, eligible: exclude.length === 0
+        envDetail: v, access: a, excluded: exclude, eligible: exclude.length === 0,
+        tier: (!v.indoor && v.hazards.some(function (h) { return PARAMS.badWeatherIndoorFirst.value.indexOf(h) >= 0; })) ? 1 : 0
       };
     });
 
@@ -537,14 +548,14 @@
         return total(e, clamp(100 * (num / den) / PARAMS.effectScale.value, 0, 100));
       });
       draws.forEach(function (v, i) { totals[i].push(v); });
-      var order = draws.map(function (v, i) { return [v, i]; }).sort(function (a, b) { return b[0] - a[0] || a[1] - b[1]; });
+      var order = draws.map(function (v, i) { return [v, i]; }).sort(function (a, b) { return pool[a[1]].tier - pool[b[1]].tier || b[0] - a[0] || a[1] - b[1]; });
       order.forEach(function (o, r) { ranks[o[1]].push(r + 1); });
     }
     pool.forEach(function (e, i) {
       e.rankRange = ranks[i].length ? [Math.round(quantile(ranks[i], 0.1)), Math.round(quantile(ranks[i], 0.9))] : null;
       e.totalRange = totals[i].length ? [round(quantile(totals[i], 0.1), 0), round(quantile(totals[i], 0.9), 0)] : null;
     });
-    pool.sort(function (a, b) { return b.total - a.total || (a.site.id < b.site.id ? -1 : 1); });
+    pool.sort(function (a, b) { return a.tier - b.tier || b.total - a.total || (a.site.id < b.site.id ? -1 : 1); });
     pool.forEach(function (e, i) { e.rank = i + 1; });
     var top = pool.slice(0, input.topN || 5);
     top.forEach(function (e) {
@@ -554,7 +565,10 @@
     });
 
     var showAlt = input.canVisit === false || top.length === 0 || safety.level === 'urgent';
-    var alt = alternatives(origin, ctx);
+    // 대체 경로용 출발지 날씨: 시나리오 입력이 있으면 그 값, 없으면 출발지에서 가장 가까운 시설의 방문일 환경으로 근사
+    var nearestEval = origin && origin.lat != null ? evals.slice().sort(function (a, b) { return haversineKm(origin, a.site) - haversineKm(origin, b.site); })[0] : null;
+    var altHazards = nearestEval ? nearestEval.envDetail.hazards : [];
+    var alt = alternatives(origin, ctx, { hazards: altHazards, hazardBasis: input.envOverride ? '화면 시나리오 입력값' : nearestEval ? nearestEval.site.name + ' ' + nearestEval.env.label + ' 근사' : null });
     var notes = [
       '효과 값은 대조군 없는 사전-사후 변화(표준편차 단위)입니다. 인과 효과가 아닙니다.',
       '시설 간 효과 차이에는 그 시설에서 운영된 사업·대상군 구성 차이가 섞여 있습니다. 환경 때문이라고 해석하면 안 됩니다.',
@@ -613,6 +627,8 @@
     }
     if (profile.literatureOnlyDomains.length) out.push(profile.literatureOnlyDomains.map(function (d) { return DOMAINS[d].label; }).join('·') + '는 효과 자료가 없어 환경 노출만 반영');
     out.push('방문일 환경: ' + e.env.label);
+    var badW = e.envDetail.hazards.filter(function (h) { return PARAMS.badWeatherIndoorFirst.value.indexOf(h) >= 0; });
+    if (badW.length) out.push(e.tier === 0 ? '나쁜 날씨(' + badW.join('·') + '): 실내 대체 시설이 있어 앞 순위로 둠' : '나쁜 날씨(' + badW.join('·') + '): 실내 대체 시설 정보가 없어 실내 시설 다음 순위로 둠');
     e.envDetail.notes.forEach(function (n) { out.push(n); });
     e.envDetail.basis.forEach(function (n) { out.push(n); });
     e.envTermsUsed.forEach(function (n) { out.push('효과모형 환경항 반영: ' + n); });

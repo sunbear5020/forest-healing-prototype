@@ -1,13 +1,13 @@
 {
  "plan": "docs/EVALUATION.md (2026-11-15 고정)",
- "ranAt": "2026-11-15T13:21:36.539Z",
- "seconds": 35.387,
+ "ranAt": "2026-11-15T13:39:30.884Z",
+ "seconds": 38.179,
  "nCases": 1600,
  "config": {
-  "engine": "0.2.0",
+  "engine": "0.3.0",
   "seed": 20271,
   "mcDraws": 400,
-  "paramsHash": "79cabd3d",
+  "paramsHash": "07e7f13b",
   "weights": {
    "effect": 0.5,
    "env": 0.3,
@@ -47,13 +47,13 @@
  ],
  "baselineOverlap": {
   "n": 133,
-  "setSame": 47,
-  "ordSame": 11,
-  "overlap": 313
+  "setSame": 41,
+  "ordSame": 12,
+  "overlap": 307
  },
  "rankRangeWidthTop5": {
   "median": 1,
-  "p90": 4,
+  "p90": 3,
   "max": 5
  },
  "effectBasisTop5": {
@@ -164,6 +164,36 @@
    "threshold": 1,
    "met": true,
    "note": null,
+   "failExamples": [],
+   "nFail": 0
+  },
+  {
+   "id": "H5",
+   "n": 504,
+   "pass": 504,
+   "rate": 1,
+   "ci95": [
+    0.9924354365613216,
+    1
+   ],
+   "threshold": 1,
+   "met": true,
+   "note": "v0.3 추가(가상 판정 후, §7). 사전 기준 아님",
+   "failExamples": [],
+   "nFail": 0
+  },
+  {
+   "id": "H6",
+   "n": 960,
+   "pass": 960,
+   "rate": 1,
+   "ci95": [
+    0.9960142828448159,
+    0.9999999999999999
+   ],
+   "threshold": 1,
+   "met": true,
+   "note": "v0.3 추가(가상 판정 후, §7). 사전 기준 아님",
    "failExamples": [],
    "nFail": 0
   },
