@@ -170,11 +170,16 @@
     if (sim) {
       return { pred: sim.pred, lo: sim.lo, hi: sim.hi, n: null, supported: true, basis: 'similar',
                note: '효과측정 자료가 없어 측정기관 ' + sim.k + '곳 중앙값으로 추정(범위는 기관 구간 최소~최대)' +
-                     (p ? '. 참고: 메타분석 ' + p.label + ' ' + p.g.toFixed(2) + ' SD' : '') };
+                     (p ? '. 참고: 메타분석 ' + p.label + ' ' + p.g.toFixed(2) + ' SD' + gradeNote(p) : '') };
     }
     if (!p) return null;
     return { pred: p.g, lo: p.lo, hi: p.hi, n: null, supported: true, basis: 'literature',
-             note: '효과측정 자료가 없어 메타분석 통합값(단일군 사전-사후)을 씀. 시설 간 차이 정보 없음' };
+             note: '효과측정 자료가 없어 메타분석 통합값(단일군 사전-사후)을 씀. 시설 간 차이 정보 없음' + gradeNote(p), grade: p.grade || null };
+  }
+  // 문헌 근거 확실성(GRADE 1차 판정)과 무작위 대조 연구 통합값 표기
+  function gradeNote(p) {
+    if (!p || !p.grade) return '';
+    return ' (문헌 근거 확실성 ' + p.grade + (p.rct ? ', 무작위 대조 연구 ' + p.rct.studies + '편 대조군 대비 g ' + p.rct.g.toFixed(2) + ' [' + p.rct.lo95.toFixed(2) + '~' + p.rct.hi95.toFixed(2) + ']' : '') + ', 1차 판정)';
   }
 
   var _simCache = {};
@@ -703,6 +708,8 @@
       });
       out.push({ model: '설문 효과모형 예측: ', mixed: '효과모형 예측(일부 영역 추정): ', similar: '측정기관 중앙값으로 추정(이 시설 자료 없음): ', literature: '문헌(메타분석) 사전값: ' }[e.effectBasis] + parts.join(', '));
     }
+    var gn = dl.map(function (d) { var m = /\(문헌 근거 확실성[^)]*\)/.exec(e.byDomain[d].note || ''); return m ? DOMAINS[d].label + ' ' + m[0] : null; }).filter(Boolean);
+    if (gn.length) out.push(gn.join('; '));
     if (profile.literatureOnlyDomains.length) out.push(profile.literatureOnlyDomains.map(function (d) { return DOMAINS[d].label; }).join('·') + '는 효과 자료가 없어 환경 노출만 반영');
     out.push('방문일 환경: ' + e.env.label);
     if (e.nearFirst) out.push('점수가 더 높은 ' + e.nearFirst + '와(과) 차이가 불확실 범위 안이라, 이동시간이 짧은 이곳을 앞에 둠');
