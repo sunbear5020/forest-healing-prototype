@@ -1,5 +1,5 @@
 /* =========================================================================
-   숲처방 — style.css
+   숲결 (Soopgyeol) — style.css
    Editorial green & cream · responsive (mobile / desktop)
    ========================================================================= */
 
@@ -511,6 +511,7 @@ input[type="range"]::-moz-range-thumb {
 .modal-close:hover { background: var(--cream); color: var(--ink); }
 .modal-head { margin-bottom: 22px; padding-right: 40px; }
 .modal-head h2 { font-family: var(--font-serif); font-size: 25px; color: var(--green); margin: 6px 0 8px; }
+.modal-head h2 .about-en { font-family: var(--font-sans); font-size: 12px; font-weight: 500; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); margin-left: 8px; vertical-align: middle; }
 .modal-head p { font-size: 13px; color: var(--ink-soft); }
 
 /* detail */
