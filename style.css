@@ -693,3 +693,45 @@ input[type="range"]::-moz-range-thumb {
   *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; }
   html { scroll-behavior: auto; }
 }
+
+/* ───────── 2027 연구계획 반영: 근거 수준 · 시연값 표시 ───────── */
+.demo-tag { display: inline-block; font-size: 9.8px; font-weight: 600; padding: 0 5px; border-radius: 4px; background: #FBEEDB; color: #8A5A16; border: 1px solid #EED9B4; vertical-align: 1px; white-space: nowrap; }
+.ev-badge, .pe-badge { font-size: 10.2px; padding: 2px 7px; border-radius: 999px; font-weight: 600; white-space: nowrap; border: 1px solid transparent; }
+.ev-measured { background: #E3EEF5; color: #2D5670; border-color: #C7DBE8; }
+.ev-similar { background: #F3EEE6; color: #7A6440; border-color: #E1D7C3; }
+.ev-pending { background: #EEEEEE; color: #666; border-color: #DDD; }
+.pe-model { background: #E3EEF5; color: #2D5670; border-color: #C7DBE8; }
+.pe-literature { background: #F1ECF6; color: #5B4777; border-color: #DED3EA; }
+.opt .pe-badge { margin-left: auto; flex: none; font-size: 9.6px; padding: 1px 6px; }
+.purpose-evidence { margin-top: 3px; }
+.bar-layers { display: grid; grid-template-columns: 3fr 2fr; gap: 6px 18px; margin-bottom: 14px; }
+.bar-layer .bars { margin-bottom: 0; grid-template-columns: 1fr; }
+.layer-cap { font-size: 10.6px; font-weight: 600; color: var(--green-2); margin: 0 0 5px; }
+.layer-cap small { font-weight: 400; color: var(--muted); margin-left: 4px; }
+.bars-effect .bar-row:nth-child(1) .bar-fill { background: linear-gradient(90deg, #C8D6AE, #1F4733); }
+.bars-effect .bar-row:nth-child(2) .bar-fill { background: linear-gradient(90deg, #D8C9A4, #B4813C); }
+.bars-effect .bar-row:nth-child(3) .bar-fill { background: linear-gradient(90deg, #CBBFA8, #8A6528); }
+.bars-access .bar-row:nth-child(1) .bar-fill { background: linear-gradient(90deg, #C9D3DB, #4E6E85); }
+.ev-note { font-size: 11.2px; color: var(--muted); line-height: 1.65; margin: 8px 0 0; }
+.ev-note b { color: var(--ink-soft); }
+.pi-tags { font-size: 10.8px; color: var(--muted); margin-top: 5px; display: flex; flex-wrap: wrap; gap: 4px; align-items: center; }
+.missing { color: var(--clay); }
+.pin.pending { background: #B9B9B9; width: 12px; height: 12px; border-radius: 50%; border: 1.5px dashed #fff; box-shadow: 0 1px 4px rgba(0,0,0,.25); }
+.map-legend .dot.pending { background: #B9B9B9; }
+.fb-dot.pending { background: #B9B9B9; }
+.pending-card { margin-top: 18px; padding: 18px 20px; }
+.pending-card h2 { font-family: var(--font-serif); font-size: 17px; color: var(--green); margin: 0 0 4px; }
+.pending-list { list-style: none; padding: 0; margin: 12px 0 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 8px; }
+.pending-list li { background: var(--cream-2); border: 1px dashed var(--line); border-radius: 11px; padding: 9px 12px; font-size: 12px; display: flex; flex-direction: column; gap: 2px; }
+.pending-list li.unknown { background: transparent; }
+.pending-list .pid { font-size: 10px; color: var(--muted); }
+.pending-list .paddr, .pending-list .pnote { font-size: 10.8px; color: var(--muted); }
+.table-scroll { overflow-x: auto; }
+.demo-table { width: 100%; border-collapse: collapse; font-size: 11.4px; margin-top: 8px; }
+.demo-table th, .demo-table td { text-align: left; vertical-align: top; padding: 6px 8px; border-bottom: 1px solid var(--line-soft); color: var(--ink-soft); line-height: 1.55; }
+.demo-table thead th { color: var(--green); font-weight: 600; }
+.algo-note + .algo-note { margin-top: 12px; }
+.algo-note h3 small { font-weight: 400; color: var(--muted); font-size: 11px; }
+@media (max-width: 700px) {
+  .bar-layers { grid-template-columns: 1fr; }
+}
