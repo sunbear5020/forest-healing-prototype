@@ -37,7 +37,7 @@ GitHub Pages에서 그대로 돌아가는 정적 구성이며, 입력값은 브�
 | `data/*.json` | 정적 자료 = 공개 조회용 API(GET). 아래 표 |
 | `scripts/build/*.py` | 연구 원자료 → `data/*.json` 재생성 |
 | `scripts/fetch_env_today.py` | 예보·대기질 스냅샷. `.github/workflows/env-daily.yml`이 하루 2회 실행 |
-| `tests/engine.test.mjs` | 엔진 시험 18건(`node tests/engine.test.mjs`) |
+| `tests/engine.test.mjs` | 엔진 시험 19건(`node tests/engine.test.mjs`) |
 | `docs/EVALUATION.md` | **사전 고정 평가계획**: 좋은 추천의 정의, 판정 기준·통과선, 전문가 판정 절차, 변경 기록 |
 | `tests/eval/run_eval.mjs` | 1,600건 교차 시나리오 규칙 판정 → `tests/eval/out/report.{md,json}` |
 | `tests/eval/make_expert_cases.mjs`, `kappa.py` | 전문가 블라인드 판정 사례 100건(엔진 vs 가까운 순), 판정자 간 κ·엔진 선호율 |
@@ -57,6 +57,7 @@ GitHub Pages에서 그대로 돌아가는 정적 구성이며, 입력값은 브�
 | 대안: 산림공원 | `parks.json` | 같은 공원 자료 중 수관 피복 60% 이상·10 ha 이상(공식 구분 아님, 시연 기준) | 확보 |
 | 대안: 도시숲 | — | 산림청 도시숲 현황 통계(15157393)는 지자체별 면적 수치뿐, 전국 위치 자료 없음 | **미확보**(일부 지자체 파일만 있음) |
 | 대안: 산림 | `forests_nearby.json` | 전국휴양림표준데이터(15013111) 186곳 + 산림청 치유의숲 좌표(15110279) 38곳 | 확보 |
+| 시설 지역 건강 | `facility_region_health.json` | 지역사회건강조사 2025 고혈압·당뇨병 진단 경험률(연령 표준화율·표준오차), 시설 시군구 vs 서울, z 검정+BH | 확보. 32개 비교 중 보정 후 유의한 차이 0개. 맥락 표시만 |
 | 지역 맥락 | `region_health.json` | 지역사회건강조사 2025 시군구 스트레스 인지율·우울감 경험률(KOSIS 177) | 확보 |
 | 관광 연계 | `tourism.json` | 한국관광공사 국문 관광정보 서비스(KorService2) 위치기반 조회, 시설 반경 10 km 관광지·문화시설·레포츠 | 확보(2026-11-15). 재수집: `scripts/build/tourism.py` |
 | 디지털치료제 | — | 개발 중 | 연결 자리만(`ctx.digitalTherapeutic`) |
@@ -93,6 +94,8 @@ python scripts/build/sites.py "$R" data/sites.json
 python scripts/build/green_places.py parks_raw.json rcrfrst.json healforest.json "$WC" data
 python scripts/build/evidence.py "$R" parks_raw.json data/evidence.json
 python scripts/build/region_health.py data/region_health.json
+python scripts/build/facility_region_health.py data/facility_region_health.json
+DATA_GO_KR_KEY=... python scripts/build/climate_asos.py data/facility_env.json
 DATA_GO_KR_KEY=... python scripts/build/tourism.py data/sites.json data/tourism.json
 DATA_GO_KR_KEY=... python scripts/fetch_env_today.py
 node tests/engine.test.mjs

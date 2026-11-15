@@ -137,7 +137,7 @@
         '<div class="eg-bars"><span>효과 ' + (e.scores.effect == null ? '–' : e.scores.effect) + '</span><span>환경 ' + e.scores.env + '</span><span>접근 ' + e.scores.access +
         (e.access.hours != null ? ' (약 ' + e.access.hours + '시간)' : '') + '</span></div>' +
         '<details><summary>추천 근거와 프로그램</summary><ul class="eg-reasons">' + e.reasons.map(function (x) { return '<li>' + esc(x) + '</li>'; }).join('') + '</ul>' +
-        '<p><b>프로그램</b><br>' + prog + '</p><p><b>주변 산림</b> ' + near + '</p><p><b>주변 관광</b> ' + (e.links.tourism && e.links.tourism.length ? e.links.tourism.map(function (t) { return esc(t.name) + ' <small>' + esc(t.type) + ' ' + t.km + 'km</small>'; }).join(', ') : '–') +
+        '<p><b>프로그램</b><br>' + prog + '</p><p><b>주변 산림</b> ' + near + '</p>' + (e.links.regionHealth ? '<p><b>시설 지역 건강지표(' + esc(e.links.regionHealth.sigungu) + ')</b><br>' + e.links.regionHealth.items.map(function (x) { return esc(x.text); }).join('<br>') + '<br><small>' + esc(e.links.regionHealth.caution) + '</small></p>' : '') + '<p><b>주변 관광</b> ' + (e.links.tourism && e.links.tourism.length ? e.links.tourism.map(function (t) { return esc(t.name) + ' <small>' + esc(t.type) + ' ' + t.km + 'km</small>'; }).join(', ') : '–') +
         '<br><small>' + esc(e.links.tourismNote || '') + '</small></p></details></li>';
     }).join('') + '</ol>';
     if (!r.recommendations.length) h += '<p class="summary">조건에 맞는 시설이 없습니다. 이동시간을 늘리거나 아래 대안을 확인하세요.</p>';

@@ -20,7 +20,8 @@
       soft(getJSON(base + 'env_today.json')),
       soft(getJSON(base + 'forests_nearby.json')),
       soft(getJSON(base + 'region_health.json')),
-      soft(getJSON(base + 'tourism.json'))
+      soft(getJSON(base + 'tourism.json')),
+      soft(getJSON(base + 'facility_region_health.json'))
     ]).then(function (r) {
       var ctx = {
         sites: r[0].sites,
@@ -31,6 +32,7 @@
         regionHealth: r[5],
         tourism: r[6] ? r[6].sites : null,
         tourismMeta: r[6] ? r[6]._meta : null,
+        facilityRegionHealth: r[7],
         sigunguPoints: r[1] ? r[1].sigungu_points : [],
         protoForests: typeof FORESTS !== 'undefined' ? FORESTS : [],
         travelHours: typeof TRAVEL_HOURS !== 'undefined' ? TRAVEL_HOURS : null,

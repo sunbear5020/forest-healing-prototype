@@ -12,7 +12,7 @@ const ev = j('evidence.json');
 const ctx = {
   sites: j('sites.json').sites, evidence: ev, facilityEnv: j('facility_env.json'), envToday: j('env_today.json'),
   forests: j('forests_nearby.json').forests, regionHealth: j('region_health.json'), sigunguPoints: ev.sigungu_points,
-  tourism: j('tourism.json').sites, tourismMeta: j('tourism.json')._meta, protoForests: sandbox.FORESTS, travelHours: sandbox.TRAVEL_HOURS, parks: j('parks.json').parks
+  tourism: j('tourism.json').sites, facilityRegionHealth: j('facility_region_health.json'), tourismMeta: j('tourism.json')._meta, protoForests: sandbox.FORESTS, travelHours: sandbox.TRAVEL_HOURS, parks: j('parks.json').parks
 };
 let n = 0; const t = (name, f) => { f(); n++; console.log('ok -', name); };
 
@@ -130,5 +130,10 @@ t('대체 경로 단계: 공원 → 산림공원(수관 60%·10 ha 이상) → �
 t('관광 연계: 추천 시설마다 10 km 안 관광 목록(최대 5곳)', () => {
   const r = E.recommend(base, ctx);
   r.recommendations.forEach((e) => { assert.ok(Array.isArray(e.links.tourism)); assert.ok(e.links.tourism.length <= 5 && e.links.tourism.every((t) => t.km <= 10)); });
+});
+t('시설 지역 건강지표: 맥락만 표시하고 점수는 그대로', () => {
+  const a = E.recommend(base, ctx), b = E.recommend(base, { ...ctx, facilityRegionHealth: null });
+  assert.deepEqual(a.recommendations.map((e) => e.total), b.recommendations.map((e) => e.total));
+  a.recommendations.forEach((e) => { assert.ok(e.links.regionHealth && e.links.regionHealth.items.length >= 2); assert.ok(e.links.regionHealth.caution.includes('인과')); });
 });
 console.log(`\n${n} tests passed`);

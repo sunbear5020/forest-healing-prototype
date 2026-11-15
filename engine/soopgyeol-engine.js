@@ -368,6 +368,18 @@
              note: '프로그램 선택은 목적 태그·난이도·기상 규칙(시연값)으로 정함. 프로그램별 효과 차이는 2026 모형에서 구분되지 않음(AUC 0.50~0.52).' };
   }
 
+  // 시설 소재 시군구의 건강지표를 도심(서울)과 비교한 맥락 정보. 점수에는 넣지 않음(생태학적 오류·인과 아님)
+  function facilityRegionHealth(site, ctx) {
+    var fr = ctx.facilityRegionHealth; if (!fr || !fr.sites || !fr.sites[site.id]) return null;
+    var sgg = fr.sites[site.id][1];
+    var rows = fr.comparisons.filter(function (r) { return r.sigungu === sgg; });
+    var m = fr.mental && fr.mental[sgg];
+    var V = { lower: '서울보다 낮음', higher: '서울보다 높음', unclear: '서울과 뚜렷한 차이 없음' };
+    return { sigungu: sgg,
+      items: rows.map(function (r) { return { label: r.label, value: r.value, ref: r.ref, verdict: r.verdict, text: r.label + ' ' + r.value + '%(서울 ' + r.ref + '%, ' + V[r.verdict] + ')' }; })
+        .concat(m && m.stress != null ? [{ label: '스트레스 인지율', value: m.stress, ref: m.ref_stress, verdict: null, text: '스트레스 인지율 ' + m.stress + '%(서울 ' + m.ref_stress + '%, 표준오차 없어 비교 판정 안 함)' }] : []),
+      caution: fr._meta.caution };
+  }
   function nearbyLinks(site, ctx) {
     var out = [];
     if (ctx.forests) {
@@ -381,6 +393,7 @@
     return {
       forests: out.slice(0, 3),
       tourism: tour ? tour.slice(0, 5) : null,
+      regionHealth: facilityRegionHealth(site, ctx),
       tourismNote: tour ? '반경 10 km 관광지·문화시설·레포츠(한국관광공사 관광정보, ' + ((ctx.tourismMeta && ctx.tourismMeta.built) || '') + ' 수집). 거리 기준 참고 목록이며 치유 효과와 무관합니다.'
                         : '주변 관광지 자료 없음'
     };
