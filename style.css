@@ -812,7 +812,7 @@ input[type="range"]::-moz-range-thumb {
 .ev-table td small { color: var(--muted); }
 .ev-list { margin: 0; padding-left: 18px; font-size: 13px; color: var(--ink-soft); line-height: 1.7; }
 .ev-grade { display: inline-block; padding: 1px 8px; border-radius: 999px; font-size: 11.5px; font-weight: 600; }
-.ev-grade-hi { background: #DCEAD3; color: var(--green); }
+.ev-grade-hi { background: var(--green-2); color: #fff; }
 .ev-grade-mid { background: var(--sage-soft); color: var(--green-2); }
 .ev-grade-lo { background: #F3E6CF; color: #7A5524; }
 .ev-grade-vlo { background: #F1DDD5; color: var(--clay); }
