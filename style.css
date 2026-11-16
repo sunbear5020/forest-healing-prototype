@@ -791,6 +791,7 @@ input[type="range"]::-moz-range-thumb {
 .eg-notes ul { font-size: 12px; color: var(--ink-soft); padding-left: 18px; }
 .eg-params { width: 100%; border-collapse: collapse; font-size: 12px; }
 .eg-params td, .eg-params th { border-bottom: 1px solid var(--line-soft); padding: 4px 6px; text-align: left; vertical-align: top; }
+.eg-params td { overflow-wrap: anywhere; word-break: break-word; } /* 긴 계수값(JSON)이 좁은 화면에서 잘리지 않게 */
 @media (max-width: 860px) {
   .eg-grid { grid-template-columns: 1fr; }
   .engine-card { padding: 16px; }
@@ -842,3 +843,19 @@ a.mini-btn { text-decoration: none; display: inline-flex; align-items: center; }
 .eg-programs { margin: 12px 0; padding: 12px 14px; border-radius: 12px; background: var(--sage-soft); }
 .eg-programs h3 { font-family: var(--font-serif); font-size: 15px; color: var(--green); margin-bottom: 6px; }
 .eg-programs ol { padding-left: 18px; font-size: 13px; line-height: 1.6; }
+
+/* 화면 배율 조정안 A(2026-11-16): 최대 폭 1440, 첫 화면 압축, 모바일 머리글 줄바꿈. 비교·잘림 점검: 6개 화면 × 6개 폭 */
+.wrap { max-width: 1440px; }
+.hero { padding: 32px 0 24px; }
+.hero h1 { font-size: clamp(28px, 3.4vw, 44px); margin: 10px 0 12px; }
+.hero-meta { margin-top: 16px; }
+@media (min-width: 1081px) { .layout { grid-template-columns: 360px minmax(0, 1fr); } }
+@media (max-width: 640px) {
+  .header-inner { height: auto; padding: 8px 0; flex-wrap: wrap; gap: 6px; }
+  .header-actions { width: 100%; flex-wrap: wrap; gap: 6px; }
+  .ghost-btn { white-space: nowrap; padding: 6px 12px; font-size: 12.5px; }
+  .hero { padding: 20px 0 16px; }
+  .hero .lede { font-size: 14px; }
+  .hero-meta { gap: 6px 16px; }
+  .hero-meta b { font-size: 19px; }
+}
