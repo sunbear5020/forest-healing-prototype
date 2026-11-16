@@ -1,0 +1,37 @@
+# 숲결 공용 엔진 점검: 엔진 시험 + API 동등성 시험 + 컨테이너 빌드 + 쿠버네티스 매니페스트 스키마 검사
+# PR마다 실행한다. 이미지는 빌드만 하고 레지스트리에 올리지 않는다(배포는 운영 환경 확정 후).
+name: ci
+on:
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: 엔진·API 시험
+        run: npm test
+  container:
+    runs-on: ubuntu-latest
+    needs: test
+    steps:
+      - uses: actions/checkout@v4
+      - name: 이미지 빌드
+        run: docker build -t soopgyeol-api:ci .
+      - name: 컨테이너 기동·상태 점검
+        run: |
+          docker run -d --name api -p 8080:8080 --read-only soopgyeol-api:ci
+          for i in $(seq 1 20); do curl -fs localhost:8080/readyz && break; sleep 1; done
+          curl -fs localhost:8080/v1/meta
+          curl -fs -X POST localhost:8080/v1/recommend -H 'Content-Type: application/json' \
+            -d '{"check":{"stress":3},"purpose":"stress","origin":{"lat":37.5665,"lng":126.978}}' > /dev/null
+          docker rm -f api
+      - name: 쿠버네티스 매니페스트 스키마 검사(kubeconform)
+        run: |
+          docker run --rm -v "$PWD/deploy/k8s:/k8s:ro" ghcr.io/yannh/kubeconform:v0.6.7 \
+            -strict -summary -ignore-filename-pattern kustomization.yaml /k8s

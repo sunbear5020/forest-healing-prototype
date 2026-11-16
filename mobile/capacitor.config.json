@@ -1,0 +1,8 @@
+{
+  "appId": "kr.soopgyeol.app",
+  "appName": "숲결",
+  "webDir": "www",
+  "server": {
+    "androidScheme": "https"
+  }
+}

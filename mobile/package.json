@@ -1,0 +1,18 @@
+{
+  "name": "soopgyeol-app",
+  "version": "0.6.1",
+  "private": true,
+  "description": "숲결 iOS·Android 앱 껍데기(Capacitor). 화면·엔진은 저장소 루트의 웹 코드를 그대로 복사해 쓴다.",
+  "scripts": {
+    "build:web": "node scripts/build-web.mjs",
+    "add:android": "npx cap add android",
+    "add:ios": "npx cap add ios",
+    "sync": "npm run build:web && npx cap sync"
+  },
+  "devDependencies": {
+    "@capacitor/cli": "8.6.2"
+  },
+  "dependencies": {
+    "@capacitor/core": "8.6.2"
+  }
+}

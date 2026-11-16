@@ -1,0 +1,12 @@
+# 비밀이 아닌 설정만 둔다. API 키(DATA_GO_KR_KEY 등)는 이 서버에 필요 없다.
+# (예보 자료 갱신은 GitHub Actions가 하고, 서버는 이미지에 든 data/ 또는 마운트된 자료를 읽는다)
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: soopgyeol-api-config
+data:
+  PORT: "8080"
+  ALLOWED_ORIGINS: "https://sunbear5020.github.io,capacitor://localhost,https://localhost"
+  MAX_BODY_BYTES: "65536"
+  RELOAD_INTERVAL_SEC: "0"
+  LOG_REQUESTS: "1"

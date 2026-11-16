@@ -19,6 +19,19 @@
 - 예보·미세먼지 자동 갱신: 저장소 Secrets에 `DATA_GO_KR_KEY`를 등록하면 `.github/workflows/env-daily.yml`이 하루 2회 `data/env_today.json`을 갱신합니다.
 - 시험: `node tests/engine.test.mjs`
 
+## 웹·앱·API 공용 구조 (2026-11-16 추가)
+
+같은 추천 엔진을 웹(GitHub Pages)·앱(Capacitor)·API 서버(컨테이너·쿠버네티스)가 함께 씁니다.
+기본값은 지금처럼 **브라우저 안 계산**이며, `config.js`의 `apiBase`를 채울 때만 서버로 계산을 보냅니다.
+계획·검증 결과·한계는 [`docs/PLATFORM_MIGRATION.md`](docs/PLATFORM_MIGRATION.md), API 명세는 [`docs/api/openapi.yaml`](docs/api/openapi.yaml)에 있습니다.
+
+```bash
+npm test                         # 엔진 시험 + API 동등성 시험
+npm start                        # API 서버(http://localhost:8080, 외부 패키지 없음)
+docker build -t soopgyeol-api .  # 컨테이너
+kubectl apply -k deploy/k8s      # 쿠버네티스(초안, 클러스터 미검증)
+```
+
 ## 실행
 
 ```bash
