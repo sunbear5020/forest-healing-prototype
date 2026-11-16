@@ -180,4 +180,14 @@ t('카카오맵 링크: 이름 인코딩·쉼표 제거·좌표 6자리, 좌표 
   const r = E.recommend(base, ctx);
   r.recommendations.forEach((e) => assert.ok(E.kakaoLinks(e.site.name, e.site.lat, e.site.lng)));
 });
+t('2026 프로그램 추천 모형: 대상 종류 필터·순위 범위·시설별 상위 3개', () => {
+  const PM = require('../engine/program-model.js');
+  const c2 = { ...ctx, programRanker: PM.create(j('program_model.json')) };
+  const r = E.recommend({ ...base, maxHours: 9, topN: 18, person: { age: 45, sex: 2, cats: ['일반', '중장년·건강관리'] } }, c2);
+  const pr = r.programRanking;
+  assert.ok(pr && pr.programs.length > 0 && pr.programs.length <= 47);
+  pr.programs.forEach((x, i) => { if (i) assert.ok(x.rank > pr.programs[i - 1].rank); assert.ok(x.rankRange[0] <= x.rankRange[1]); });
+  assert.ok(r.recommendations.some((e) => e.programs.model && e.programs.model.length > 0));
+  r.recommendations.forEach((e) => assert.ok(!e.programs.model || e.programs.model.length <= 3));
+});
 console.log(`\n${n} tests passed`);

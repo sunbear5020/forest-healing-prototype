@@ -21,7 +21,7 @@
 .chip.flag-on.fl-pwd { background: #7A4E8C; border-color: #7A4E8C; color: #fff; }
 .chip.flag-on.fl-landslide { background: #3E6A8A; border-color: #3E6A8A; color: #fff; }
 .rg-mapwrap { position: relative; margin-top: 14px; }
-#rg-map { height: 560px; border-radius: var(--radius-sm); border: 1px solid var(--line-soft); background: #EEF0E8; }
+#rg-map { height: 560px; border-radius: var(--radius-sm); border: 1px solid var(--line-soft); background: #E9EFF3; }
 .rg-legend { position: absolute; left: 10px; bottom: 10px; z-index: 500; background: rgba(255, 253, 248, .94); border: 1px solid var(--line); border-radius: 10px; padding: 8px 10px; font-size: 11.5px; max-width: 250px; }
 .rg-legend .t { font-weight: 600; margin-bottom: 4px; }
 .rg-legend .row { display: flex; align-items: center; gap: 6px; }
@@ -58,7 +58,7 @@
 .rg-evi h3 { font-size: 14.5px; margin-top: 3px; }
 .rg-evi .cite { font-size: 12px; color: var(--muted); margin-top: 2px; }
 .rg-evi p { font-size: 13.2px; margin-top: 8px; color: var(--ink-soft); }
-.lv { display: inline-block; font-size: 11px; border-radius: 6px; padding: 1px 7px; margin-top: 8px; background: #EDF2E3; color: #3C5B45; }
+.lv { display: inline-block; font-size: 11px; border-radius: 6px; padding: 1px 7px; margin-top: 8px; background: #E2EFF6; color: #1D4F6B; }
 .lv.low { background: #F6EBD9; color: #7A5A1F; }
 .lv.vlow { background: #F4E1DA; color: #8A3F2A; }
 .rg-gaps li, .rg-src li { font-size: 13px; color: var(--ink-soft); padding: 6px 0; border-bottom: 1px dashed var(--line); }
