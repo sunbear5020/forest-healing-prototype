@@ -488,6 +488,8 @@
           <div class="card-actions">
             <button class="mini-btn" data-focus="${f.id}">지도에서 보기</button>
             <button class="mini-btn primary" data-detail="${f.id}">상세 보기</button>
+            <a class="mini-btn" href="https://map.kakao.com/link/map/${encodeURIComponent(String(f.name).replace(/,/g, ' '))},${f.lat},${f.lng}" target="_blank" rel="noopener">카카오맵</a>
+            <a class="mini-btn" href="https://map.kakao.com/link/to/${encodeURIComponent(String(f.name).replace(/,/g, ' '))},${f.lat},${f.lng}" target="_blank" rel="noopener">길찾기</a>
           </div>
         </div>
         <div class="tags">${tags}</div>

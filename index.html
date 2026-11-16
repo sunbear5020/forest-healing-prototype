@@ -30,6 +30,8 @@
       </span>
     </a>
     <nav class="header-actions">
+      <button class="ghost-btn" id="btn-evidence">연구 근거</button>
+      <a class="ghost-btn" href="region.html">지역 정보</a>
       <button class="ghost-btn" id="btn-algo">알고리즘·데이터</button>
       <button class="ghost-btn" id="btn-about">서비스 소개</button>
     </nav>
@@ -195,6 +197,20 @@
   <div class="modal-panel detail-panel" role="dialog" aria-modal="true" aria-labelledby="detail-title">
     <button class="modal-close" data-close aria-label="닫기">✕</button>
     <div id="detail-body"></div>
+  </div>
+</div>
+
+<!-- ───────────────── 연구 근거 모달 ───────────────── -->
+<div class="modal" id="modal-evidence" hidden>
+  <div class="modal-backdrop" data-close></div>
+  <div class="modal-panel" role="dialog" aria-modal="true" aria-labelledby="evidence-title">
+    <button class="modal-close" data-close aria-label="닫기">✕</button>
+    <header class="modal-head">
+      <p class="eyebrow">Evidence · 연구진 메타분석</p>
+      <h2 id="evidence-title">숲 체험은 기분과 스트레스를 얼마나 바꾸나</h2>
+      <p>숲결 연구진이 국내외 논문을 모아 직접 통합 분석한 결과입니다. 방법, 결과 수치와 불확실성, 앱 반영 방식, 한계를 함께 적었습니다.</p>
+    </header>
+    <div class="algo-body" id="evidence-body"><p class="ev-note">불러오는 중…</p></div>
   </div>
 </div>
 
@@ -421,6 +437,9 @@
 <script src="app.js"></script>
 <script src="engine/soopgyeol-engine.js"></script>
 <script src="engine/loader.js"></script>
+<script src="engine/program-model.js"></script>
+<script src="engine/program-ext.js"></script>
 <script src="engine/ui.js"></script>
+<script src="engine/evidence-view.js"></script>
 </body>
 </html>

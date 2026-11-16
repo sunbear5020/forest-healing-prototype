@@ -23,7 +23,7 @@
 }(typeof self !== 'undefined' ? self : this, function () {
   'use strict';
 
-  var VERSION = '0.1.0';
+  var VERSION = '0.6.1';
 
   /* ---------------------------------------------------------------------
      계수표 — basis: rule(공공 기준) / literature / model / demo(시연값)
@@ -36,6 +36,7 @@
     coldCaution:    { value: 0, basis: 'demo', note: '최고기온 0 ℃ 이하 감점' },
     windWarn:       { value: 14, basis: 'rule', note: '풍속 14 m/s: 기상청 육상 강풍주의보 기준값' },
     pm25Bad:        { value: 36, basis: 'rule', note: 'PM2.5 36 ㎍/㎥ 이상 = 환경부 예보 등급 나쁨' },
+    nvocEnvMax:     { value: 3, basis: 'decision', note: '예측 NVOC를 환경 점수에 반영하는 최대 폭(±점). 2026-11-16 사용자 결정(환경 점수 소폭 반영). 농도→효과 근거 미확인' },
     rainPop:        { value: 60, basis: 'demo', note: '강수확률 60% 이상 또는 강수 2시간 이상을 비 오는 날로 봄' },
     lapse:          { value: 0.65, basis: 'literature', note: '표준 기온감률 0.65 ℃/100 m(연구설계 3.4절)' },
     roadFactor:     { value: 1.3, basis: 'demo', note: '직선거리 → 도로거리 보정' },
@@ -44,7 +45,11 @@
     parkCanopyMin:  { value: 30, basis: 'demo', note: '공원 수관 피복 30% 이상. 3-30-300 규칙의 30%를 공원 단위에 차용(원래는 동네 단위 기준)' },
     parkRadiusKm:   { value: [2, 5, 10], basis: 'demo', note: '근처 공원 탐색 반경(부족하면 넓힘)' },
     gentleBarrier:  { value: 8, basis: 'demo', note: '무장애 선호: 반경 0.5 km 완경사(8° 미만) 비율이 이 값(%) 미만이면 감점(무장애 데크 정보가 없는 시설)' },
-    mcDraws:        { value: 400, basis: 'demo', note: '순위 범위 계산 반복 수' }
+    mcDraws:        { value: 400, basis: 'demo', note: '순위 범위 계산 반복 수' },
+    fdr:            { value: 0.05, basis: 'rule', note: '효과모형 환경항 다중비교 보정(Benjamini-Hochberg) 기준 q' },
+    forestPark:     { value: { canopyMin: 60, areaHa: 10, radiusKm: [10, 20, 40] }, basis: 'demo', note: '산림공원(숲이 많은 큰 공원): 수관 피복 60% 이상·10 ha 이상. 공식 공원 구분이 아니라 WorldCover 기준 정의' },
+    nearIfUncertain: { value: { delta: 5, pSure: 0.8 }, basis: 'demo', note: '같은 순위 단계 안에서 1위 후보보다 점수가 delta점 넘게 낮을 확률이 pSure 미만인(확실히 낮다고 할 수 없는) 시설 중 이동시간이 가장 짧은 곳을 앞에 둠. v0.3 가상 판정 후 추가(사후 규칙)' },
+    badWeatherIndoorFirst: { value: ['pm25', 'rain'], basis: 'demo', note: 'PM2.5 나쁨·비 예상일에는 실내 대체 시설이 있는 곳을 먼저(점수보다 앞선 순위 규칙). v0.2 가상 판정에서 드러난 약점 보완' }
   };
 
   /* 자가점검 영역 ↔ 근거 영역 */
@@ -76,6 +81,13 @@
     return 2 * R * Math.asin(Math.sqrt(h));
   }
   function isJeju(p) { return p.lat < 34.0; }
+  /* 카카오맵 링크(API 키 없는 공개 URL 방식, 2026-11-16 실제로 열어 좌표 일치 확인).
+     https://map.kakao.com/link/map/{이름},{위도},{경도} 지도 · /link/to/ 길찾기. 이름의 쉼표는 구분자와 겹쳐 공백으로 바꿈 */
+  function kakaoLinks(name, lat, lng) {
+    if (lat == null || lng == null || !isFinite(lat) || !isFinite(lng)) return null;
+    var tail = encodeURIComponent(String(name || '목적지').replace(/,/g, ' ').trim()) + ',' + (+lat).toFixed(6) + ',' + (+lng).toFixed(6);
+    return { map: 'https://map.kakao.com/link/map/' + tail, route: 'https://map.kakao.com/link/to/' + tail };
+  }
   function mulberry32(a) {
     return function () {
       a |= 0; a = a + 0x6D2B79F5 | 0;
@@ -166,11 +178,16 @@
     if (sim) {
       return { pred: sim.pred, lo: sim.lo, hi: sim.hi, n: null, supported: true, basis: 'similar',
                note: '효과측정 자료가 없어 측정기관 ' + sim.k + '곳 중앙값으로 추정(범위는 기관 구간 최소~최대)' +
-                     (p ? '. 참고: 메타분석 ' + p.label + ' ' + p.g.toFixed(2) + ' SD' : '') };
+                     (p ? '. 참고: 메타분석 ' + p.label + ' ' + p.g.toFixed(2) + ' SD' + gradeNote(p) : '') };
     }
     if (!p) return null;
     return { pred: p.g, lo: p.lo, hi: p.hi, n: null, supported: true, basis: 'literature',
-             note: '효과측정 자료가 없어 메타분석 통합값(단일군 사전-사후)을 씀. 시설 간 차이 정보 없음' };
+             note: '효과측정 자료가 없어 메타분석 통합값(단일군 사전-사후)을 씀. 시설 간 차이 정보 없음' + gradeNote(p), grade: p.grade || null };
+  }
+  // 문헌 근거 확실성(GRADE 가상 판정: 엄격·완화)과 무작위 대조 연구 통합값 표기
+  function gradeNote(p) {
+    if (!p || !p.grade) return '';
+    return ' (문헌 근거 확실성 ' + p.grade + (p.rct ? ', 무작위 대조 연구 ' + p.rct.studies + '편 대조군 대비 g ' + p.rct.g.toFixed(2) + ' [' + p.rct.lo95.toFixed(2) + '~' + p.rct.hi95.toFixed(2) + ']' : '') + (p.grade_lenient ? ', 엄격 판정 기준. 완화 판정 ' + p.grade_lenient : '') + ', 가상 판정)';
   }
 
   var _simCache = {};
@@ -194,18 +211,44 @@
     return v;
   }
 
-  /* 환경 항(효과모형 env_terms 중 p<0.05이고 날짜별로 달라지는 항만) */
+  /* 환경 항 다중비교 보정(Benjamini-Hochberg). 효과모형은 환경변수 × 결과영역을 여러 개 검정했으므로
+     개별 p<0.05만으로 쓰면 우연히 걸린 항을 반영하게 된다. 보정 q<0.05인 항만 반영한다. */
+  var _bhCache = { model: null, q: null };
+  function bhQ(model) {
+    if (_bhCache.model === model) return _bhCache.q;
+    var terms = (model.env_terms || []).map(function (t, i) { return { i: i, p: typeof t.p === 'number' ? t.p : 1 }; });
+    var m = terms.length, q = new Array(m);
+    terms.sort(function (a, b) { return a.p - b.p; });
+    var prev = 1;
+    for (var k = m - 1; k >= 0; k--) { prev = Math.min(prev, terms[k].p * m / (k + 1)); q[terms[k].i] = Math.min(1, prev); }
+    _bhCache = { model: model, q: q };
+    return q;
+  }
+  function envTermAudit(ctx) {
+    var model = ctx.evidence && ctx.evidence.model;
+    if (!model || !model.env_terms) return null;
+    var q = bhQ(model);
+    var nominal = model.env_terms.filter(function (t) { return t.p < 0.05; }).length;
+    var kept = model.env_terms.filter(function (t, i) { return q[i] < PARAMS.fdr.value; });
+    return { tested: model.env_terms.length, nominalP05: nominal, keptAfterFDR: kept.length,
+             kept: kept.map(function (t) { return t.var + ':' + t.outcome; }),
+             note: '환경항 ' + model.env_terms.length + '개 검정 중 p<0.05는 ' + nominal + '개, BH 보정(q<' + PARAMS.fdr.value + ') 후 ' + kept.length + '개' +
+                   (kept.length ? ' 반영' : ' → 환경항은 효과 점수에 반영하지 않음(탐색 결과로만 보고)') };
+  }
+
+  /* 환경 항(효과모형 env_terms 중 BH 보정 q<0.05이고 날짜별로 달라지는 항만) */
   function envTermShift(domain, dayEnv, climMonth, ctx) {
     var model = ctx.evidence && ctx.evidence.model;
     if (!model || !dayEnv) return { shift: 0, used: [] };
     var D = DOMAINS[domain], shift = 0, used = [];
-    (model.env_terms || []).forEach(function (t) {
-      if (!(t.p < 0.05)) return;
+    var q = bhQ(model);
+    (model.env_terms || []).forEach(function (t, i) {
+      if (!(q[i] < PARAMS.fdr.value)) return;
       if (t.outcome !== 'all' && t.outcome !== D.model) return;
-      if (t.var === 'wet' && dayEnv.rain) { shift += t.b; used.push('강수일 ' + (t.b > 0 ? '+' : '') + t.b.toFixed(2) + ' SD(탐색 수준, p=' + t.p.toFixed(3) + ')'); }
+      if (t.var === 'wet' && dayEnv.rain) { shift += t.b; used.push('강수일 ' + (t.b > 0 ? '+' : '') + t.b.toFixed(2) + ' SD(p=' + t.p.toFixed(3) + ', q=' + q[i].toFixed(3) + ')'); }
       if (t.var === 'tmean_anom' && dayEnv.tmean != null && climMonth && climMonth.tavg != null) {
         var an = dayEnv.tmean - climMonth.tavg;
-        shift += t.b * an; used.push('기온 편차 ' + an.toFixed(1) + '℃ × ' + t.b + ' SD(탐색 수준)');
+        shift += t.b * an; used.push('기온 편차 ' + an.toFixed(1) + '℃ × ' + t.b + ' SD(q=' + q[i].toFixed(3) + ')');
       }
     });
     return { shift: shift, used: used };
@@ -215,8 +258,20 @@
      3-b. 방문일 환경(③층 실황 → 없으면 ②층 월평균)
      --------------------------------------------------------------------- */
   function dayEnvironment(site, date, month, ctx, override) {
-    var fe = ctx.facilityEnv && site.facilityId && ctx.facilityEnv.facilities[site.facilityId];
+    var fe = ctx.facilityEnv && (site.envKey || site.facilityId) && ctx.facilityEnv.facilities[site.envKey || site.facilityId];
     var clim = fe && fe.climate && fe.climate.monthly ? fe.climate.monthly[String(month)] || fe.climate.monthly[month] : null;
+    var nm = fe && fe.climate && fe.climate.normal && fe.climate.normal.monthly;
+    var normal = nm && nm[String(month)] ? Object.assign({ period: fe.climate.normal.period, station: fe.climate.normal.station.name }, nm[String(month)]) : null;
+    var env = dayEnvironmentRaw(fe, clim, date, month, ctx, override, site);
+    env.normal = normal;
+    var ref = normal || clim;
+    if ((env.source === 'forecast' || env.source === 'scenario') && env.tmean != null && ref && ref.tavg != null) {
+      env.anom = Math.round((env.tmean - ref.tavg) * 10) / 10;
+      env.anomBasis = normal ? normal.period + '(' + normal.station + ', 표고 보정)' : '2021~2025 월평균(평년값 없음)';
+    }
+    return env;
+  }
+  function dayEnvironmentRaw(fe, clim, date, month, ctx, override, site) {
     if (override) {
       return { source: 'scenario', label: '화면 시나리오 입력값',
                tmax: override.temp, tmean: override.temp - 3, reh: override.humidity,
@@ -247,7 +302,7 @@
      --------------------------------------------------------------------- */
   function envFit(site, profile, env, ctx, proto, walk) {
     var notes = [], hazards = [], score = 70, basis = [];
-    var fe = ctx.facilityEnv && site.facilityId && ctx.facilityEnv.facilities[site.facilityId];
+    var fe = ctx.facilityEnv && (site.envKey || site.facilityId) && ctx.facilityEnv.facilities[site.envKey || site.facilityId];
     var indoor = proto ? (proto.shelter || 0) >= 60 : false;
     var w = profile.weights;
 
@@ -289,6 +344,12 @@
     } else if (proto) {
       basis.push('시설 환경 프로필은 공개자료 요약(data.js)만 있음');
       if (walk === 'barrier' && !proto.barrierFree) { score -= 15; notes.push('무장애 숲길 정보 없음'); }
+    }
+    // 임상(반경 5 km, 1:5,000 임상도) — 근거 표시만, 점수에는 쓰지 않음(효과와의 관계 미추정)
+    var stv = ctx.facilityEnv && ctx.facilityEnv.stands && ctx.facilityEnv.stands[site.id];
+    if (stv) {
+      var sp = stv.pct_of_5km_circle;
+      basis.push('반경 5 km 임상: 활엽수림 ' + sp.broadleaf + '%, 침엽수림 ' + sp.conifer + '%, 혼효림 ' + sp.mixed + '%' + (sp.bamboo >= 0.5 ? ', 죽림 ' + sp.bamboo + '%' : '') + '(1:5,000 임상도, 원 면적 대비)');
     }
     if (walk === 'barrier' && proto && proto.barrierFree) { score += 5; basis.push('무장애 데크 있음'); }
     return { score: clamp(score, 0, 100), hazards: hazards, notes: notes, basis: basis, indoor: indoor };
@@ -339,6 +400,18 @@
              note: '프로그램 선택은 목적 태그·난이도·기상 규칙(시연값)으로 정함. 프로그램별 효과 차이는 2026 모형에서 구분되지 않음(AUC 0.50~0.52).' };
   }
 
+  // 시설 소재 시군구의 건강지표를 도심(서울)과 비교한 맥락 정보. 점수에는 넣지 않음(생태학적 오류·인과 아님)
+  function facilityRegionHealth(site, ctx) {
+    var fr = ctx.facilityRegionHealth; if (!fr || !fr.sites || !fr.sites[site.id]) return null;
+    var sgg = fr.sites[site.id][1];
+    var rows = fr.comparisons.filter(function (r) { return r.sigungu === sgg; });
+    var m = fr.mental && fr.mental[sgg];
+    var V = { lower: '서울보다 낮음', higher: '서울보다 높음', unclear: '서울과 뚜렷한 차이 없음' };
+    return { sigungu: sgg,
+      items: rows.map(function (r) { return { label: r.label, value: r.value, ref: r.ref, verdict: r.verdict, text: r.label + ' ' + r.value + '%(서울 ' + r.ref + '%, ' + V[r.verdict] + ')' }; })
+        .concat(m && m.stress != null ? [{ label: '스트레스 인지율', value: m.stress, ref: m.ref_stress, verdict: null, text: '스트레스 인지율 ' + m.stress + '%(서울 ' + m.ref_stress + '%, 표준오차 없어 비교 판정 안 함)' }] : []),
+      caution: fr._meta.caution };
+  }
   function nearbyLinks(site, ctx) {
     var out = [];
     if (ctx.forests) {
@@ -351,8 +424,10 @@
     var tour = ctx.tourism && ctx.tourism[site.id];
     return {
       forests: out.slice(0, 3),
-      tourism: tour || null,
-      tourismNote: tour ? null : '주변 관광지 연계는 한국관광공사 위치기반 관광정보 API 활용신청 후 연결 예정(현재 키 미등록)'
+      tourism: tour ? tour.slice(0, 5) : null,
+      regionHealth: facilityRegionHealth(site, ctx),
+      tourismNote: tour ? '반경 10 km 관광지·문화시설·레포츠(한국관광공사 관광정보, ' + ((ctx.tourismMeta && ctx.tourismMeta.built) || '') + ' 수집). 거리 기준 참고 목록이며 치유 효과와 무관합니다.'
+                        : '주변 관광지 자료 없음'
     };
   }
 
@@ -364,7 +439,7 @@
     var res = {
       digital: Object.assign({ available: false, status: '개발 중', title: '산림치유 디지털치료제',
                                note: '개발 중인 디지털치료제 연결 자리입니다. 출시 후 링크를 연결합니다.' }, ctx.digitalTherapeutic || {}),
-      parks: [], forests: [], originNote: null
+      parks: [], forestParks: [], urbanForest: null, forests: [], originNote: null
     };
     if (!origin || origin.lat == null) {
       res.originNote = '출발 위치(기기 위치 또는 시군구)를 알려 주시면 근처 공원과 산림을 찾습니다.';
@@ -384,10 +459,23 @@
         });
       }
       res.parks = found.sort(function (a, b) { return b.score - a.score; }).slice(0, 5);
+      var fp = PARAMS.forestPark.value, ffound = [];
+      for (var r2 = 0; r2 < fp.radiusKm.length && ffound.length < 3; r2++) {
+        ffound = [];
+        ctx.parks.forEach(function (p) {
+          if (p.tree_pct == null || p.tree_pct < fp.canopyMin || p.area_m2 < fp.areaHa * 10000) return;
+          var d = haversineKm(origin, p);
+          if (d > fp.radiusKm[r2]) return;
+          ffound.push({ name: p.name, type: p.type, km: round(d, 1), tree_pct: p.tree_pct, area_ha: round(p.area_m2 / 10000, 1), addr: p.addr, lat: p.lat, lng: p.lng, radiusKm: fp.radiusKm[r2] });
+        });
+      }
+      res.forestParks = ffound.sort(function (a, b) { return a.km - b.km; }).slice(0, 3);
+      res.urbanForest = { available: false, note: '도시숲은 전국 위치 자료가 공개되어 있지 않습니다(산림청 도시숲 현황 통계는 지자체별 면적 수치). 지자체 자료를 확보하면 이 단계에 연결합니다.' };
       res.parkNote = '수관 피복률은 공원 대표 좌표 중심의 원형 근사(ESA WorldCover 2021) 추정값이며, 수종 정보는 아직 결합하지 않았습니다.';
     }
     var fl = [];
-    (ctx.forests || []).forEach(function (f) { fl.push({ name: f.name, kind: f.kind, km: round(haversineKm(origin, f), 1), tree_pct_1km: f.tree_pct_1km, addr: f.addr, phone: f.phone, lat: f.lat, lng: f.lng }); });
+    (ctx.forests || []).forEach(function (f) { fl.push({ name: f.name, kind: f.kind, km: round(haversineKm(origin, f), 1), tree_pct_1km: f.tree_pct_1km, addr: f.addr, phone: f.phone, lat: f.lat, lng: f.lng,
+                                               program: f.kind === '자연휴양림' ? '산림치유 프로그램 미운영(숲 환경만 이용, 효과 점수 계산 안 함)' : null }); });
     (ctx.sites || []).forEach(function (s) { fl.push({ name: s.name, kind: s.kind, km: round(haversineKm(origin, s), 1), addr: s.address, lat: s.lat, lng: s.lng, isSite: true }); });
     var kept = [];
     fl.sort(function (a, b) { return a.km - b.km; }).forEach(function (f) {
@@ -396,6 +484,15 @@
       if (!dup) kept.push(f);
     });
     res.forests = kept.slice(0, 5);
+    var hz = opts.hazards || [];
+    var HZ = { wind: '강풍', heat: '폭염', pm25: 'PM2.5 나쁨', rain: '비' };
+    var severe = hz.filter(function (h) { return h === 'wind' || h === 'heat' || h === 'pm25'; });
+    if (hz.length) {
+      res.weather = { hazards: hz, basis: opts.hazardBasis || null, outdoorOk: severe.length === 0,
+        note: severe.length
+          ? '오늘은 ' + severe.map(function (h) { return HZ[h]; }).join('·') + ' 때문에 공원·산림 등 실외 활동을 권하지 않습니다. 실내에서 쓸 수 있는 디지털치료제(개발 중)나 실내 휴식을 먼저 고려하고, 공원·산림은 날씨가 나아진 뒤 이용하세요.'
+          : '비 예상: 공원·산림은 짧게, 미끄럼에 유의하세요.' };
+    }
     return res;
   }
 
@@ -425,6 +522,87 @@
   /* ---------------------------------------------------------------------
      메인
      --------------------------------------------------------------------- */
+  /* ---------------------------------------------------------------------
+     3-e. 숲 경관 정보(임상) — 효과 점수에는 넣지 않음.
+     근거: 연구설계/메타분석 09(기분 변화에 임상 차이 미확인), 10(선호·회복 지각은 혼효림 우위 방향, 근거 약함),
+     08(한국 수목 꽃가루: 4~5월 참나무·자작·오리, 제주 삼나무 2~4월).
+     --------------------------------------------------------------------- */
+  /* ---------------------------------------------------------------------
+     3-d'. 예측 NVOC(피톤치드) 농도. 원문에서 계수를 확인한 식만 씀
+     자작나무: Kim·Park·Kwak 2020 IJERPH 17:7875, R² 0.601, 2019년 5·7월 측정
+     잣나무: Kim et al. 2021 Atmosphere 12:1113, 600·700본/ha 식(R² 0.566·0.764), 미기후 3~9월 측정
+     단위 μg/m³(모형값). 측정 계절 밖은 계산하지 않음. 근거등급 낮음
+     --------------------------------------------------------------------- */
+  var NVOC_MODELS = {
+    '자작나무': { months: [5, 6, 7], src: 'Kim·Park·Kwak 2020, IJERPH 17:7875', r2: '0.60',
+      f: [function (t, h, w) { return -1.204 + 0.096 * t + 0.008 * h - 0.261 * w; }] },
+    '잣나무': { months: [3, 4, 5, 6, 7, 8, 9], src: 'Kim et al. 2021, Atmosphere 12:1113(600·700본/ha 식)', r2: '0.57~0.76',
+      f: [function (t, h) { return -0.501 + 0.012 * t + 0.014 * h; }, function (t, h) { return -0.410 + 0.041 * t + 0.029 * h; }] }
+  };
+  function nvocInfo(site, env, month, ctx) {
+    var ss = ctx.facilityEnv && ctx.facilityEnv.species_stands && ctx.facilityEnv.species_stands[site.id];
+    if (!ss) return null;
+    var out = [];
+    Object.keys(NVOC_MODELS).forEach(function (sp) {
+      var st = ss[sp];
+      if (!st || !(st.n_poly_ge1ha_1km >= 1)) return;
+      var m = NVOC_MODELS[sp], item = { species: sp, ha1km: st.ha_1km, src: m.src, r2: m.r2, evidence: '낮음', unit: 'μg/m³(모형값)' };
+      if (m.months.indexOf(month) < 0) { item.status = 'out_of_season'; item.note = '측정 계절(' + m.months[0] + '~' + m.months[m.months.length - 1] + '월) 밖이라 계산하지 않음'; out.push(item); return; }
+      if (!env || env.tmean == null || env.reh == null) { item.status = 'no_weather'; item.note = '기상 자료 없음'; out.push(item); return; }
+      var w = env.wind || 0, vals = m.f.map(function (fn) { return fn(env.tmean, env.reh, w); });
+      var c = env.clim, base = c && c.tavg != null && c.rh != null ? m.f.map(function (fn) { return fn(c.tavg, c.rh, w); }) : null;
+      item.range = [round(Math.min.apply(null, vals), 2), round(Math.max.apply(null, vals), 2)];
+      if (item.range[0] <= 0) { item.status = 'invalid'; item.note = '모형값이 0 이하(식의 적용 범위 밖으로 보임)'; out.push(item); return; }
+      item.status = 'ok';
+      if (base && Math.min.apply(null, base) > 0) {
+        var r = vals.reduce(function (a, b) { return a + b; }, 0) / base.reduce(function (a, b) { return a + b; }, 0);
+        item.vsUsual = round(r, 2);
+        item.level = r >= 1.1 ? '평소보다 높음' : r <= 0.9 ? '평소보다 낮음' : '평소 수준';
+      }
+      item.basisWeather = env.label;
+      out.push(item);
+    });
+    return out.length ? out : null;
+  }
+  function nvocEnvAdj(info) {
+    if (!info) return 0;
+    var rs = info.filter(function (x) { return x.status === 'ok' && x.vsUsual != null; }).map(function (x) { return x.vsUsual; });
+    if (!rs.length) return 0;
+    var r = Math.max.apply(null, rs), M = PARAMS.nvocEnvMax.value;
+    return round(clamp((r - 1) * 10, -M, M), 1);
+  }
+
+  var TASTE_BAND = 3; // 점(0~100). 취향 정렬을 허용하는 최고점과의 차이
+  var TASTE = { conifer: '침엽수림', broadleaf: '활엽수림', mixed: '혼효림' };
+  var _standCut = null;
+  // 시설 간 상대 비교: 각 유형 비율의 상위 1/3 경계(임상도 자료가 있는 시설 기준). 한국 숲은 활엽 비율이 대체로 높아 절대 기준은 쓰지 않음.
+  function standCuts(ctx) {
+    if (_standCut && _standCut.src === ctx.facilityEnv) return _standCut;
+    var st = (ctx.facilityEnv && ctx.facilityEnv.stands) || {}, v = { conifer: [], broadleaf: [], mixed: [] };
+    Object.keys(st).forEach(function (k) {
+      var sp = st[k].pct_of_5km_circle, t = (sp.conifer || 0) + (sp.broadleaf || 0) + (sp.mixed || 0);
+      if (t >= 1) Object.keys(v).forEach(function (x) { v[x].push(sp[x] / t); });
+    });
+    _standCut = { src: ctx.facilityEnv, conifer: quantile(v.conifer, 2 / 3), broadleaf: quantile(v.broadleaf, 2 / 3), mixed: quantile(v.mixed, 2 / 3) };
+    return _standCut;
+  }
+  function landscapeInfo(site, month, taste, ctx) {
+    var stv = ctx.facilityEnv && ctx.facilityEnv.stands && ctx.facilityEnv.stands[site.id];
+    if (!stv) return null;
+    var sp = stv.pct_of_5km_circle, tot = (sp.conifer || 0) + (sp.broadleaf || 0) + (sp.mixed || 0);
+    if (tot < 1) return null;
+    var share = { conifer: sp.conifer / tot, broadleaf: sp.broadleaf / tot, mixed: sp.mixed / tot }, cut = standCuts(ctx);
+    var top = Object.keys(share).sort(function (a, b) { return share[b] - share[a]; })[0];
+    var badges = [], cautions = [];
+    if (share.mixed >= cut.mixed) badges.push({ label: '혼효림 많은 편', note: '침엽수와 활엽수가 섞인 숲은 여러 연구에서 경관이 더 좋게 평가되었습니다. 다만 기분이 나아지는 정도는 숲 종류에 따라 뚜렷한 차이가 확인되지 않았습니다.', basis: '경관 정보(효과 근거 아님)' });
+    if ((month === 10 || month === 11) && share.broadleaf >= cut.broadleaf) badges.push({ label: '단풍 경관 시기', note: '반경 5 km 숲의 활엽수 비율이 높은 편이라 단풍 시기입니다.', basis: '경관 정보(효과 근거 아님)' });
+    if ((month === 4 || month === 5) && share.broadleaf >= 0.4) cautions.push('4~5월은 참나무·자작나무·오리나무 꽃가루가 많은 시기입니다. 꽃가루 알레르기가 있으면 마스크를 준비하거나 다른 시기를 고려하세요.');
+    if (site.lat < 33.7 && month >= 2 && month <= 4) cautions.push('제주의 삼나무·편백 식재지는 2~4월 꽃가루가 많습니다. 알레르기가 있으면 주의하세요.');
+    var match = taste && TASTE[taste] ? share[taste] >= cut[taste] : null;
+    return { share: { conifer: Math.round(100 * share.conifer), broadleaf: Math.round(100 * share.broadleaf), mixed: Math.round(100 * share.mixed) },
+      dominant: TASTE[top], taste: taste && TASTE[taste] ? TASTE[taste] : null, badges: badges, cautions: cautions, tasteMatch: match };
+  }
+
   function recommend(input, ctx) {
     input = input || {}; ctx = ctx || {};
     var W = Object.assign({}, PARAMS.weights.value, input.weights || {});
@@ -441,15 +619,26 @@
     }
     var protoById = {};
     (ctx.protoForests || []).forEach(function (f) { protoById[f.id] = f; });
+    var warnings = [];
+    if (!ctx.sites || !ctx.sites.length) warnings.push('시설 목록이 비어 있어 추천할 수 없음');
+    if (!ctx.evidence || !ctx.evidence.model) warnings.push('설문 효과모형을 읽지 못함 → 효과 점수는 문헌 사전값만 사용');
+    if (!input.envOverride && !(ctx.envToday && ctx.envToday.sites)) warnings.push('예보 스냅샷을 읽지 못함 → 월평균 기후로만 판단');
+    Object.keys(input.check || {}).forEach(function (k) {
+      var v = input.check[k];
+      if (!DOMAINS[k]) warnings.push('알 수 없는 자가점검 항목 무시: ' + k);
+      else if (!(v >= 0 && v <= 4)) warnings.push('자가점검 ' + k + ' 값 ' + v + '를 0~4 범위로 고침');
+    });
+    // 입력 시설 순서가 결과에 영향을 주지 않도록 ID 순으로 고정
+    var siteList = (ctx.sites || []).slice().sort(function (a, b) { return a.id < b.id ? -1 : a.id > b.id ? 1 : 0; });
 
-    var evals = (ctx.sites || []).map(function (site) {
+    var evals = siteList.map(function (site) {
       var proto = site.protoId ? protoById[site.protoId] : null;
       var env = dayEnvironment(site, date, month, ctx, input.envOverride);
       var byDomain = {}, eNum = 0, eW = 0, envUsed = [];
       profile.modeledDomains.forEach(function (d) {
         var e = domainEffect(site, d, month, ctx);
         if (!e) return;
-        var sh = envTermShift(d, env.source === 'forecast' || env.source === 'scenario' ? env : null, env.clim, ctx);
+        var sh = envTermShift(d, env.source === 'forecast' || env.source === 'scenario' ? env : null, env.normal || env.clim, ctx);
         if (sh.used.length) { e = Object.assign({}, e, { pred: e.pred + sh.shift, lo: e.lo + sh.shift, hi: e.hi + sh.shift }); envUsed = envUsed.concat(sh.used); }
         byDomain[d] = e;
         eNum += profile.weights[d] * (-e.pred); eW += profile.weights[d];
@@ -460,7 +649,10 @@
         : basisSet.every(function (b) { return b === 'model'; }) ? 'model'
         : basisSet.some(function (b) { return b === 'model'; }) ? 'mixed'
         : basisSet.some(function (b) { return b === 'similar'; }) ? 'similar' : 'literature';
+      if (env.source === 'none') warnings.push(site.name + ': 기상 자료 없음(환경 점수 중립값)');
       var v = envFit(site, profile, env, ctx, proto, walk);
+      var nvoc = nvocInfo(site, env, month, ctx), nvAdj = nvocEnvAdj(nvoc);
+      if (nvAdj) { v.score = clamp(v.score + nvAdj, 0, 100); v.notes.push('예측 피톤치드(모형값)가 같은 달 평소 기상 대비 ' + (nvAdj > 0 ? '높아 +' : '낮아 ') + nvAdj + '점(근거등급 낮음, 최대 ±' + PARAMS.nvocEnvMax.value + '점)'); }
       var a = access(site, origin, input.maxHours, ctx);
       var effScore = effectSD == null ? null : clamp(100 * effectSD / PARAMS.effectScale.value, 0, 100);
       var exclude = [];
@@ -471,7 +663,8 @@
       return {
         site: site, proto: proto, env: env, byDomain: byDomain, effectSD: effectSD, effectBasis: basis, envTermsUsed: envUsed,
         scores: { effect: effScore == null ? null : round(effScore, 0), env: round(v.score, 0), access: a.score },
-        envDetail: v, access: a, excluded: exclude, eligible: exclude.length === 0
+        envDetail: v, nvoc: nvoc, nvocAdj: nvAdj, access: a, excluded: exclude, eligible: exclude.length === 0,
+        tier: (!v.indoor && v.hazards.some(function (h) { return PARAMS.badWeatherIndoorFirst.value.indexOf(h) >= 0; })) ? 1 : 0
       };
     });
 
@@ -481,12 +674,50 @@
       if (es == null) return (W.env * e.scores.env + W.access * e.scores.access) / (W.env + W.access);
       return W.effect * es + W.env * e.scores.env + W.access * e.scores.access;
     }
-    evals.forEach(function (e) { e.total = round(total(e), 1); });
+    evals.forEach(function (e) { e.total = round(total(e), 1); e.landscape = landscapeInfo(e.site, month, input.forestTaste, ctx); });
+    function tasteRank(e) { return e.landscape && e.landscape.tasteMatch ? 0 : 1; }
 
     // 4. 순위 범위(몬테카를로)
     var pool = evals.filter(function (e) { return e.eligible; });
     var rng = mulberry32(input.seed || 20271);
-    var N = PARAMS.mcDraws.value, ranks = pool.map(function () { return []; });
+    // 시설별 종합 점수의 표준편차(효과 구간만, 정규 근사, 0~100 절단 무시) — 시드와 무관한 해석적 값
+    var tSD = pool.map(function (e) {
+      if (e.effectSD == null) return 0;
+      var v = 0, den = 0;
+      Object.keys(e.byDomain).forEach(function (d) {
+        var x = e.byDomain[d], sd = Math.max(0.01, (x.hi - x.lo) / 2.563);
+        v += Math.pow(profile.weights[d] * sd, 2); den += profile.weights[d];
+      });
+      return W.effect * 100 / PARAMS.effectScale.value * Math.sqrt(v) / den;
+    });
+    function normCdf(z) { var t = 1 / (1 + 0.2316419 * Math.abs(z)), d = 0.3989423 * Math.exp(-z * z / 2);
+      var q = d * t * (0.3193815 + t * (-0.3565638 + t * (1.781478 + t * (-1.821256 + t * 1.330274)))); return z > 0 ? 1 - q : q; }
+    var NU = PARAMS.nearIfUncertain.value;
+    // i가 j보다 delta점 넘게 높을 확률(점수 차이 = 주어진 값 기준)
+    function pSure(vals, i, j) {
+      var sd = Math.sqrt(tSD[i] * tSD[i] + tSD[j] * tSD[j]), diff = vals[i] - vals[j] - NU.delta;
+      return sd < 1e-9 ? (diff > 0 ? 1 : 0) : normCdf(diff / sd);
+    }
+    function hoursOf(e) { return e.access.hours == null ? 0 : e.access.hours; }
+    // 순서 규칙: tier → (점수 최고 후보를 '확실히' 앞서지 못하는 시설 중) 이동시간 짧은 곳 → 점수 → ID
+    function orderPool(vals) {
+      var rest = pool.map(function (_, i) { return i; }), out = [];
+      var byScore = function (a, b) { return pool[a].tier - pool[b].tier || vals[b] - vals[a] || (pool[a].site.id < pool[b].site.id ? -1 : 1); };
+      while (rest.length) {
+        rest.sort(byScore);
+        var best = rest[0];
+        var cand = rest.filter(function (j) { return pool[j].tier === pool[best].tier && (j === best || pSure(vals, best, j) < NU.pSure); });
+        // 숲 취향은 최고점과 TASTE_BAND점 이내(사실상 동점)인 후보끼리만 앞당긴다. 점수는 바꾸지 않는다.
+        var tasteCand = cand.filter(function (j) { return tasteRank(pool[j]) === 0 && vals[best] - vals[j] <= TASTE_BAND; });
+        if (tasteCand.length) cand = tasteCand;
+        cand.sort(function (a, b) { return hoursOf(pool[a]) - hoursOf(pool[b]) || vals[b] - vals[a] || (pool[a].site.id < pool[b].site.id ? -1 : 1); });
+        var pick = cand[0];
+        if (pick !== best) pool[pick]._nearFirstOver = pool[pick]._nearFirstOver || pool[best].site.name;
+        out.push(pick); rest.splice(rest.indexOf(pick), 1);
+      }
+      return out;
+    }
+    var N = PARAMS.mcDraws.value, ranks = pool.map(function () { return []; }), totals = pool.map(function () { return []; });
     for (var it = 0; it < N && pool.length; it++) {
       var draws = pool.map(function (e) {
         if (e.effectSD == null) return total(e);
@@ -497,14 +728,17 @@
         });
         return total(e, clamp(100 * (num / den) / PARAMS.effectScale.value, 0, 100));
       });
-      var order = draws.map(function (v, i) { return [v, i]; }).sort(function (a, b) { return b[0] - a[0]; });
-      order.forEach(function (o, r) { ranks[o[1]].push(r + 1); });
+      draws.forEach(function (v, i) { totals[i].push(v); });
+      orderPool(draws).forEach(function (i, r) { ranks[i].push(r + 1); });
     }
     pool.forEach(function (e, i) {
       e.rankRange = ranks[i].length ? [Math.round(quantile(ranks[i], 0.1)), Math.round(quantile(ranks[i], 0.9))] : null;
+      e.totalRange = totals[i].length ? [round(quantile(totals[i], 0.1), 0), round(quantile(totals[i], 0.9), 0)] : null;
     });
-    pool.sort(function (a, b) { return b.total - a.total; });
-    pool.forEach(function (e, i) { e.rank = i + 1; });
+    pool.forEach(function (e) { delete e._nearFirstOver; });
+    var finalOrder = orderPool(pool.map(function (e) { return e.total; }));
+    pool = finalOrder.map(function (i) { return pool[i]; });
+    pool.forEach(function (e, i) { e.rank = i + 1; e.nearFirst = e._nearFirstOver || null; delete e._nearFirstOver; });
     var top = pool.slice(0, input.topN || 5);
     top.forEach(function (e) {
       e.programs = pickPrograms(e.proto, profile, walk, e.envDetail.hazards);
@@ -512,29 +746,70 @@
       e.reasons = buildReasons(e, profile);
     });
 
+    // 선택 확장: 외부에서 프로그램 순위 모형을 주면(ctx.programRanker) 시설별 운영 프로그램을 모형 순위로 보여 줌.
+    // 공개판에는 모형이 없으며, 있을 때만 동작한다.
+    var programRanking = null;
+    if (typeof ctx.programRanker === 'function') {
+      try {
+        programRanking = ctx.programRanker(input, ctx);
+        var norm = function (x) { return String(x || '').replace(/\s|\(.*?\)/g, ''); };
+        top.forEach(function (e) {
+          var nm = norm(e.site.name);
+          e.programs.model = programRanking.programs.filter(function (p) { return norm(p.org).indexOf(nm) >= 0; }).slice(0, 3);
+        });
+      } catch (err) { warnings.push('프로그램 순위 모형 실행 실패: ' + err.message); programRanking = null; }
+    }
+
     var showAlt = input.canVisit === false || top.length === 0 || safety.level === 'urgent';
-    var alt = alternatives(origin, ctx);
+    // 대체 경로용 출발지 날씨: 시나리오 입력이 있으면 그 값, 없으면 출발지에서 가장 가까운 시설의 방문일 환경으로 근사
+    var nearestEval = origin && origin.lat != null ? evals.slice().sort(function (a, b) { return haversineKm(origin, a.site) - haversineKm(origin, b.site); })[0] : null;
+    var altHazards = nearestEval ? nearestEval.envDetail.hazards : [];
+    var alt = alternatives(origin, ctx, { hazards: altHazards, hazardBasis: input.envOverride ? '화면 시나리오 입력값' : nearestEval ? nearestEval.site.name + ' ' + nearestEval.env.label + ' 근사' : null });
     var notes = [
       '효과 값은 대조군 없는 사전-사후 변화(표준편차 단위)입니다. 인과 효과가 아닙니다.',
       '시설 간 효과 차이에는 그 시설에서 운영된 사업·대상군 구성 차이가 섞여 있습니다. 환경 때문이라고 해석하면 안 됩니다.',
       '효과측정 자료가 없는 시설은 측정기관 중앙값을 똑같이 쓰고 범위를 넓게 둡니다. 효과로는 구분되지 않으며 환경·접근으로 순위가 정해집니다.',
       '수면·호흡기 목적은 결과 척도가 없어 효과를 계산하지 않고, 환경 노출(대기질·피톤치드·수관 피복)만 반영합니다(근거 수준 낮음).',
-      '환경 적합·접근 점수의 계수는 대부분 시연값입니다(PARAMS 참조).'
-    ].concat((ctx.evidence && ctx.evidence.model && ctx.evidence.model.notes) || []);
+      '환경 적합·접근 점수의 계수는 대부분 시연값입니다(PARAMS 참조).',
+      '종합 점수 범위와 순위 범위는 효과 구간만 반영한 10~90% 범위입니다. 환경·접근 계수의 불확실성은 들어 있지 않습니다.'
+    ].concat(envTermAudit(ctx) ? [envTermAudit(ctx).note] : []).concat((ctx.evidence && ctx.evidence.model && ctx.evidence.model.notes) || []);
 
+    var em = ctx.evidence && ctx.evidence.model;
+    var config = {
+      engine: VERSION, seed: input.seed || 20271, mcDraws: N, paramsHash: hashStr(JSON.stringify(PARAMS)),
+      weights: W,
+      data: {
+        effectModel: em ? { version: em.version, fitted_at: em.fitted_at, n_rows: em.n_rows } : null,
+        evidenceBuilt: ctx.evidence && ctx.evidence._meta ? ctx.evidence._meta.built : null,
+        facilityEnvBuilt: ctx.facilityEnv && ctx.facilityEnv._meta ? ctx.facilityEnv._meta.built : null,
+        envToday: ctx.envToday ? { generated_at: ctx.envToday.generated_at, forecast_base: ctx.envToday.forecast_base } : null,
+        nSites: siteList.length, nParks: ctx.parks ? ctx.parks.length : null, nForests: ctx.forests ? ctx.forests.length : null
+      },
+      envSource: input.envOverride ? 'scenario' : 'forecast/climate'
+    };
     return {
       version: VERSION,
-      input: { purpose: input.purpose, walk: walk, maxHours: input.maxHours || 3, canVisit: input.canVisit !== false, month: month, date: date,
+      config: config,
+      warnings: warnings,
+      evidenceAudit: { envTerms: envTermAudit(ctx) },
+      input: { purpose: input.purpose, forestTaste: input.forestTaste || null, walk: walk, maxHours: input.maxHours || 3, canVisit: input.canVisit !== false, month: month, date: date,
                origin: origin ? { approx: origin.approx || null, region: origin.region || null, sigungu: origin.sigungu || null } : null },
       weights: W, safety: safety, profile: profile,
       context: { region: regionContext(origin, ctx) },
       recommendations: top,
+      programRanking: programRanking,
       others: pool.slice(top.length).map(function (e) { return { id: e.site.id, name: e.site.name, total: e.total, rank: e.rank }; }),
       excluded: evals.filter(function (e) { return !e.eligible; }).map(function (e) { return { id: e.site.id, name: e.site.name, reasons: e.excluded, access: e.access }; }),
       alternatives: Object.assign(alt, { prominent: showAlt }),
       notes: notes,
       params: PARAMS
     };
+  }
+
+  function hashStr(str) {   // 설정 변경 추적용 짧은 해시(FNV-1a 32bit)
+    var h = 0x811c9dc5;
+    for (var i = 0; i < str.length; i++) { h ^= str.charCodeAt(i); h = Math.imul(h, 0x01000193); }
+    return ('00000000' + (h >>> 0).toString(16)).slice(-8);
   }
 
   function buildReasons(e, profile) {
@@ -547,8 +822,14 @@
       });
       out.push({ model: '설문 효과모형 예측: ', mixed: '효과모형 예측(일부 영역 추정): ', similar: '측정기관 중앙값으로 추정(이 시설 자료 없음): ', literature: '문헌(메타분석) 사전값: ' }[e.effectBasis] + parts.join(', '));
     }
+    var gn = dl.map(function (d) { var m = /\(문헌 근거 확실성[^)]*\)/.exec(e.byDomain[d].note || ''); return m ? DOMAINS[d].label + ' ' + m[0] : null; }).filter(Boolean);
+    if (gn.length) out.push(gn.join('; '));
     if (profile.literatureOnlyDomains.length) out.push(profile.literatureOnlyDomains.map(function (d) { return DOMAINS[d].label; }).join('·') + '는 효과 자료가 없어 환경 노출만 반영');
-    out.push('방문일 환경: ' + e.env.label);
+    out.push('방문일 환경: ' + e.env.label + (e.env.anom != null ? ' · 평균기온 평년 대비 ' + (e.env.anom > 0 ? '+' : '') + e.env.anom.toFixed(1) + '℃(' + e.env.anomBasis + ')' : ''));
+    if (e.nearFirst) out.push('점수가 더 높은 ' + e.nearFirst + '와(과) 차이가 불확실 범위 안이라, ' + (e.landscape && e.landscape.tasteMatch ? '좋아하는 숲(' + e.landscape.taste + ') 비율이 높은 편이고 ' : '') + '이동시간 기준으로 이곳을 앞에 둠');
+    if (e.landscape && e.landscape.tasteMatch) out.push('반경 5 km 숲에서 고른 취향(' + e.landscape.taste + ') 비율이 다른 시설보다 높은 편 — 점수에는 넣지 않고 비슷한 점수끼리의 순서에만 반영');
+    var badW = e.envDetail.hazards.filter(function (h) { return PARAMS.badWeatherIndoorFirst.value.indexOf(h) >= 0; });
+    if (badW.length) out.push(e.tier === 0 ? '나쁜 날씨(' + badW.join('·') + '): 실내 대체 시설이 있어 앞 순위로 둠' : '나쁜 날씨(' + badW.join('·') + '): 실내 대체 시설 정보가 없어 실내 시설 다음 순위로 둠');
     e.envDetail.notes.forEach(function (n) { out.push(n); });
     e.envDetail.basis.forEach(function (n) { out.push(n); });
     e.envTermsUsed.forEach(function (n) { out.push('효과모형 환경항 반영: ' + n); });
@@ -558,7 +839,7 @@
 
   return {
     version: VERSION, PARAMS: PARAMS, DOMAINS: DOMAINS, CONTACTS: CONTACTS,
-    recommend: recommend, safetyCheck: safetyCheck, buildProfile: buildProfile,
+    recommend: recommend, kakaoLinks: kakaoLinks, safetyCheck: safetyCheck, buildProfile: buildProfile,
     alternatives: alternatives, haversineKm: haversineKm
   };
 }));

@@ -1,0 +1,665 @@
+{
+ "_meta": {
+  "source": "질병관리청 지역사회건강조사 2025, KOSIS orgId 177 DT_HYPER_DOCTOR·DT_DIA_DOCTOR(연령 표준화율·표준오차), 정신건강은 region_health.json",
+  "retrieved": "2026-11-15",
+  "reference": "서울특별시(도심 비교 기준)",
+  "test": "z 검정, 32개 비교 BH-FDR q<0.05",
+  "links": [
+   "https://kosis.kr/statHtml/statHtml.do?orgId=177&tblId=DT_HYPER_DOCTOR",
+   "https://kosis.kr/statHtml/statHtml.do?orgId=177&tblId=DT_DIA_DOCTOR"
+  ],
+  "urban": {
+   "서울특별시": {
+    "hypertension": 20.7,
+    "diabetes": 8.5
+   },
+   "부산광역시": {
+    "hypertension": 19.3,
+    "diabetes": 9.8
+   },
+   "대구광역시": {
+    "hypertension": 19.1,
+    "diabetes": 8.6
+   },
+   "인천광역시": {
+    "hypertension": 21.9,
+    "diabetes": 10.0
+   },
+   "광주광역시": {
+    "hypertension": 19.1,
+    "diabetes": 7.9
+   },
+   "대전광역시": {
+    "hypertension": 20.5,
+    "diabetes": 9.4
+   },
+   "울산광역시": {
+    "hypertension": 19.9,
+    "diabetes": 8.8
+   }
+  },
+  "caution": "지역 간 차이는 인과가 아닙니다(숲이 있어서 덜 아프다는 뜻이 아님). 개인 추천 점수에 넣지 않고 시설 지역 맥락으로만 보여 줍니다. 질병코드(진료) 자료가 아니라 설문 기반 진단 경험률입니다."
+ },
+ "sites": {
+  "F02": [
+   "경상북도",
+   "영주시"
+  ],
+  "F03": [
+   "강원특별자치도",
+   "횡성군"
+  ],
+  "F04": [
+   "경상북도",
+   "칠곡군"
+  ],
+  "F05": [
+   "전라남도",
+   "장성군"
+  ],
+  "F06": [
+   "경상북도",
+   "청도군"
+  ],
+  "F07": [
+   "대전광역시",
+   "유성구"
+  ],
+  "F08": [
+   "경기도",
+   "양평군"
+  ],
+  "F09": [
+   "강원특별자치도",
+   "강릉시"
+  ],
+  "F10": [
+   "울산광역시",
+   "울주군"
+  ],
+  "F11": [
+   "경상북도",
+   "김천시"
+  ],
+  "F12": [
+   "충청북도",
+   "제천시"
+  ],
+  "F13": [
+   "충청남도",
+   "예산군"
+  ],
+  "F14": [
+   "전라남도",
+   "곡성군"
+  ],
+  "saneum": [
+   "경기도",
+   "양평군"
+  ],
+  "jangseong": [
+   "전라남도",
+   "장성군"
+  ],
+  "seogwipo": [
+   "제주특별자치도",
+   "서귀포시"
+  ],
+  "hwasun": [
+   "전라남도",
+   "화순군"
+  ],
+  "namhae": [
+   "경상남도",
+   "남해군"
+  ]
+ },
+ "comparisons": [
+  {
+   "sigungu": "강릉시",
+   "key": "hypertension",
+   "label": "고혈압 진단 경험률",
+   "value": 24.8,
+   "se": 1.4,
+   "ref": 20.7,
+   "ref_se": 0.3,
+   "diff": 4.1,
+   "z": 2.86,
+   "p": 0.0042,
+   "q": 0.0584,
+   "verdict": "unclear"
+  },
+  {
+   "sigungu": "강릉시",
+   "key": "diabetes",
+   "label": "당뇨병 진단 경험률",
+   "value": 9.5,
+   "se": 1.1,
+   "ref": 8.5,
+   "ref_se": 0.2,
+   "diff": 1.0,
+   "z": 0.89,
+   "p": 0.3711,
+   "q": 0.5655,
+   "verdict": "unclear"
+  },
+  {
+   "sigungu": "곡성군",
+   "key": "hypertension",
+   "label": "고혈압 진단 경험률",
+   "value": 19.1,
+   "se": 1.4,
+   "ref": 20.7,
+   "ref_se": 0.3,
+   "diff": -1.6,
+   "z": -1.12,
+   "p": 0.2638,
+   "q": 0.4819,
+   "verdict": "unclear"
+  },
+  {
+   "sigungu": "곡성군",
+   "key": "diabetes",
+   "label": "당뇨병 진단 경험률",
+   "value": 10.6,
+   "se": 1.7,
+   "ref": 8.5,
+   "ref_se": 0.2,
+   "diff": 2.1,
+   "z": 1.23,
+   "p": 0.2199,
+   "q": 0.4819,
+   "verdict": "unclear"
+  },
+  {
+   "sigungu": "김천시",
+   "key": "hypertension",
+   "label": "고혈압 진단 경험률",
+   "value": 17.8,
+   "se": 1.0,
+   "ref": 20.7,
+   "ref_se": 0.3,
+   "diff": -2.9,
+   "z": -2.78,
+   "p": 0.0055,
+   "q": 0.0584,
+   "verdict": "unclear"
+  },
+  {
+   "sigungu": "김천시",
+   "key": "diabetes",
+   "label": "당뇨병 진단 경험률",
+   "value": 9.2,
+   "se": 0.9,
+   "ref": 8.5,
+   "ref_se": 0.2,
+   "diff": 0.7,
+   "z": 0.76,
+   "p": 0.4477,
+   "q": 0.6225,
+   "verdict": "unclear"
+  },
+  {
+   "sigungu": "남해군",
+   "key": "hypertension",
+   "label": "고혈압 진단 경험률",
+   "value": 20.4,
+   "se": 1.5,
+   "ref": 20.7,
+   "ref_se": 0.3,
+   "diff": -0.3,
+   "z": -0.2,
+   "p": 0.8445,
+   "q": 0.8445,
+   "verdict": "unclear"
+  },
+  {
+   "sigungu": "남해군",
+   "key": "diabetes",
+   "label": "당뇨병 진단 경험률",
+   "value": 9.5,
+   "se": 1.1,
+   "ref": 8.5,
+   "ref_se": 0.2,
+   "diff": 1.0,
+   "z": 0.89,
+   "p": 0.3711,
+   "q": 0.5655,
+   "verdict": "unclear"
+  },
+  {
+   "sigungu": "서귀포시",
+   "key": "hypertension",
+   "label": "고혈압 진단 경험률",
+   "value": 23.2,
+   "se": 1.0,
+   "ref": 20.7,
+   "ref_se": 0.3,
+   "diff": 2.5,
+   "z": 2.39,
+   "p": 0.0166,
+   "q": 0.118,
+   "verdict": "unclear"
+  },
+  {
+   "sigungu": "서귀포시",
+   "key": "diabetes",
+   "label": "당뇨병 진단 경험률",
+   "value": 9.1,
+   "se": 0.8,
+   "ref": 8.5,
+   "ref_se": 0.2,
+   "diff": 0.6,
+   "z": 0.73,
+   "p": 0.4669,
+   "q": 0.6225,
+   "verdict": "unclear"
+  },
+  {
+   "sigungu": "양평군",
+   "key": "hypertension",
+   "label": "고혈압 진단 경험률",
+   "value": 22.7,
+   "se": 1.9,
+   "ref": 20.7,
+   "ref_se": 0.3,
+   "diff": 2.0,
+   "z": 1.04,
+   "p": 0.2985,
+   "q": 0.5027,
+   "verdict": "unclear"
+  },
+  {
+   "sigungu": "양평군",
+   "key": "diabetes",
+   "label": "당뇨병 진단 경험률",
+   "value": 9.9,
+   "se": 1.2,
+   "ref": 8.5,
+   "ref_se": 0.2,
+   "diff": 1.4,
+   "z": 1.15,
+   "p": 0.2498,
+   "q": 0.4819,
+   "verdict": "unclear"
+  },
+  {
+   "sigungu": "영주시",
+   "key": "hypertension",
+   "label": "고혈압 진단 경험률",
+   "value": 19.4,
+   "se": 1.7,
+   "ref": 20.7,
+   "ref_se": 0.3,
+   "diff": -1.3,
+   "z": -0.75,
+   "p": 0.4514,
+   "q": 0.6225,
+   "verdict": "unclear"
+  },
+  {
+   "sigungu": "영주시",
+   "key": "diabetes",
+   "label": "당뇨병 진단 경험률",
+   "value": 10.1,
+   "se": 1.4,
+   "ref": 8.5,
+   "ref_se": 0.2,
+   "diff": 1.6,
+   "z": 1.13,
+   "p": 0.2579,
+   "q": 0.4819,
+   "verdict": "unclear"
+  },
+  {
+   "sigungu": "예산군",
+   "key": "hypertension",
+   "label": "고혈압 진단 경험률",
+   "value": 21.8,
+   "se": 1.6,
+   "ref": 20.7,
+   "ref_se": 0.3,
+   "diff": 1.1,
+   "z": 0.68,
+   "p": 0.4992,
+   "q": 0.639,
+   "verdict": "unclear"
+  },
+  {
+   "sigungu": "예산군",
+   "key": "diabetes",
+   "label": "당뇨병 진단 경험률",
+   "value": 10.9,
+   "se": 1.3,
+   "ref": 8.5,
+   "ref_se": 0.2,
+   "diff": 2.4,
+   "z": 1.82,
+   "p": 0.068,
+   "q": 0.2722,
+   "verdict": "unclear"
+  },
+  {
+   "sigungu": "울주군",
+   "key": "hypertension",
+   "label": "고혈압 진단 경험률",
+   "value": 22.6,
+   "se": 1.7,
+   "ref": 20.7,
+   "ref_se": 0.3,
+   "diff": 1.9,
+   "z": 1.1,
+   "p": 0.2711,
+   "q": 0.4819,
+   "verdict": "unclear"
+  },
+  {
+   "sigungu": "울주군",
+   "key": "diabetes",
+   "label": "당뇨병 진단 경험률",
+   "value": 10.0,
+   "se": 1.0,
+   "ref": 8.5,
+   "ref_se": 0.2,
+   "diff": 1.5,
+   "z": 1.47,
+   "p": 0.1413,
+   "q": 0.401,
+   "verdict": "unclear"
+  },
+  {
+   "sigungu": "유성구",
+   "key": "hypertension",
+   "label": "고혈압 진단 경험률",
+   "value": 16.7,
+   "se": 1.3,
+   "ref": 20.7,
+   "ref_se": 0.3,
+   "diff": -4.0,
+   "z": -3.0,
+   "p": 0.0027,
+   "q": 0.0584,
+   "verdict": "unclear"
+  },
+  {
+   "sigungu": "유성구",
+   "key": "diabetes",
+   "label": "당뇨병 진단 경험률",
+   "value": 6.7,
+   "se": 0.8,
+   "ref": 8.5,
+   "ref_se": 0.2,
+   "diff": -1.8,
+   "z": -2.18,
+   "p": 0.029,
+   "q": 0.1328,
+   "verdict": "unclear"
+  },
+  {
+   "sigungu": "장성군",
+   "key": "hypertension",
+   "label": "고혈압 진단 경험률",
+   "value": 24.2,
+   "se": 2.0,
+   "ref": 20.7,
+   "ref_se": 0.3,
+   "diff": 3.5,
+   "z": 1.73,
+   "p": 0.0835,
+   "q": 0.2969,
+   "verdict": "unclear"
+  },
+  {
+   "sigungu": "장성군",
+   "key": "diabetes",
+   "label": "당뇨병 진단 경험률",
+   "value": 10.5,
+   "se": 1.2,
+   "ref": 8.5,
+   "ref_se": 0.2,
+   "diff": 2.0,
+   "z": 1.64,
+   "p": 0.1002,
+   "q": 0.3206,
+   "verdict": "unclear"
+  },
+  {
+   "sigungu": "제천시",
+   "key": "hypertension",
+   "label": "고혈압 진단 경험률",
+   "value": 22.9,
+   "se": 1.5,
+   "ref": 20.7,
+   "ref_se": 0.3,
+   "diff": 2.2,
+   "z": 1.44,
+   "p": 0.1504,
+   "q": 0.401,
+   "verdict": "unclear"
+  },
+  {
+   "sigungu": "제천시",
+   "key": "diabetes",
+   "label": "당뇨병 진단 경험률",
+   "value": 11.0,
+   "se": 1.1,
+   "ref": 8.5,
+   "ref_se": 0.2,
+   "diff": 2.5,
+   "z": 2.24,
+   "p": 0.0253,
+   "q": 0.1328,
+   "verdict": "unclear"
+  },
+  {
+   "sigungu": "청도군",
+   "key": "hypertension",
+   "label": "고혈압 진단 경험률",
+   "value": 22.0,
+   "se": 2.0,
+   "ref": 20.7,
+   "ref_se": 0.3,
+   "diff": 1.3,
+   "z": 0.64,
+   "p": 0.5203,
+   "q": 0.6404,
+   "verdict": "unclear"
+  },
+  {
+   "sigungu": "청도군",
+   "key": "diabetes",
+   "label": "당뇨병 진단 경험률",
+   "value": 9.1,
+   "se": 1.4,
+   "ref": 8.5,
+   "ref_se": 0.2,
+   "diff": 0.6,
+   "z": 0.42,
+   "p": 0.6714,
+   "q": 0.7743,
+   "verdict": "unclear"
+  },
+  {
+   "sigungu": "칠곡군",
+   "key": "hypertension",
+   "label": "고혈압 진단 경험률",
+   "value": 20.4,
+   "se": 1.2,
+   "ref": 20.7,
+   "ref_se": 0.3,
+   "diff": -0.3,
+   "z": -0.24,
+   "p": 0.8084,
+   "q": 0.8445,
+   "verdict": "unclear"
+  },
+  {
+   "sigungu": "칠곡군",
+   "key": "diabetes",
+   "label": "당뇨병 진단 경험률",
+   "value": 9.7,
+   "se": 0.9,
+   "ref": 8.5,
+   "ref_se": 0.2,
+   "diff": 1.2,
+   "z": 1.3,
+   "p": 0.1931,
+   "q": 0.4752,
+   "verdict": "unclear"
+  },
+  {
+   "sigungu": "화순군",
+   "key": "hypertension",
+   "label": "고혈압 진단 경험률",
+   "value": 20.2,
+   "se": 1.7,
+   "ref": 20.7,
+   "ref_se": 0.3,
+   "diff": -0.5,
+   "z": -0.29,
+   "p": 0.7721,
+   "q": 0.8445,
+   "verdict": "unclear"
+  },
+  {
+   "sigungu": "화순군",
+   "key": "diabetes",
+   "label": "당뇨병 진단 경험률",
+   "value": 12.3,
+   "se": 1.6,
+   "ref": 8.5,
+   "ref_se": 0.2,
+   "diff": 3.8,
+   "z": 2.36,
+   "p": 0.0184,
+   "q": 0.118,
+   "verdict": "unclear"
+  },
+  {
+   "sigungu": "횡성군",
+   "key": "hypertension",
+   "label": "고혈압 진단 경험률",
+   "value": 21.5,
+   "se": 1.9,
+   "ref": 20.7,
+   "ref_se": 0.3,
+   "diff": 0.8,
+   "z": 0.42,
+   "p": 0.6775,
+   "q": 0.7743,
+   "verdict": "unclear"
+  },
+  {
+   "sigungu": "횡성군",
+   "key": "diabetes",
+   "label": "당뇨병 진단 경험률",
+   "value": 8.7,
+   "se": 1.0,
+   "ref": 8.5,
+   "ref_se": 0.2,
+   "diff": 0.2,
+   "z": 0.2,
+   "p": 0.8445,
+   "q": 0.8445,
+   "verdict": "unclear"
+  }
+ ],
+ "mental": {
+  "영주시": {
+   "stress": 23.6,
+   "depress": 6.9,
+   "ref_stress": 26.3,
+   "ref_depress": 7.0
+  },
+  "횡성군": {
+   "stress": 26.9,
+   "depress": 6.6,
+   "ref_stress": 26.3,
+   "ref_depress": 7.0
+  },
+  "칠곡군": {
+   "stress": 16.5,
+   "depress": 5.1,
+   "ref_stress": 26.3,
+   "ref_depress": 7.0
+  },
+  "장성군": {
+   "stress": 19.4,
+   "depress": 6.1,
+   "ref_stress": 26.3,
+   "ref_depress": 7.0
+  },
+  "청도군": {
+   "stress": 22.0,
+   "depress": 7.7,
+   "ref_stress": 26.3,
+   "ref_depress": 7.0
+  },
+  "유성구": {
+   "stress": 22.0,
+   "depress": 5.9,
+   "ref_stress": 26.3,
+   "ref_depress": 7.0
+  },
+  "양평군": {
+   "stress": 27.4,
+   "depress": 5.4,
+   "ref_stress": 26.3,
+   "ref_depress": 7.0
+  },
+  "강릉시": {
+   "stress": 23.6,
+   "depress": 6.6,
+   "ref_stress": 26.3,
+   "ref_depress": 7.0
+  },
+  "울주군": {
+   "stress": 24.8,
+   "depress": 8.8,
+   "ref_stress": 26.3,
+   "ref_depress": 7.0
+  },
+  "김천시": {
+   "stress": 17.9,
+   "depress": 6.0,
+   "ref_stress": 26.3,
+   "ref_depress": 7.0
+  },
+  "제천시": {
+   "stress": 26.1,
+   "depress": 7.5,
+   "ref_stress": 26.3,
+   "ref_depress": 7.0
+  },
+  "예산군": {
+   "stress": 27.6,
+   "depress": 6.7,
+   "ref_stress": 26.3,
+   "ref_depress": 7.0
+  },
+  "곡성군": {
+   "stress": 22.1,
+   "depress": 2.5,
+   "ref_stress": 26.3,
+   "ref_depress": 7.0
+  },
+  "서귀포시": {
+   "stress": 23.8,
+   "depress": 4.5,
+   "ref_stress": 26.3,
+   "ref_depress": 7.0
+  },
+  "화순군": {
+   "stress": 18.9,
+   "depress": 3.3,
+   "ref_stress": 26.3,
+   "ref_depress": 7.0
+  },
+  "남해군": {
+   "stress": 22.1,
+   "depress": 8.5,
+   "ref_stress": 26.3,
+   "ref_depress": 7.0
+  }
+ }
+}

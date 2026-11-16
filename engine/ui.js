@@ -56,11 +56,33 @@
       '<button type="button" class="ghost-btn" id="eg-geo">내 위치 사용</button>' +
       '<select id="eg-sido"><option value="">시도</option></select><select id="eg-sigungu"><option value="">시군구</option></select></div>' +
       '<small id="eg-geo-note">위치는 이 기기 안에서만 거리 계산에 씁니다.</small></div>' +
+      tasteHTML() +
       '<label class="eg-inline"><input type="checkbox" id="eg-cannot" /> 지금은 숲에 가기 어렵다(가까운 대안 보기)</label>' +
       '<label class="eg-inline"><input type="checkbox" id="eg-usescn" /> 왼쪽 패널의 기상 시나리오로 시험해 보기</label>' +
       '<button type="button" class="primary-btn" id="eg-run">맞춤 추천 받기</button>' +
       '</fieldset></div>' +
       '<div id="eg-out" aria-live="polite"></div>';
+  }
+
+  // 숲 취향 사진(위키미디어 공용, 라이선스·출처 표기). 사진은 예시이며 해당 시설 사진이 아님.
+  // 세 장 모두 늦봄~여름 맑은 날 눈높이 숲길 사진으로 맞춤(평균 밝기 113~123/255, 2026-11-16 측정).
+  var TASTE_PHOTOS = [
+    { v: 'conifer', label: '침엽수림', src: 'https://commons.wikimedia.org/wiki/Special:FilePath/Brendstrup_Skov_2.jpg?width=480',
+      credit: '낙엽송 조림지 숲길(덴마크, 2013-05) · RhinoMind · CC BY-SA 3.0', page: 'https://commons.wikimedia.org/wiki/File:Brendstrup_Skov_2.jpg' },
+    { v: 'broadleaf', label: '활엽수림', src: 'https://commons.wikimedia.org/wiki/Special:FilePath/Maj_i_Riis_Skov_02.JPG?width=480',
+      credit: '활엽수 숲길(덴마크 Riis Skov, 2015-05) · RhinoMind · CC BY-SA 4.0', page: 'https://commons.wikimedia.org/wiki/File:Maj_i_Riis_Skov_02.JPG' },
+    { v: 'mixed', label: '혼효림', src: 'https://commons.wikimedia.org/wiki/Special:FilePath/Gribskov_-_N%C3%B8debo-Ottevejskrydset_path.JPG?width=480',
+      credit: '침엽·활엽 혼효 숲길(덴마크 Gribskov, 2015-07) · Ramblersen · CC BY-SA 4.0', page: 'https://commons.wikimedia.org/wiki/File:Gribskov_-_N%C3%B8debo-Ottevejskrydset_path.JPG' }
+  ];
+  function tasteHTML() {
+    return '<fieldset class="eg-field eg-taste"><legend>좋아하는 숲(선택)</legend><div class="eg-taste-grid">' +
+      TASTE_PHOTOS.map(function (t) {
+        return '<label class="eg-taste-opt"><input type="radio" name="eg-taste" value="' + t.v + '" />' +
+          '<img src="' + t.src + '" alt="' + t.label + ' 예시 사진" loading="lazy" referrerpolicy="no-referrer" />' +
+          '<b>' + t.label + '</b><small><a href="' + t.page + '" target="_blank" rel="noopener">' + esc(t.credit) + '</a></small></label>';
+      }).join('') +
+      '<label class="eg-taste-opt eg-taste-none"><input type="radio" name="eg-taste" value="" checked /><b>상관없음</b></label></div>' +
+      '<small>취향은 점수에 넣지 않고, 점수가 비슷한 시설끼리의 순서에만 반영합니다. 숲 종류에 따른 치유 효과 차이는 아직 확인되지 않았습니다.</small></fieldset>';
   }
 
   function fillRegions() {
@@ -87,7 +109,8 @@
       purpose: document.getElementById('eg-purpose').value,
       walk: document.getElementById('eg-walk').value,
       maxHours: +document.getElementById('eg-hours').value,
-      canVisit: !document.getElementById('eg-cannot').checked
+      canVisit: !document.getElementById('eg-cannot').checked,
+      forestTaste: (document.querySelector('input[name="eg-taste"]:checked') || {}).value || null
     };
     if (dv.charAt(0) === 'm') input.month = +dv.slice(1); else input.date = dv;
     if (geo) input.origin = { lat: geo.lat, lng: geo.lng };
@@ -102,6 +125,7 @@
         rain: document.getElementById('rain').checked, wind: document.getElementById('wind-on').checked ? 15 : 2
       };
     }
+    if (window.SoopExt && typeof window.SoopExt.readInput === 'function') Object.assign(input, window.SoopExt.readInput());
     return input;
   }
 
@@ -131,34 +155,72 @@
       var near = e.links.forests.length ? e.links.forests.map(function (f) { return esc(f.name) + ' ' + f.km + 'km'; }).join(', ') : '20 km 안 산림 자료 없음';
       return '<li class="eg-item"><div class="eg-item-head"><span class="eg-rank">' + e.rank + '</span><div><b>' + esc(e.site.name) + '</b>' +
         ' <span class="eg-badge ' + b[1] + '">' + b[0] + '</span>' +
-        '<small class="eg-sub">' + esc(e.site.address || '') + '</small></div>' +
-        '<div class="eg-score"><b>' + e.total.toFixed(0) + '</b><small>순위 범위 ' + (e.rankRange ? e.rankRange[0] + '~' + e.rankRange[1] + '위' : '-') + '</small></div></div>' +
+        (e.landscape ? e.landscape.badges.map(function (g) { return ' <span class="eg-badge b-land" title="' + esc(g.note + ' (' + g.basis + ')') + '">' + esc(g.label) + '</span>'; }).join('') +
+          (e.landscape.tasteMatch ? ' <span class="eg-badge b-taste">취향: ' + esc(e.landscape.taste) + ' 많은 편</span>' : '') : '') +
+        '<small class="eg-sub">' + esc(e.site.address || '') + '</small>' + kakao(e.site.name, e.site.lat, e.site.lng) +
+        (e.landscape && e.landscape.cautions.length ? '<small class="eg-caution">⚠ ' + e.landscape.cautions.map(esc).join(' ') + '</small>' : '') + '</div>' +
+        '<div class="eg-score"><b>' + e.total.toFixed(0) + '</b><small>점수 범위 ' + (e.totalRange ? e.totalRange[0] + '~' + e.totalRange[1] : '-') + ' · 순위 ' + (e.rankRange ? e.rankRange[0] + '~' + e.rankRange[1] + '위' : '-') + '</small></div></div>' +
         '<div class="eg-bars"><span>효과 ' + (e.scores.effect == null ? '–' : e.scores.effect) + '</span><span>환경 ' + e.scores.env + '</span><span>접근 ' + e.scores.access +
         (e.access.hours != null ? ' (약 ' + e.access.hours + '시간)' : '') + '</span></div>' +
         '<details><summary>추천 근거와 프로그램</summary><ul class="eg-reasons">' + e.reasons.map(function (x) { return '<li>' + esc(x) + '</li>'; }).join('') + '</ul>' +
-        '<p><b>프로그램</b><br>' + prog + '</p><p><b>주변 산림</b> ' + near + '<br><small>' + esc(e.links.tourismNote || '') + '</small></p></details></li>';
+        (e.landscape ? '<p><b>숲 경관(반경 5 km)</b> 침엽 ' + e.landscape.share.conifer + '% · 활엽 ' + e.landscape.share.broadleaf + '% · 혼효 ' + e.landscape.share.mixed + '%' +
+          e.landscape.badges.map(function (g) { return '<br><small>' + esc(g.label) + ': ' + esc(g.note) + ' [' + esc(g.basis) + ']</small>'; }).join('') +
+          '<br><small>숲 종류(임상)는 점수에 반영하지 않습니다. 숲 종류에 따른 치유 효과 차이는 아직 근거가 부족합니다.</small></p>' : '') +
+        (e.nvoc ? '<p><b>예상 피톤치드(모형값)</b>' + e.nvoc.map(function (x) {
+          var head = '<br>' + esc(x.species) + ' 숲 ' + x.ha1km + ' ha(1 km 안): ';
+          if (x.status === 'ok') return head + (x.range[0] === x.range[1] ? x.range[0] : x.range[0] + '~' + x.range[1]) + ' μg/m³' + (x.level ? ' · ' + esc(x.level) : '') +
+            ' <small>[' + esc(x.src) + ', R² ' + esc(x.r2) + ', 근거등급 ' + esc(x.evidence) + ']</small>';
+          return head + '<small>' + esc(x.note) + '</small>';
+        }).join('') + '<br><small>한 장소·짧은 기간 측정으로 만든 식에 오늘 예보를 넣은 값입니다. 농도와 건강 효과의 관계는 확인되지 않아 효과 점수에는 넣지 않고 환경 점수에만 최대 ±3점 반영합니다' +
+          (e.nvocAdj ? '(이 시설 ' + (e.nvocAdj > 0 ? '+' : '') + e.nvocAdj + '점)' : '') + '.</small></p>' : '') +
+        '<p><b>프로그램</b><br>' + prog + '</p><p><b>주변 산림</b> ' + near + '</p>' + (e.links.regionHealth ? '<p><b>시설 지역 건강지표(' + esc(e.links.regionHealth.sigungu) + ')</b><br>' + e.links.regionHealth.items.map(function (x) { return esc(x.text); }).join('<br>') + '<br><small>' + esc(e.links.regionHealth.caution) + '</small></p>' : '') + '<p><b>주변 관광</b> ' + (e.links.tourism && e.links.tourism.length ? e.links.tourism.map(function (t) { return esc(t.name) + ' <small>' + esc(t.type) + ' ' + t.km + 'km</small>'; }).join(', ') : '–') +
+        '<br><small>' + esc(e.links.tourismNote || '') + '</small></p></details></li>';
     }).join('') + '</ol>';
     if (!r.recommendations.length) h += '<p class="summary">조건에 맞는 시설이 없습니다. 이동시간을 늘리거나 아래 대안을 확인하세요.</p>';
     if (r.excluded.length) h += '<details class="eg-excl"><summary>제외된 시설 ' + r.excluded.length + '곳</summary><ul>' +
       r.excluded.map(function (x) { return '<li>' + esc(x.name) + ': ' + esc(x.reasons.join(', ')) + '</li>'; }).join('') + '</ul></details>';
+    if (r.warnings && r.warnings.length) h += '<details class="eg-excl"><summary>자료 경고 ' + r.warnings.length + '건</summary><ul>' +
+      r.warnings.map(function (w) { return '<li>' + esc(w) + '</li>'; }).join('') + '</ul></details>';
     if (!alt.prominent) h += '<details class="eg-alt-wrap"><summary>방문이 어려울 때 대안 보기</summary>' + altHTML + '</details>';
     h += '<details class="eg-notes"><summary>해석 유의사항과 계수 근거</summary><ul>' + r.notes.map(function (n) { return '<li>' + esc(n) + '</li>'; }).join('') + '</ul>' +
       '<table class="eg-params"><thead><tr><th>계수</th><th>값</th><th>근거</th></tr></thead><tbody>' +
       Object.keys(r.params).map(function (k) { var p = r.params[k]; return '<tr><td>' + esc(p.note) + '</td><td>' + esc(JSON.stringify(p.value)) + '</td><td>' +
-        ({ rule: '공공 기준', literature: '문헌', model: '모형', demo: '시연값' }[p.basis]) + '</td></tr>'; }).join('') + '</tbody></table></details>';
+        ({ rule: '공공 기준', literature: '문헌', model: '모형', demo: '시연값' }[p.basis]) + '</td></tr>'; }).join('') + '</tbody></table>' + configLine(r.config) + '</details>';
     document.getElementById('eg-out').innerHTML = h;
+    if (window.SoopExt && typeof window.SoopExt.afterRender === 'function') window.SoopExt.afterRender(r, document.getElementById('eg-out'));
+  }
+
+  function configLine(c) {
+    if (!c) return '';
+    var em = c.data.effectModel, et = c.data.envToday;
+    return '<p class="eg-config"><small>엔진 ' + esc(c.engine) + ' · 계수 해시 ' + esc(c.paramsHash) + ' · seed ' + c.seed + ' · 반복 ' + c.mcDraws +
+      (em ? ' · 효과모형 ' + esc(em.version) : '') + (et ? ' · 예보 기준 ' + esc(et.forecast_base || '') : '') +
+      ' · 평가 결과: tests/eval/out/report.md</small></p>';
+  }
+
+  // 카카오맵 지도·길찾기 링크(새 창). 좌표가 없으면 빈 문자열
+  function kakao(name, lat, lng, compact) {
+    var k = E.kakaoLinks && E.kakaoLinks(name, lat, lng);
+    if (!k) return '';
+    return ' <span class="kakao-links' + (compact ? ' compact' : '') + '"><a href="' + esc(k.map) + '" target="_blank" rel="noopener" aria-label="' + esc(name) + ' 카카오맵에서 보기">카카오맵에서 보기</a>' +
+      '<a href="' + esc(k.route) + '" target="_blank" rel="noopener" aria-label="' + esc(name) + ' 카카오맵 길찾기">길찾기</a></span>';
   }
 
   function renderAlternatives(a) {
-    var h = '<div class="eg-alt"><h3>방문이 어려울 때</h3><ol>';
+    var h = '<div class="eg-alt"><h3>방문이 어려울 때</h3>' +
+      (a.weather ? '<p class="eg-alert' + (a.weather.outdoorOk ? '' : ' urgent') + '">' + esc(a.weather.note) + (a.weather.basis ? ' <small>(' + esc(a.weather.basis) + ')</small>' : '') + '</p>' : '') + '<ol>';
     h += '<li><b>' + esc(a.digital.title) + '</b> — ' + (a.digital.available && a.digital.url
       ? '<a href="' + esc(a.digital.url) + '" target="_blank" rel="noopener">바로 이용</a>' : esc(a.digital.status) + '. ' + esc(a.digital.note)) + '</li>';
     if (a.originNote) h += '<li>' + esc(a.originNote) + '</li>';
     else {
       h += '<li><b>가까운 숲 같은 공원</b>(수관 피복 30% 이상, 1 ha 이상)<ul>' +
-        (a.parks.length ? a.parks.map(function (p) { return '<li>' + esc(p.name) + ' ' + p.km + 'km · 수관 ' + p.tree_pct + '% · ' + p.area_ha + 'ha <small>' + esc(p.addr || '') + '</small></li>'; }).join('')
+        (a.parks.length ? a.parks.map(function (p) { return '<li>' + esc(p.name) + ' ' + p.km + 'km · 수관 ' + p.tree_pct + '% · ' + p.area_ha + 'ha <small>' + esc(p.addr || '') + '</small>' + kakao(p.name, p.lat, p.lng, true) + '</li>'; }).join('')
           : '<li>반경 10 km 안에 조건에 맞는 공원이 없습니다.</li>') + '</ul><small>' + esc(a.parkNote || '') + '</small></li>';
-      h += '<li><b>가까운 산림</b>(자연휴양림·치유의숲)<ul>' + a.forests.map(function (f) { return '<li>' + esc(f.name) + ' ' + f.km + 'km <small>' + esc(f.kind || '') + '</small></li>'; }).join('') + '</ul></li>';
+      h += '<li><b>산림공원</b>(수관 피복 60% 이상, 10 ha 이상인 큰 공원)<ul>' +
+        (a.forestParks && a.forestParks.length ? a.forestParks.map(function (p) { return '<li>' + esc(p.name) + ' ' + p.km + 'km · 수관 ' + p.tree_pct + '% · ' + p.area_ha + 'ha' + kakao(p.name, p.lat, p.lng, true) + '</li>'; }).join('')
+          : '<li>반경 40 km 안에 조건에 맞는 공원이 없습니다.</li>') + '</ul></li>';
+      if (a.urbanForest) h += '<li><b>도시숲</b> <small>' + esc(a.urbanForest.note) + '</small></li>';
+      h += '<li><b>가까운 산림</b>(자연휴양림·치유의숲)<ul>' + a.forests.map(function (f) { return '<li>' + esc(f.name) + ' ' + f.km + 'km <small>' + esc(f.kind || '') + (f.program ? ' · ' + esc(f.program) : '') + '</small>' + kakao(f.name, f.lat, f.lng, true) + '</li>'; }).join('') + '</ul></li>';
     }
     return h + '</ol></div>';
   }
@@ -191,6 +253,7 @@
 
   window.SoopLoader.loadContext('data/').then(function (c) {
     ctx = c; fillRegions();
+    if (window.SoopExt && typeof window.SoopExt.init === 'function') window.SoopExt.init(ctx);
     var et = c.envToday;
     if (et && et.generated_at) {
       var s = mount.querySelector('.eg-head .summary');
