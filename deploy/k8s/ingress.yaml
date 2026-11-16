@@ -1,0 +1,22 @@
+# 예시: 도메인·TLS·인그레스 컨트롤러는 운영기관 환경에 따라 정한다(미정).
+# 요청 수 제한(rate limit)은 서버 코드가 아니라 인그레스·API 게이트웨이에서 건다.
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: soopgyeol-api
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: api.soopgyeol.example   # 자리표시(실제 도메인 아님)
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: soopgyeol-api
+                port:
+                  name: http
+  # tls:
+  #   - hosts: [api.soopgyeol.example]
+  #     secretName: soopgyeol-api-tls

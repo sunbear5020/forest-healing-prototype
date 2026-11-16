@@ -1,0 +1,115 @@
+openapi: 3.1.0
+info:
+  title: 숲결 추천 API (Soopgyeol API)
+  version: 0.6.1
+  description: |
+    웹 화면이 브라우저 안에서 쓰는 추천 엔진(engine/soopgyeol-engine.js)을 같은 파일 그대로 서빙한다.
+    응답 형식은 엔진 recommend() 반환값과 같다(servedBy 필드만 추가). 요청 본문은 저장·기록하지 않는다.
+    점수 계수 상당수는 근거 확보 전 시연값이다(GET /v1/params의 basis 참조).
+servers:
+  - url: http://localhost:8080
+    description: 로컬·단일 서버(운영 주소 미정)
+paths:
+  /healthz:
+    get: { summary: 생존 확인, responses: { '200': { description: 정상 } } }
+  /readyz:
+    get: { summary: 준비 확인(자료 적재 완료), responses: { '200': { description: 준비됨 }, '503': { description: 준비 안 됨 } } }
+  /v1/meta:
+    get: { summary: 엔진 버전·계수 해시·자료 시점, responses: { '200': { description: OK } } }
+  /v1/params:
+    get: { summary: 엔진 계수표(근거 유형 basis 포함), responses: { '200': { description: OK } } }
+  /v1/sites:
+    get: { summary: 추천 대상 시설 목록, responses: { '200': { description: OK } } }
+  /v1/recommend:
+    post:
+      summary: 맞춤 추천
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/RecommendInput' }
+            example:
+              check: { stress: 3, anxiety: 2, depression: 1, fatigue: 2, sleep: 1, breath: 0 }
+              purpose: stress
+              walk: normal
+              maxHours: 3
+              origin: { lat: 37.5665, lng: 126.978 }
+              month: 10
+      responses:
+        '200': { description: 추천 결과(엔진 recommend() 반환값 + servedBy) }
+        '400': { description: 입력 오류 }
+        '413': { description: 본문이 64KB 초과 }
+  /v1/programs:
+    post:
+      summary: 2026 프로그램 추천 모형 순위
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties: { person: { $ref: '#/components/schemas/Person' } }
+      responses:
+        '200': { description: 프로그램 순위 }
+        '503': { description: 모형 자료 없음 }
+components:
+  schemas:
+    RecommendInput:
+      type: object
+      additionalProperties: true
+      description: 모르는 최상위 키는 버린다.
+      properties:
+        check:
+          type: object
+          description: 자가점검 0(없음)~4(매우 심함)
+          properties:
+            stress: { type: number, minimum: 0, maximum: 4 }
+            anxiety: { type: number, minimum: 0, maximum: 4 }
+            depression: { type: number, minimum: 0, maximum: 4 }
+            fatigue: { type: number, minimum: 0, maximum: 4 }
+            sleep: { type: number, minimum: 0, maximum: 4 }
+            breath: { type: number, minimum: 0, maximum: 4 }
+          additionalProperties: false
+        selfharm: { type: boolean, description: true면 긴급 안내가 먼저 나온다 }
+        purpose: { type: string, enum: [stress, sleep, respiratory, family, vitality] }
+        walk: { type: string, enum: [barrier, normal, trek] }
+        maxHours: { type: number, minimum: 0.25, maximum: 99 }
+        canVisit: { type: boolean }
+        forestTaste: { type: string, maxLength: 20 }
+        month: { type: integer, minimum: 1, maximum: 12 }
+        date: { type: string, pattern: '^\d{4}-\d{2}-\d{2}$' }
+        origin:
+          oneOf:
+            - type: object
+              required: [lat, lng]
+              properties: { lat: { type: number, minimum: 32, maximum: 39.5 }, lng: { type: number, minimum: 124, maximum: 132 } }
+            - type: object
+              required: [sigungu]
+              properties: { sido: { type: string }, sigungu: { type: string } }
+        envOverride:
+          type: object
+          description: 방문일 환경 시나리오(없으면 예보·평년값)
+          properties:
+            temp: { type: number, minimum: -30, maximum: 45 }
+            humidity: { type: number, minimum: 0, maximum: 100 }
+            pm: { type: string, enum: [good, normal, bad] }
+            rain: { type: boolean }
+            wind: { type: number, minimum: 0, maximum: 60 }
+        weights:
+          type: object
+          properties: { effect: { type: number }, env: { type: number }, access: { type: number } }
+        topN: { type: integer, minimum: 1, maximum: 30 }
+        seed: { type: integer, description: 순위 범위 몬테카를로 시드(기본 20271) }
+        person: { $ref: '#/components/schemas/Person' }
+    Person:
+      type: object
+      description: 2026 프로그램 추천 모형 입력(빈 값은 학습 때 대체값 사용)
+      properties:
+        age: { type: [number, string] }
+        sex: { type: [number, string], description: '1 남, 2 여' }
+        h: { type: [number, string] }
+        ex: { type: [number, string] }
+        hp: { type: [number, string] }
+        d: { type: [number, string] }
+        v: { type: [number, string] }
+        pre: { type: [number, string], description: 사전 스트레스 점수 0~88 }
+        cats: { type: array, items: { type: string }, maxItems: 20 }

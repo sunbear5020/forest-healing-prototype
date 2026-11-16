@@ -1,4 +1,4 @@
-/* 숲결 엔진 자료 로더 — 정적 JSON(data/*.json)을 읽어 엔진 ctx를 만든다.
+/* 숲결 엔진 자료 로더 — 정적 JSON(data/*.json)을 읽어 엔진 ctx를 만든다(조립 규칙은 engine/context.js).
    GitHub Pages에서 같은 저장소 경로로 읽으므로 외부 서버·API 키가 필요 없다.
    공원 목록(약 1.2 MB)은 대체 경로가 필요할 때만 늦게 읽는다. */
 (function (root) {
@@ -13,32 +13,17 @@
 
   function loadContext(base) {
     base = base || 'data/';
-    return Promise.all([
-      getJSON(base + 'sites.json'),
-      soft(getJSON(base + 'evidence.json')),
-      soft(getJSON(base + 'facility_env.json')),
-      soft(getJSON(base + 'env_today.json')),
-      soft(getJSON(base + 'forests_nearby.json')),
-      soft(getJSON(base + 'region_health.json')),
-      soft(getJSON(base + 'tourism.json')),
-      soft(getJSON(base + 'facility_region_health.json'))
-    ]).then(function (r) {
-      var ctx = {
-        sites: r[0].sites,
-        evidence: r[1],
-        facilityEnv: r[2],
-        envToday: r[3],
-        forests: r[4] ? r[4].forests : [],
-        regionHealth: r[5],
-        tourism: r[6] ? r[6].sites : null,
-        tourismMeta: r[6] ? r[6]._meta : null,
-        facilityRegionHealth: r[7],
-        sigunguPoints: r[1] ? r[1].sigungu_points : [],
+    var C = root.SoopContext;   // engine/context.js — 웹·앱·API 서버가 같은 ctx 조립 규칙을 쓴다
+    return Promise.all(C.FILES.map(function (f) {
+      var p = getJSON(base + f.file);
+      return f.required ? p : soft(p);
+    })).then(function (r) {
+      var raw = {};
+      C.FILES.forEach(function (f, i) { raw[f.key] = r[i]; });
+      var ctx = C.build(raw, {
         protoForests: typeof FORESTS !== 'undefined' ? FORESTS : [],
-        travelHours: typeof TRAVEL_HOURS !== 'undefined' ? TRAVEL_HOURS : null,
-        parks: null,
-        digitalTherapeutic: null   // 출시 후 { available:true, url:'…', title:'…' }로 채움
-      };
+        travelHours: typeof TRAVEL_HOURS !== 'undefined' ? TRAVEL_HOURS : null
+      });
       ctx.loadParks = function () {
         if (ctx.parks) return Promise.resolve(ctx.parks);
         return soft(getJSON(base + 'parks.json')).then(function (p) { ctx.parks = p ? p.parks : []; return ctx.parks; });

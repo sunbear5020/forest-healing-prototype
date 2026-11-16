@@ -1,0 +1,12 @@
+.git
+.github
+node_modules
+mobile
+deploy
+docs
+tests
+analysis
+scripts
+*.png
+*.md
+!package.json

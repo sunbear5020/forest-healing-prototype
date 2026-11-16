@@ -1,0 +1,15 @@
+{
+  "name": "soopgyeol",
+  "version": "0.6.1",
+  "private": true,
+  "description": "숲결(Soopgyeol) 산림치유 맞춤 추천 — 웹(GitHub Pages)·앱(Capacitor)·API(컨테이너) 공용 엔진",
+  "engines": { "node": ">=20" },
+  "scripts": {
+    "start": "node server/server.mjs",
+    "test": "node tests/engine.test.mjs && node tests/api.test.mjs",
+    "test:engine": "node tests/engine.test.mjs",
+    "test:api": "node tests/api.test.mjs",
+    "eval": "node tests/eval/run_eval.mjs",
+    "serve:web": "python3 -m http.server 8000"
+  }
+}

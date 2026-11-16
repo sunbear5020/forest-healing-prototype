@@ -1,0 +1,22 @@
+# 숲결 API 쿠버네티스 기본 구성(kustomize). 적용: kubectl apply -k deploy/k8s
+# 이 파일들은 '이관 준비용 초안'이며 실제 클러스터에서 검증하지 않았다(docs/PLATFORM_MIGRATION.md §7 한계).
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: soopgyeol
+labels:
+  - pairs:
+      app.kubernetes.io/name: soopgyeol-api
+      app.kubernetes.io/part-of: soopgyeol
+    includeSelectors: false
+resources:
+  - namespace.yaml
+  - configmap.yaml
+  - deployment.yaml
+  - service.yaml
+  - hpa.yaml
+  - pdb.yaml
+  - ingress.yaml
+images:
+  - name: soopgyeol-api
+    newName: ghcr.io/sunbear5020/soopgyeol-api   # 레지스트리 미정(확인 필요). 운영기관 레지스트리로 바꾼다
+    newTag: "0.6.1"

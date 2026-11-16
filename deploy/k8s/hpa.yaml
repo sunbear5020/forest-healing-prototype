@@ -1,0 +1,19 @@
+# CPU 사용률 기준 자동 확장. 기준값(70%)·범위(2~6)는 추정값이며 부하 시험 전이다(확실하지 않음).
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: soopgyeol-api
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: soopgyeol-api
+  minReplicas: 2
+  maxReplicas: 6
+  metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: 70

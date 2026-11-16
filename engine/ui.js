@@ -230,7 +230,9 @@
     var needParks = true;
     var p = needParks && ctx.loadParks ? ctx.loadParks() : Promise.resolve();
     document.getElementById('eg-out').innerHTML = '<p class="summary">계산 중…</p>';
-    p.then(function () { render(E.recommend(input, ctx)); }).catch(function (e) {
+    // 계산 위치(기기 안/API 서버)는 config.js 설정을 따른다. 기본값은 기기 안 계산(engine/client.js)
+    var client = window.SoopClient ? window.SoopClient.fromConfig(window.SOOP_CONFIG, E) : null;
+    p.then(function () { return client ? client.recommend(input, ctx) : E.recommend(input, ctx); }).then(render).catch(function (e) {
       document.getElementById('eg-out').innerHTML = '<p class="summary">계산 중 오류: ' + esc(e.message) + '</p>';
     });
   }
@@ -247,7 +249,8 @@
     note.textContent = '위치 확인 중…';
     navigator.geolocation.getCurrentPosition(function (pos) {
       geo = { lat: pos.coords.latitude, lng: pos.coords.longitude };
-      note.textContent = '기기 위치를 사용합니다(저장·전송 안 함).';
+      note.textContent = window.SOOP_CONFIG && window.SOOP_CONFIG.apiBase
+        ? '기기 위치를 추천 계산에만 쓰려고 서버로 보냅니다(저장 안 함).' : '기기 위치를 사용합니다(저장·전송 안 함).';
     }, function () { note.textContent = '위치를 가져오지 못했습니다. 시군구를 골라 주세요.'; }, { maximumAge: 600000, timeout: 10000 });
   });
 
