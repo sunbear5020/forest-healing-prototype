@@ -157,7 +157,7 @@
         ' <span class="eg-badge ' + b[1] + '">' + b[0] + '</span>' +
         (e.landscape ? e.landscape.badges.map(function (g) { return ' <span class="eg-badge b-land" title="' + esc(g.note + ' (' + g.basis + ')') + '">' + esc(g.label) + '</span>'; }).join('') +
           (e.landscape.tasteMatch ? ' <span class="eg-badge b-taste">취향: ' + esc(e.landscape.taste) + ' 많은 편</span>' : '') : '') +
-        '<small class="eg-sub">' + esc(e.site.address || '') + '</small>' +
+        '<small class="eg-sub">' + esc(e.site.address || '') + '</small>' + kakao(e.site.name, e.site.lat, e.site.lng) +
         (e.landscape && e.landscape.cautions.length ? '<small class="eg-caution">⚠ ' + e.landscape.cautions.map(esc).join(' ') + '</small>' : '') + '</div>' +
         '<div class="eg-score"><b>' + e.total.toFixed(0) + '</b><small>점수 범위 ' + (e.totalRange ? e.totalRange[0] + '~' + e.totalRange[1] : '-') + ' · 순위 ' + (e.rankRange ? e.rankRange[0] + '~' + e.rankRange[1] + '위' : '-') + '</small></div></div>' +
         '<div class="eg-bars"><span>효과 ' + (e.scores.effect == null ? '–' : e.scores.effect) + '</span><span>환경 ' + e.scores.env + '</span><span>접근 ' + e.scores.access +
@@ -198,6 +198,14 @@
       ' · 평가 결과: tests/eval/out/report.md</small></p>';
   }
 
+  // 카카오맵 지도·길찾기 링크(새 창). 좌표가 없으면 빈 문자열
+  function kakao(name, lat, lng, compact) {
+    var k = E.kakaoLinks && E.kakaoLinks(name, lat, lng);
+    if (!k) return '';
+    return ' <span class="kakao-links' + (compact ? ' compact' : '') + '"><a href="' + esc(k.map) + '" target="_blank" rel="noopener" aria-label="' + esc(name) + ' 카카오맵에서 보기">카카오맵에서 보기</a>' +
+      '<a href="' + esc(k.route) + '" target="_blank" rel="noopener" aria-label="' + esc(name) + ' 카카오맵 길찾기">길찾기</a></span>';
+  }
+
   function renderAlternatives(a) {
     var h = '<div class="eg-alt"><h3>방문이 어려울 때</h3>' +
       (a.weather ? '<p class="eg-alert' + (a.weather.outdoorOk ? '' : ' urgent') + '">' + esc(a.weather.note) + (a.weather.basis ? ' <small>(' + esc(a.weather.basis) + ')</small>' : '') + '</p>' : '') + '<ol>';
@@ -206,13 +214,13 @@
     if (a.originNote) h += '<li>' + esc(a.originNote) + '</li>';
     else {
       h += '<li><b>가까운 숲 같은 공원</b>(수관 피복 30% 이상, 1 ha 이상)<ul>' +
-        (a.parks.length ? a.parks.map(function (p) { return '<li>' + esc(p.name) + ' ' + p.km + 'km · 수관 ' + p.tree_pct + '% · ' + p.area_ha + 'ha <small>' + esc(p.addr || '') + '</small></li>'; }).join('')
+        (a.parks.length ? a.parks.map(function (p) { return '<li>' + esc(p.name) + ' ' + p.km + 'km · 수관 ' + p.tree_pct + '% · ' + p.area_ha + 'ha <small>' + esc(p.addr || '') + '</small>' + kakao(p.name, p.lat, p.lng, true) + '</li>'; }).join('')
           : '<li>반경 10 km 안에 조건에 맞는 공원이 없습니다.</li>') + '</ul><small>' + esc(a.parkNote || '') + '</small></li>';
       h += '<li><b>산림공원</b>(수관 피복 60% 이상, 10 ha 이상인 큰 공원)<ul>' +
-        (a.forestParks && a.forestParks.length ? a.forestParks.map(function (p) { return '<li>' + esc(p.name) + ' ' + p.km + 'km · 수관 ' + p.tree_pct + '% · ' + p.area_ha + 'ha</li>'; }).join('')
+        (a.forestParks && a.forestParks.length ? a.forestParks.map(function (p) { return '<li>' + esc(p.name) + ' ' + p.km + 'km · 수관 ' + p.tree_pct + '% · ' + p.area_ha + 'ha' + kakao(p.name, p.lat, p.lng, true) + '</li>'; }).join('')
           : '<li>반경 40 km 안에 조건에 맞는 공원이 없습니다.</li>') + '</ul></li>';
       if (a.urbanForest) h += '<li><b>도시숲</b> <small>' + esc(a.urbanForest.note) + '</small></li>';
-      h += '<li><b>가까운 산림</b>(자연휴양림·치유의숲)<ul>' + a.forests.map(function (f) { return '<li>' + esc(f.name) + ' ' + f.km + 'km <small>' + esc(f.kind || '') + (f.program ? ' · ' + esc(f.program) : '') + '</small></li>'; }).join('') + '</ul></li>';
+      h += '<li><b>가까운 산림</b>(자연휴양림·치유의숲)<ul>' + a.forests.map(function (f) { return '<li>' + esc(f.name) + ' ' + f.km + 'km <small>' + esc(f.kind || '') + (f.program ? ' · ' + esc(f.program) : '') + '</small>' + kakao(f.name, f.lat, f.lng, true) + '</li>'; }).join('') + '</ul></li>';
     }
     return h + '</ol></div>';
   }

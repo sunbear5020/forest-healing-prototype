@@ -23,7 +23,7 @@
 }(typeof self !== 'undefined' ? self : this, function () {
   'use strict';
 
-  var VERSION = '0.6.0';
+  var VERSION = '0.6.1';
 
   /* ---------------------------------------------------------------------
      계수표 — basis: rule(공공 기준) / literature / model / demo(시연값)
@@ -81,6 +81,13 @@
     return 2 * R * Math.asin(Math.sqrt(h));
   }
   function isJeju(p) { return p.lat < 34.0; }
+  /* 카카오맵 링크(API 키 없는 공개 URL 방식, 2026-11-16 실제로 열어 좌표 일치 확인).
+     https://map.kakao.com/link/map/{이름},{위도},{경도} 지도 · /link/to/ 길찾기. 이름의 쉼표는 구분자와 겹쳐 공백으로 바꿈 */
+  function kakaoLinks(name, lat, lng) {
+    if (lat == null || lng == null || !isFinite(lat) || !isFinite(lng)) return null;
+    var tail = encodeURIComponent(String(name || '목적지').replace(/,/g, ' ').trim()) + ',' + (+lat).toFixed(6) + ',' + (+lng).toFixed(6);
+    return { map: 'https://map.kakao.com/link/map/' + tail, route: 'https://map.kakao.com/link/to/' + tail };
+  }
   function mulberry32(a) {
     return function () {
       a |= 0; a = a + 0x6D2B79F5 | 0;
@@ -253,6 +260,18 @@
   function dayEnvironment(site, date, month, ctx, override) {
     var fe = ctx.facilityEnv && (site.envKey || site.facilityId) && ctx.facilityEnv.facilities[site.envKey || site.facilityId];
     var clim = fe && fe.climate && fe.climate.monthly ? fe.climate.monthly[String(month)] || fe.climate.monthly[month] : null;
+    var nm = fe && fe.climate && fe.climate.normal && fe.climate.normal.monthly;
+    var normal = nm && nm[String(month)] ? Object.assign({ period: fe.climate.normal.period, station: fe.climate.normal.station.name }, nm[String(month)]) : null;
+    var env = dayEnvironmentRaw(fe, clim, date, month, ctx, override, site);
+    env.normal = normal;
+    var ref = normal || clim;
+    if ((env.source === 'forecast' || env.source === 'scenario') && env.tmean != null && ref && ref.tavg != null) {
+      env.anom = Math.round((env.tmean - ref.tavg) * 10) / 10;
+      env.anomBasis = normal ? normal.period + '(' + normal.station + ', 표고 보정)' : '2021~2025 월평균(평년값 없음)';
+    }
+    return env;
+  }
+  function dayEnvironmentRaw(fe, clim, date, month, ctx, override, site) {
     if (override) {
       return { source: 'scenario', label: '화면 시나리오 입력값',
                tmax: override.temp, tmean: override.temp - 3, reh: override.humidity,
@@ -619,7 +638,7 @@
       profile.modeledDomains.forEach(function (d) {
         var e = domainEffect(site, d, month, ctx);
         if (!e) return;
-        var sh = envTermShift(d, env.source === 'forecast' || env.source === 'scenario' ? env : null, env.clim, ctx);
+        var sh = envTermShift(d, env.source === 'forecast' || env.source === 'scenario' ? env : null, env.normal || env.clim, ctx);
         if (sh.used.length) { e = Object.assign({}, e, { pred: e.pred + sh.shift, lo: e.lo + sh.shift, hi: e.hi + sh.shift }); envUsed = envUsed.concat(sh.used); }
         byDomain[d] = e;
         eNum += profile.weights[d] * (-e.pred); eW += profile.weights[d];
@@ -806,7 +825,7 @@
     var gn = dl.map(function (d) { var m = /\(문헌 근거 확실성[^)]*\)/.exec(e.byDomain[d].note || ''); return m ? DOMAINS[d].label + ' ' + m[0] : null; }).filter(Boolean);
     if (gn.length) out.push(gn.join('; '));
     if (profile.literatureOnlyDomains.length) out.push(profile.literatureOnlyDomains.map(function (d) { return DOMAINS[d].label; }).join('·') + '는 효과 자료가 없어 환경 노출만 반영');
-    out.push('방문일 환경: ' + e.env.label);
+    out.push('방문일 환경: ' + e.env.label + (e.env.anom != null ? ' · 평균기온 평년 대비 ' + (e.env.anom > 0 ? '+' : '') + e.env.anom.toFixed(1) + '℃(' + e.env.anomBasis + ')' : ''));
     if (e.nearFirst) out.push('점수가 더 높은 ' + e.nearFirst + '와(과) 차이가 불확실 범위 안이라, ' + (e.landscape && e.landscape.tasteMatch ? '좋아하는 숲(' + e.landscape.taste + ') 비율이 높은 편이고 ' : '') + '이동시간 기준으로 이곳을 앞에 둠');
     if (e.landscape && e.landscape.tasteMatch) out.push('반경 5 km 숲에서 고른 취향(' + e.landscape.taste + ') 비율이 다른 시설보다 높은 편 — 점수에는 넣지 않고 비슷한 점수끼리의 순서에만 반영');
     var badW = e.envDetail.hazards.filter(function (h) { return PARAMS.badWeatherIndoorFirst.value.indexOf(h) >= 0; });
@@ -820,7 +839,7 @@
 
   return {
     version: VERSION, PARAMS: PARAMS, DOMAINS: DOMAINS, CONTACTS: CONTACTS,
-    recommend: recommend, safetyCheck: safetyCheck, buildProfile: buildProfile,
+    recommend: recommend, kakaoLinks: kakaoLinks, safetyCheck: safetyCheck, buildProfile: buildProfile,
     alternatives: alternatives, haversineKm: haversineKm
   };
 }));

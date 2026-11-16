@@ -159,4 +159,25 @@ t('v0.6: 예측 피톤치드는 측정 계절 밖이면 계산 안 하고, 환�
     assert.ok(r.recommendations.some((e) => e.nvoc && e.nvoc.some((x) => x.status === 'ok')));
   }
 });
+t('v0.6.1: 기온 편차는 평년값(climate.normal) 기준, 평년값 없는 시설은 2021~2025 월평균', () => {
+  const r = E.recommend({ ...base, month: 7, maxHours: 9, topN: 40, envOverride: { temp: 30, humidity: 60 } }, ctx);
+  const fe = ctx.facilityEnv.facilities;
+  let withN = 0;
+  r.recommendations.forEach((e) => {
+    if (e.env.anom == null) return;
+    const f = fe[e.site.envKey || e.site.facilityId];
+    const ref = f && f.climate.normal ? f.climate.normal.monthly['7'].tavg : f.climate.monthly['7'].tavg;
+    if (f && f.climate.normal) withN++;
+    assert.ok(Math.abs(e.env.anom - (27 - ref)) < 0.06);
+  });
+  assert.ok(withN > 0);
+});
+t('카카오맵 링크: 이름 인코딩·쉼표 제거·좌표 6자리, 좌표 없으면 null', () => {
+  const k = E.kakaoLinks('국립산림치유원, 본관', 36.857915, 128.471903);
+  assert.equal(k.map, 'https://map.kakao.com/link/map/' + encodeURIComponent('국립산림치유원  본관') + ',36.857915,128.471903');
+  assert.ok(k.route.startsWith('https://map.kakao.com/link/to/'));
+  assert.equal(E.kakaoLinks('x', null, 127), null);
+  const r = E.recommend(base, ctx);
+  r.recommendations.forEach((e) => assert.ok(E.kakaoLinks(e.site.name, e.site.lat, e.site.lng)));
+});
 console.log(`\n${n} tests passed`);
