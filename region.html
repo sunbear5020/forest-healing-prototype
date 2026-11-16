@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>숲결 · 지역 정보</title>
+<meta name="description" content="시군구별 정신건강 현황과 산불·소나무재선충병·산사태·자연재난 피해 지역 정보, 피해지역 주민 심리 영향에 관한 근거를 출처와 함께 보여줍니다." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&family=Noto+Serif+KR:wght@500;600;700&display=swap" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<link rel="stylesheet" href="style.css" />
+<link rel="stylesheet" href="region.css" />
+</head>
+<body>
+
+<header class="site-header">
+  <div class="wrap header-inner">
+    <a class="brand" href="index.html">
+      <span class="brand-mark" aria-hidden="true">
+        <svg viewBox="0 0 32 32" width="30" height="30">
+          <path d="M16 3c5.2 3.6 8.6 8.3 8.6 13.1 0 4.5-3.9 7.9-8.6 7.9s-8.6-3.4-8.6-7.9C7.4 11.3 10.8 6.6 16 3z" fill="currentColor" opacity=".92"/>
+          <path d="M16 12v17" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" opacity=".55"/>
+        </svg>
+      </span>
+      <span class="brand-text">
+        <strong>숲결</strong>
+        <em>지역 정보 · 마음건강과 산림재난</em>
+      </span>
+    </a>
+    <nav class="header-actions">
+      <a class="ghost-btn" href="index.html">← 숲 추천으로</a>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap rg-main">
+  <section class="rg-intro">
+    <p class="eyebrow">지역 정보 · 참고용</p>
+    <h1>우리 지역의 마음건강과 숲의 상처</h1>
+    <p class="rg-lede">시군구별 스트레스·우울감 수준과 산불·소나무재선충병·산사태·자연재난 피해 지역을 한 화면에서 봅니다.
+      모든 수치는 공개 통계와 발표 자료이며, 출처와 기준 시점을 함께 적었습니다.</p>
+    <p class="rg-caution"><b>읽을 때 주의</b> 지역 통계는 그 지역 사람들의 평균적인 모습입니다. 이 화면만으로 개인의 상태를 판단하거나, 재난 때문에 그 지역의 정신건강 수치가 달라졌다고 해석할 수 없습니다. 숲결 추천 점수에도 쓰지 않습니다.</p>
+  </section>
+
+  <section class="rg-tiles" id="rg-tiles" aria-label="전국 요약"></section>
+
+  <section class="card rg-mapcard">
+    <div class="rg-controls">
+      <div>
+        <p class="rg-label">색으로 보기</p>
+        <div class="chip-group" id="rg-layer" role="radiogroup" aria-label="지도 색 기준"></div>
+        <div class="rg-year" id="rg-year" hidden>
+          <span>연도</span>
+          <div class="chip-group" id="rg-year-chips" role="radiogroup" aria-label="연도"></div>
+        </div>
+      </div>
+      <div>
+        <p class="rg-label">피해 지역 표시</p>
+        <div class="chip-group" id="rg-flags" aria-label="피해 지역 표시"></div>
+      </div>
+      <div class="rg-search">
+        <label class="rg-label" for="rg-q">시군구 찾기</label>
+        <input id="rg-q" list="rg-list" placeholder="예: 안동시, 강남구" autocomplete="off" />
+        <datalist id="rg-list"></datalist>
+      </div>
+    </div>
+    <div class="rg-mapwrap">
+      <div id="rg-map" role="img" aria-label="시군구 지도"></div>
+      <div class="rg-legend" id="rg-legend"></div>
+    </div>
+    <p class="rg-note" id="rg-layer-note"></p>
+  </section>
+
+  <section class="card rg-detail" id="rg-detail" aria-live="polite">
+    <p class="rg-empty">지도에서 시군구를 누르거나 이름으로 찾으면 그 지역의 정보를 보여줍니다.</p>
+  </section>
+
+  <section class="rg-section">
+    <h2>재난을 겪은 주민의 마음, 근거는 어디까지인가</h2>
+    <p class="rg-sub">산불·산사태·수목 고사 지역 주민의 심리 영향에 관한 연구를 근거 수준과 함께 정리했습니다. 근거가 약한 내용은 그렇게 표시합니다.</p>
+    <div class="rg-evi" id="rg-evi"></div>
+  </section>
+
+  <section class="rg-section">
+    <h2>분석 결과: 산불 뒤 지역 마음건강 지표가 달라졌나</h2>
+    <p class="rg-sub">지역사회건강조사 2024(산불 이전)와 2025(산불 2~4.5개월 뒤, 조사기간 5.16~7.31)를 같은 시군구끼리 비교한 탐색 분석입니다. 인과 추론이 아닙니다.</p>
+    <ul class="rg-gaps rg-results">
+      <li><b>산불 피해 8개 시군의 스트레스가 낮은 것은 산불 이전부터였습니다.</b> 2024년 평균 20.4%(다른 시군구 23.5%), 2025년 18.9%(23.6%)입니다. 농산촌 등 지역 특성으로 보입니다.</li>
+      <li><b>산불 이후 스트레스·우울감이 늘었다는 신호는 시군구 통계에서 확인되지 않았습니다.</b> 1년 변화량은 검정 방법에 따라 결론이 갈렸고, 시군구 값의 해마다 흔들림(표준편차 3.8%p)보다 작았습니다.</li>
+      <li>지역별로는 엇갈립니다. 울주군은 스트레스 18.1→24.8%, 산청군·하동군은 우울감이 각각 4.0→7.3%, 2.8→6.1%로 올랐습니다. 영덕군·의성군은 스트레스가 크게 내렸습니다. 한 시군구 값은 약 900명 표본 추정치라 우연한 변동과 구분할 수 없습니다.</li>
+      <li>재선충병 피해 극심 6곳도 1년 변화에서 다른 지역과 차이가 확인되지 않았습니다.</li>
+      <li>결론: 지역 평균 통계로는 재난 피해가 주민 마음건강을 바꿨는지 판정할 수 없습니다. 영향이 없다는 뜻은 아니며, 직접 피해 주민을 따로 봐야 합니다.</li>
+    </ul>
+    <p class="rg-note">연구방법·자료·검정 전체: <a href="https://github.com/sunbear5020/forest-healing-prototype/blob/main/docs/REGION_INFO_METHODS.md" target="_blank" rel="noopener">연구방법과 결과 문서</a></p>
+  </section>
+
+  <section class="rg-section">
+    <h2>아직 확인하지 못한 것</h2>
+    <ul class="rg-gaps" id="rg-gaps"></ul>
+  </section>
+
+  <section class="rg-section">
+    <h2>출처</h2>
+    <ul class="rg-src" id="rg-src"></ul>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap footer-inner">
+    <div>
+      <strong>숲결</strong>
+      <p>경상국립대학교 산림환경자원학과 인간환경연구실 · 지역 정보(참고용)</p>
+    </div>
+  </div>
+</footer>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="region.js"></script>
+</body>
+</html>
