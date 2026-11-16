@@ -77,3 +77,4 @@
   .rg-legend { font-size: 10.5px; max-width: 190px; }
 }
 .rg-year[hidden] { display: none; }
+.rg-results b { color: var(--green); }

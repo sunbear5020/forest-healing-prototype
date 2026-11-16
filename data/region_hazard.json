@@ -20,7 +20,7 @@
     "certainty": "단일 출처"
    },
    "mental": {
-    "name": "질병관리청 지역사회건강조사 2025 표준화율(스트레스 인지율·우울감 경험률), KOSIS orgId 177",
+    "name": "질병관리청 지역사회건강조사 2025(조사 2025-05-16~07-31, 보건소당 약 900명)·2024 표준화율(스트레스 인지율·우울감 경험률), KOSIS orgId 177",
     "url": "https://kosis.kr/statHtml/statHtml.do?orgId=177&tblId=DT_H_MENTAL_STRESS",
     "file": "data/region_health.json"
    }

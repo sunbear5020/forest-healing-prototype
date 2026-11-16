@@ -12,7 +12,7 @@ out={"_meta":{"built":"2026-11-16","use":"지역 정보 표시 전용. 개인 �
   "fire":{"name":"산림청 「산불통계」 시도별 산불발생 현황(DT_13625_A011), 2025년·10년 평균","url":"https://kosis.kr/statHtml/statHtml.do?orgId=136&tblId=DT_13625_A011","retrieved":"2026-11-16"},
   "disaster":{"name":"행정안전부 「자연재해현황」 자연재해 피해현황(시도)(DT_1YL202106E), 2020~2024, 단위 천원","url":"https://kosis.kr/statHtml/statHtml.do?orgId=101&tblId=DT_1YL202106E","retrieved":"2026-11-16"},
   "pwd_sido5":{"name":"소나무재선충병 시도별 피해목 5년 누적(2022~2026, 국유림 32만1,946그루 별도) — 국회 김선교 의원실이 산림청 제출자료를 분석한 보도(뉴시스 2026-09-08). 단일 보도 출처라 '확실하지 않음' 표시","url":"https://www.newsis.com/view/NISX20260908_0003780845","retrieved":"2026-11-16","certainty":"단일 출처"},
-  "mental":{"name":"질병관리청 지역사회건강조사 2025 표준화율(스트레스 인지율·우울감 경험률), KOSIS orgId 177","url":"https://kosis.kr/statHtml/statHtml.do?orgId=177&tblId=DT_H_MENTAL_STRESS","file":"data/region_health.json"}}},
+  "mental":{"name":"질병관리청 지역사회건강조사 2025(조사 2025-05-16~07-31, 보건소당 약 900명)·2024 표준화율(스트레스 인지율·우울감 경험률), KOSIS orgId 177","url":"https://kosis.kr/statHtml/statHtml.do?orgId=177&tblId=DT_H_MENTAL_STRESS","file":"data/region_health.json"}}},
  "national":{
   "pwd":{"period":"2025-06-01~2026-05-31(매개충 우화기 기준)","trees":1770000,"sigungu":166,"note":"전년 대비 28만 그루 증가, 신규·재발생 12개 시군구. 극심(5만 그루 이상) 6곳, 심(3~5만) 21곳.","refs":["https://www.mt.co.kr/article/2026062510122990581","https://www.fnnews.com/news/202606250955251182","https://www.newsis.com/view/NISX20260908_0003780845"]},
   "fire2025":{"count":459,"area_ha":105099.44,"avg10_count":529,"avg10_area_ha":14471.31,"ref":"KOSIS DT_13625_A011"},
