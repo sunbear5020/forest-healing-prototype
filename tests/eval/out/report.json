@@ -1,10 +1,10 @@
 {
  "plan": "docs/EVALUATION.md (2026-11-15 고정)",
- "ranAt": "2026-11-16T03:48:54.709Z",
- "seconds": 94.727,
+ "ranAt": "2026-11-16T12:02:04.256Z",
+ "seconds": 97.333,
  "nCases": 1600,
  "config": {
-  "engine": "0.6.0",
+  "engine": "0.6.1",
   "seed": 20271,
   "mcDraws": 400,
   "paramsHash": "97d162df",
@@ -22,8 +22,8 @@
    "evidenceBuilt": "2026-11-15",
    "facilityEnvBuilt": "2026-11-15",
    "envToday": {
-    "generated_at": "2026-11-15T21:37+09:00",
-    "forecast_base": "20261115 1700 KST"
+    "generated_at": "2026-11-16T09:21+09:00",
+    "forecast_base": "20261116 0500 KST"
    },
    "nSites": 44,
    "nParks": 4755,
