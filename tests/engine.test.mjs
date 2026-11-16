@@ -138,4 +138,14 @@ t('시설 지역 건강지표: 맥락만 표시하고 점수는 그대로', () =
   withRH.forEach((e) => { assert.ok(e.links.regionHealth && e.links.regionHealth.items.length >= 2); assert.ok(e.links.regionHealth.caution.includes('인과')); });
   a.recommendations.filter((e) => e.site.id.startsWith('hf_')).forEach((e) => assert.ok(!e.links.regionHealth || e.links.regionHealth.items));
 });
+t('v0.5: 숲 취향은 총점을 바꾸지 않고, 경관 배지·꽃가루 안내를 붙임', () => {
+  const a = E.recommend({ ...base, maxHours: 9, topN: 18 }, ctx), b = E.recommend({ ...base, maxHours: 9, topN: 18, forestTaste: 'mixed' }, ctx);
+  const ta = Object.fromEntries(a.recommendations.map((e) => [e.site.id, e.total])), tb = Object.fromEntries(b.recommendations.map((e) => [e.site.id, e.total]));
+  Object.keys(ta).forEach((k) => { if (tb[k] != null) assert.equal(ta[k], tb[k]); });
+  assert.ok(b.recommendations.some((e) => e.landscape));
+  const spring = E.recommend({ ...base, maxHours: 9, topN: 18, month: 5 }, ctx);
+  assert.ok(spring.recommendations.some((e) => e.landscape && e.landscape.cautions.some((c) => c.includes('꽃가루'))));
+  const fall = E.recommend({ ...base, maxHours: 9, topN: 18, month: 10 }, ctx);
+  assert.ok(fall.recommendations.every((e) => !e.landscape || e.landscape.cautions.length === 0 || e.site.lat < 33.7));
+});
 console.log(`\n${n} tests passed`);

@@ -23,7 +23,7 @@
 }(typeof self !== 'undefined' ? self : this, function () {
   'use strict';
 
-  var VERSION = '0.4.0';
+  var VERSION = '0.5.0';
 
   /* ---------------------------------------------------------------------
      계수표 — basis: rule(공공 기준) / literature / model / demo(시연값)
@@ -502,6 +502,42 @@
   /* ---------------------------------------------------------------------
      메인
      --------------------------------------------------------------------- */
+  /* ---------------------------------------------------------------------
+     3-e. 숲 경관 정보(임상) — 효과 점수에는 넣지 않음.
+     근거: 연구설계/메타분석 09(기분 변화에 임상 차이 미확인), 10(선호·회복 지각은 혼효림 우위 방향, 근거 약함),
+     08(한국 수목 꽃가루: 4~5월 참나무·자작·오리, 제주 삼나무 2~4월).
+     --------------------------------------------------------------------- */
+  var TASTE_BAND = 3; // 점(0~100). 취향 정렬을 허용하는 최고점과의 차이
+  var TASTE = { conifer: '침엽수림', broadleaf: '활엽수림', mixed: '혼효림' };
+  var _standCut = null;
+  // 시설 간 상대 비교: 각 유형 비율의 상위 1/3 경계(임상도 자료가 있는 시설 기준). 한국 숲은 활엽 비율이 대체로 높아 절대 기준은 쓰지 않음.
+  function standCuts(ctx) {
+    if (_standCut && _standCut.src === ctx.facilityEnv) return _standCut;
+    var st = (ctx.facilityEnv && ctx.facilityEnv.stands) || {}, v = { conifer: [], broadleaf: [], mixed: [] };
+    Object.keys(st).forEach(function (k) {
+      var sp = st[k].pct_of_5km_circle, t = (sp.conifer || 0) + (sp.broadleaf || 0) + (sp.mixed || 0);
+      if (t >= 1) Object.keys(v).forEach(function (x) { v[x].push(sp[x] / t); });
+    });
+    _standCut = { src: ctx.facilityEnv, conifer: quantile(v.conifer, 2 / 3), broadleaf: quantile(v.broadleaf, 2 / 3), mixed: quantile(v.mixed, 2 / 3) };
+    return _standCut;
+  }
+  function landscapeInfo(site, month, taste, ctx) {
+    var stv = ctx.facilityEnv && ctx.facilityEnv.stands && ctx.facilityEnv.stands[site.id];
+    if (!stv) return null;
+    var sp = stv.pct_of_5km_circle, tot = (sp.conifer || 0) + (sp.broadleaf || 0) + (sp.mixed || 0);
+    if (tot < 1) return null;
+    var share = { conifer: sp.conifer / tot, broadleaf: sp.broadleaf / tot, mixed: sp.mixed / tot }, cut = standCuts(ctx);
+    var top = Object.keys(share).sort(function (a, b) { return share[b] - share[a]; })[0];
+    var badges = [], cautions = [];
+    if (share.mixed >= cut.mixed) badges.push({ label: '혼효림 많은 편', note: '침엽수와 활엽수가 섞인 숲은 여러 연구에서 경관이 더 좋게 평가되었습니다. 다만 기분이 나아지는 정도는 숲 종류에 따라 뚜렷한 차이가 확인되지 않았습니다.', basis: '경관 정보(효과 근거 아님)' });
+    if ((month === 10 || month === 11) && share.broadleaf >= cut.broadleaf) badges.push({ label: '단풍 경관 시기', note: '반경 5 km 숲의 활엽수 비율이 높은 편이라 단풍 시기입니다.', basis: '경관 정보(효과 근거 아님)' });
+    if ((month === 4 || month === 5) && share.broadleaf >= 0.4) cautions.push('4~5월은 참나무·자작나무·오리나무 꽃가루가 많은 시기입니다. 꽃가루 알레르기가 있으면 마스크를 준비하거나 다른 시기를 고려하세요.');
+    if (site.lat < 33.7 && month >= 2 && month <= 4) cautions.push('제주의 삼나무·편백 식재지는 2~4월 꽃가루가 많습니다. 알레르기가 있으면 주의하세요.');
+    var match = taste && TASTE[taste] ? share[taste] >= cut[taste] : null;
+    return { share: { conifer: Math.round(100 * share.conifer), broadleaf: Math.round(100 * share.broadleaf), mixed: Math.round(100 * share.mixed) },
+      dominant: TASTE[top], taste: taste && TASTE[taste] ? TASTE[taste] : null, badges: badges, cautions: cautions, tasteMatch: match };
+  }
+
   function recommend(input, ctx) {
     input = input || {}; ctx = ctx || {};
     var W = Object.assign({}, PARAMS.weights.value, input.weights || {});
@@ -571,7 +607,8 @@
       if (es == null) return (W.env * e.scores.env + W.access * e.scores.access) / (W.env + W.access);
       return W.effect * es + W.env * e.scores.env + W.access * e.scores.access;
     }
-    evals.forEach(function (e) { e.total = round(total(e), 1); });
+    evals.forEach(function (e) { e.total = round(total(e), 1); e.landscape = landscapeInfo(e.site, month, input.forestTaste, ctx); });
+    function tasteRank(e) { return e.landscape && e.landscape.tasteMatch ? 0 : 1; }
 
     // 4. 순위 범위(몬테카를로)
     var pool = evals.filter(function (e) { return e.eligible; });
@@ -603,6 +640,9 @@
         rest.sort(byScore);
         var best = rest[0];
         var cand = rest.filter(function (j) { return pool[j].tier === pool[best].tier && (j === best || pSure(vals, best, j) < NU.pSure); });
+        // 숲 취향은 최고점과 TASTE_BAND점 이내(사실상 동점)인 후보끼리만 앞당긴다. 점수는 바꾸지 않는다.
+        var tasteCand = cand.filter(function (j) { return tasteRank(pool[j]) === 0 && vals[best] - vals[j] <= TASTE_BAND; });
+        if (tasteCand.length) cand = tasteCand;
         cand.sort(function (a, b) { return hoursOf(pool[a]) - hoursOf(pool[b]) || vals[b] - vals[a] || (pool[a].site.id < pool[b].site.id ? -1 : 1); });
         var pick = cand[0];
         if (pick !== best) pool[pick]._nearFirstOver = pool[pick]._nearFirstOver || pool[best].site.name;
@@ -685,7 +725,7 @@
       config: config,
       warnings: warnings,
       evidenceAudit: { envTerms: envTermAudit(ctx) },
-      input: { purpose: input.purpose, walk: walk, maxHours: input.maxHours || 3, canVisit: input.canVisit !== false, month: month, date: date,
+      input: { purpose: input.purpose, forestTaste: input.forestTaste || null, walk: walk, maxHours: input.maxHours || 3, canVisit: input.canVisit !== false, month: month, date: date,
                origin: origin ? { approx: origin.approx || null, region: origin.region || null, sigungu: origin.sigungu || null } : null },
       weights: W, safety: safety, profile: profile,
       context: { region: regionContext(origin, ctx) },
@@ -719,7 +759,8 @@
     if (gn.length) out.push(gn.join('; '));
     if (profile.literatureOnlyDomains.length) out.push(profile.literatureOnlyDomains.map(function (d) { return DOMAINS[d].label; }).join('·') + '는 효과 자료가 없어 환경 노출만 반영');
     out.push('방문일 환경: ' + e.env.label);
-    if (e.nearFirst) out.push('점수가 더 높은 ' + e.nearFirst + '와(과) 차이가 불확실 범위 안이라, 이동시간이 짧은 이곳을 앞에 둠');
+    if (e.nearFirst) out.push('점수가 더 높은 ' + e.nearFirst + '와(과) 차이가 불확실 범위 안이라, ' + (e.landscape && e.landscape.tasteMatch ? '좋아하는 숲(' + e.landscape.taste + ') 비율이 높은 편이고 ' : '') + '이동시간 기준으로 이곳을 앞에 둠');
+    if (e.landscape && e.landscape.tasteMatch) out.push('반경 5 km 숲에서 고른 취향(' + e.landscape.taste + ') 비율이 다른 시설보다 높은 편 — 점수에는 넣지 않고 비슷한 점수끼리의 순서에만 반영');
     var badW = e.envDetail.hazards.filter(function (h) { return PARAMS.badWeatherIndoorFirst.value.indexOf(h) >= 0; });
     if (badW.length) out.push(e.tier === 0 ? '나쁜 날씨(' + badW.join('·') + '): 실내 대체 시설이 있어 앞 순위로 둠' : '나쁜 날씨(' + badW.join('·') + '): 실내 대체 시설 정보가 없어 실내 시설 다음 순위로 둠');
     e.envDetail.notes.forEach(function (n) { out.push(n); });

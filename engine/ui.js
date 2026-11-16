@@ -56,11 +56,33 @@
       '<button type="button" class="ghost-btn" id="eg-geo">내 위치 사용</button>' +
       '<select id="eg-sido"><option value="">시도</option></select><select id="eg-sigungu"><option value="">시군구</option></select></div>' +
       '<small id="eg-geo-note">위치는 이 기기 안에서만 거리 계산에 씁니다.</small></div>' +
+      tasteHTML() +
       '<label class="eg-inline"><input type="checkbox" id="eg-cannot" /> 지금은 숲에 가기 어렵다(가까운 대안 보기)</label>' +
       '<label class="eg-inline"><input type="checkbox" id="eg-usescn" /> 왼쪽 패널의 기상 시나리오로 시험해 보기</label>' +
       '<button type="button" class="primary-btn" id="eg-run">맞춤 추천 받기</button>' +
       '</fieldset></div>' +
       '<div id="eg-out" aria-live="polite"></div>';
+  }
+
+  // 숲 취향 사진(위키미디어 공용, 라이선스·출처 표기). 사진은 예시이며 해당 시설 사진이 아님.
+  // 세 장 모두 늦봄~여름 맑은 날 눈높이 숲길 사진으로 맞춤(평균 밝기 113~123/255, 2026-11-16 측정).
+  var TASTE_PHOTOS = [
+    { v: 'conifer', label: '침엽수림', src: 'https://commons.wikimedia.org/wiki/Special:FilePath/Brendstrup_Skov_2.jpg?width=480',
+      credit: '낙엽송 조림지 숲길(덴마크, 2013-05) · RhinoMind · CC BY-SA 3.0', page: 'https://commons.wikimedia.org/wiki/File:Brendstrup_Skov_2.jpg' },
+    { v: 'broadleaf', label: '활엽수림', src: 'https://commons.wikimedia.org/wiki/Special:FilePath/Maj_i_Riis_Skov_02.JPG?width=480',
+      credit: '활엽수 숲길(덴마크 Riis Skov, 2015-05) · RhinoMind · CC BY-SA 4.0', page: 'https://commons.wikimedia.org/wiki/File:Maj_i_Riis_Skov_02.JPG' },
+    { v: 'mixed', label: '혼효림', src: 'https://commons.wikimedia.org/wiki/Special:FilePath/Gribskov_-_N%C3%B8debo-Ottevejskrydset_path.JPG?width=480',
+      credit: '침엽·활엽 혼효 숲길(덴마크 Gribskov, 2015-07) · Ramblersen · CC BY-SA 4.0', page: 'https://commons.wikimedia.org/wiki/File:Gribskov_-_N%C3%B8debo-Ottevejskrydset_path.JPG' }
+  ];
+  function tasteHTML() {
+    return '<fieldset class="eg-field eg-taste"><legend>좋아하는 숲(선택)</legend><div class="eg-taste-grid">' +
+      TASTE_PHOTOS.map(function (t) {
+        return '<label class="eg-taste-opt"><input type="radio" name="eg-taste" value="' + t.v + '" />' +
+          '<img src="' + t.src + '" alt="' + t.label + ' 예시 사진" loading="lazy" referrerpolicy="no-referrer" />' +
+          '<b>' + t.label + '</b><small><a href="' + t.page + '" target="_blank" rel="noopener">' + esc(t.credit) + '</a></small></label>';
+      }).join('') +
+      '<label class="eg-taste-opt eg-taste-none"><input type="radio" name="eg-taste" value="" checked /><b>상관없음</b></label></div>' +
+      '<small>취향은 점수에 넣지 않고, 점수가 비슷한 시설끼리의 순서에만 반영합니다. 숲 종류에 따른 치유 효과 차이는 아직 확인되지 않았습니다.</small></fieldset>';
   }
 
   function fillRegions() {
@@ -87,7 +109,8 @@
       purpose: document.getElementById('eg-purpose').value,
       walk: document.getElementById('eg-walk').value,
       maxHours: +document.getElementById('eg-hours').value,
-      canVisit: !document.getElementById('eg-cannot').checked
+      canVisit: !document.getElementById('eg-cannot').checked,
+      forestTaste: (document.querySelector('input[name="eg-taste"]:checked') || {}).value || null
     };
     if (dv.charAt(0) === 'm') input.month = +dv.slice(1); else input.date = dv;
     if (geo) input.origin = { lat: geo.lat, lng: geo.lng };
@@ -132,11 +155,17 @@
       var near = e.links.forests.length ? e.links.forests.map(function (f) { return esc(f.name) + ' ' + f.km + 'km'; }).join(', ') : '20 km 안 산림 자료 없음';
       return '<li class="eg-item"><div class="eg-item-head"><span class="eg-rank">' + e.rank + '</span><div><b>' + esc(e.site.name) + '</b>' +
         ' <span class="eg-badge ' + b[1] + '">' + b[0] + '</span>' +
-        '<small class="eg-sub">' + esc(e.site.address || '') + '</small></div>' +
+        (e.landscape ? e.landscape.badges.map(function (g) { return ' <span class="eg-badge b-land" title="' + esc(g.note + ' (' + g.basis + ')') + '">' + esc(g.label) + '</span>'; }).join('') +
+          (e.landscape.tasteMatch ? ' <span class="eg-badge b-taste">취향: ' + esc(e.landscape.taste) + ' 많은 편</span>' : '') : '') +
+        '<small class="eg-sub">' + esc(e.site.address || '') + '</small>' +
+        (e.landscape && e.landscape.cautions.length ? '<small class="eg-caution">⚠ ' + e.landscape.cautions.map(esc).join(' ') + '</small>' : '') + '</div>' +
         '<div class="eg-score"><b>' + e.total.toFixed(0) + '</b><small>점수 범위 ' + (e.totalRange ? e.totalRange[0] + '~' + e.totalRange[1] : '-') + ' · 순위 ' + (e.rankRange ? e.rankRange[0] + '~' + e.rankRange[1] + '위' : '-') + '</small></div></div>' +
         '<div class="eg-bars"><span>효과 ' + (e.scores.effect == null ? '–' : e.scores.effect) + '</span><span>환경 ' + e.scores.env + '</span><span>접근 ' + e.scores.access +
         (e.access.hours != null ? ' (약 ' + e.access.hours + '시간)' : '') + '</span></div>' +
         '<details><summary>추천 근거와 프로그램</summary><ul class="eg-reasons">' + e.reasons.map(function (x) { return '<li>' + esc(x) + '</li>'; }).join('') + '</ul>' +
+        (e.landscape ? '<p><b>숲 경관(반경 5 km)</b> 침엽 ' + e.landscape.share.conifer + '% · 활엽 ' + e.landscape.share.broadleaf + '% · 혼효 ' + e.landscape.share.mixed + '%' +
+          e.landscape.badges.map(function (g) { return '<br><small>' + esc(g.label) + ': ' + esc(g.note) + ' [' + esc(g.basis) + ']</small>'; }).join('') +
+          '<br><small>숲 종류(임상)는 점수에 반영하지 않습니다. 숲 종류에 따른 치유 효과 차이는 아직 근거가 부족합니다.</small></p>' : '') +
         '<p><b>프로그램</b><br>' + prog + '</p><p><b>주변 산림</b> ' + near + '</p>' + (e.links.regionHealth ? '<p><b>시설 지역 건강지표(' + esc(e.links.regionHealth.sigungu) + ')</b><br>' + e.links.regionHealth.items.map(function (x) { return esc(x.text); }).join('<br>') + '<br><small>' + esc(e.links.regionHealth.caution) + '</small></p>' : '') + '<p><b>주변 관광</b> ' + (e.links.tourism && e.links.tourism.length ? e.links.tourism.map(function (t) { return esc(t.name) + ' <small>' + esc(t.type) + ' ' + t.km + 'km</small>'; }).join(', ') : '–') +
         '<br><small>' + esc(e.links.tourismNote || '') + '</small></p></details></li>';
     }).join('') + '</ol>';
