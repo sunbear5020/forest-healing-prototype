@@ -23,7 +23,7 @@
 }(typeof self !== 'undefined' ? self : this, function () {
   'use strict';
 
-  var VERSION = '0.5.0';
+  var VERSION = '0.6.0';
 
   /* ---------------------------------------------------------------------
      계수표 — basis: rule(공공 기준) / literature / model / demo(시연값)
@@ -36,6 +36,7 @@
     coldCaution:    { value: 0, basis: 'demo', note: '최고기온 0 ℃ 이하 감점' },
     windWarn:       { value: 14, basis: 'rule', note: '풍속 14 m/s: 기상청 육상 강풍주의보 기준값' },
     pm25Bad:        { value: 36, basis: 'rule', note: 'PM2.5 36 ㎍/㎥ 이상 = 환경부 예보 등급 나쁨' },
+    nvocEnvMax:     { value: 3, basis: 'decision', note: '예측 NVOC를 환경 점수에 반영하는 최대 폭(±점). 2026-11-16 사용자 결정(환경 점수 소폭 반영). 농도→효과 근거 미확인' },
     rainPop:        { value: 60, basis: 'demo', note: '강수확률 60% 이상 또는 강수 2시간 이상을 비 오는 날로 봄' },
     lapse:          { value: 0.65, basis: 'literature', note: '표준 기온감률 0.65 ℃/100 m(연구설계 3.4절)' },
     roadFactor:     { value: 1.3, basis: 'demo', note: '직선거리 → 도로거리 보정' },
@@ -507,6 +508,51 @@
      근거: 연구설계/메타분석 09(기분 변화에 임상 차이 미확인), 10(선호·회복 지각은 혼효림 우위 방향, 근거 약함),
      08(한국 수목 꽃가루: 4~5월 참나무·자작·오리, 제주 삼나무 2~4월).
      --------------------------------------------------------------------- */
+  /* ---------------------------------------------------------------------
+     3-d'. 예측 NVOC(피톤치드) 농도. 원문에서 계수를 확인한 식만 씀
+     자작나무: Kim·Park·Kwak 2020 IJERPH 17:7875, R² 0.601, 2019년 5·7월 측정
+     잣나무: Kim et al. 2021 Atmosphere 12:1113, 600·700본/ha 식(R² 0.566·0.764), 미기후 3~9월 측정
+     단위 μg/m³(모형값). 측정 계절 밖은 계산하지 않음. 근거등급 낮음
+     --------------------------------------------------------------------- */
+  var NVOC_MODELS = {
+    '자작나무': { months: [5, 6, 7], src: 'Kim·Park·Kwak 2020, IJERPH 17:7875', r2: '0.60',
+      f: [function (t, h, w) { return -1.204 + 0.096 * t + 0.008 * h - 0.261 * w; }] },
+    '잣나무': { months: [3, 4, 5, 6, 7, 8, 9], src: 'Kim et al. 2021, Atmosphere 12:1113(600·700본/ha 식)', r2: '0.57~0.76',
+      f: [function (t, h) { return -0.501 + 0.012 * t + 0.014 * h; }, function (t, h) { return -0.410 + 0.041 * t + 0.029 * h; }] }
+  };
+  function nvocInfo(site, env, month, ctx) {
+    var ss = ctx.facilityEnv && ctx.facilityEnv.species_stands && ctx.facilityEnv.species_stands[site.id];
+    if (!ss) return null;
+    var out = [];
+    Object.keys(NVOC_MODELS).forEach(function (sp) {
+      var st = ss[sp];
+      if (!st || !(st.n_poly_ge1ha_1km >= 1)) return;
+      var m = NVOC_MODELS[sp], item = { species: sp, ha1km: st.ha_1km, src: m.src, r2: m.r2, evidence: '낮음', unit: 'μg/m³(모형값)' };
+      if (m.months.indexOf(month) < 0) { item.status = 'out_of_season'; item.note = '측정 계절(' + m.months[0] + '~' + m.months[m.months.length - 1] + '월) 밖이라 계산하지 않음'; out.push(item); return; }
+      if (!env || env.tmean == null || env.reh == null) { item.status = 'no_weather'; item.note = '기상 자료 없음'; out.push(item); return; }
+      var w = env.wind || 0, vals = m.f.map(function (fn) { return fn(env.tmean, env.reh, w); });
+      var c = env.clim, base = c && c.tavg != null && c.rh != null ? m.f.map(function (fn) { return fn(c.tavg, c.rh, w); }) : null;
+      item.range = [round(Math.min.apply(null, vals), 2), round(Math.max.apply(null, vals), 2)];
+      if (item.range[0] <= 0) { item.status = 'invalid'; item.note = '모형값이 0 이하(식의 적용 범위 밖으로 보임)'; out.push(item); return; }
+      item.status = 'ok';
+      if (base && Math.min.apply(null, base) > 0) {
+        var r = vals.reduce(function (a, b) { return a + b; }, 0) / base.reduce(function (a, b) { return a + b; }, 0);
+        item.vsUsual = round(r, 2);
+        item.level = r >= 1.1 ? '평소보다 높음' : r <= 0.9 ? '평소보다 낮음' : '평소 수준';
+      }
+      item.basisWeather = env.label;
+      out.push(item);
+    });
+    return out.length ? out : null;
+  }
+  function nvocEnvAdj(info) {
+    if (!info) return 0;
+    var rs = info.filter(function (x) { return x.status === 'ok' && x.vsUsual != null; }).map(function (x) { return x.vsUsual; });
+    if (!rs.length) return 0;
+    var r = Math.max.apply(null, rs), M = PARAMS.nvocEnvMax.value;
+    return round(clamp((r - 1) * 10, -M, M), 1);
+  }
+
   var TASTE_BAND = 3; // 점(0~100). 취향 정렬을 허용하는 최고점과의 차이
   var TASTE = { conifer: '침엽수림', broadleaf: '활엽수림', mixed: '혼효림' };
   var _standCut = null;
@@ -586,6 +632,8 @@
         : basisSet.some(function (b) { return b === 'similar'; }) ? 'similar' : 'literature';
       if (env.source === 'none') warnings.push(site.name + ': 기상 자료 없음(환경 점수 중립값)');
       var v = envFit(site, profile, env, ctx, proto, walk);
+      var nvoc = nvocInfo(site, env, month, ctx), nvAdj = nvocEnvAdj(nvoc);
+      if (nvAdj) { v.score = clamp(v.score + nvAdj, 0, 100); v.notes.push('예측 피톤치드(모형값)가 같은 달 평소 기상 대비 ' + (nvAdj > 0 ? '높아 +' : '낮아 ') + nvAdj + '점(근거등급 낮음, 최대 ±' + PARAMS.nvocEnvMax.value + '점)'); }
       var a = access(site, origin, input.maxHours, ctx);
       var effScore = effectSD == null ? null : clamp(100 * effectSD / PARAMS.effectScale.value, 0, 100);
       var exclude = [];
@@ -596,7 +644,7 @@
       return {
         site: site, proto: proto, env: env, byDomain: byDomain, effectSD: effectSD, effectBasis: basis, envTermsUsed: envUsed,
         scores: { effect: effScore == null ? null : round(effScore, 0), env: round(v.score, 0), access: a.score },
-        envDetail: v, access: a, excluded: exclude, eligible: exclude.length === 0,
+        envDetail: v, nvoc: nvoc, nvocAdj: nvAdj, access: a, excluded: exclude, eligible: exclude.length === 0,
         tier: (!v.indoor && v.hazards.some(function (h) { return PARAMS.badWeatherIndoorFirst.value.indexOf(h) >= 0; })) ? 1 : 0
       };
     });

@@ -3564,5 +3564,389 @@
     "unknown_83_86": 1.4
    }
   }
+ },
+ "species_stands": {
+  "_meta": {
+   "source": "임상도(1:5,000) 시설 반경 5 km 폴리곤의 수종 코드(koftrGrou) 집계, 2026-11-16. 원 폴리곤은 비공개.",
+   "fields": [
+    "ha_1km",
+    "n_poly_ge1ha_1km",
+    "max_poly_ha_1km",
+    "ha_5km"
+   ],
+   "caveat": "1 km는 폴리곤 외접사각형 중심과 시설 대표점 사이 거리(근사). 임상도에 조림/천연 구분 없음."
+  },
+  "F02": {
+   "잣나무": {
+    "ha_1km": 11.4,
+    "n_poly_ge1ha_1km": 3,
+    "max_poly_ha_1km": 5.1,
+    "ha_5km": 138.2
+   },
+   "자작나무": {
+    "ha_1km": 0,
+    "n_poly_ge1ha_1km": 0,
+    "max_poly_ha_1km": 0,
+    "ha_5km": 16.7
+   },
+   "편백나무": {
+    "ha_1km": 0,
+    "n_poly_ge1ha_1km": 0,
+    "max_poly_ha_1km": 0,
+    "ha_5km": 4.9
+   }
+  },
+  "F03": {
+   "잣나무": {
+    "ha_1km": 18.6,
+    "n_poly_ge1ha_1km": 5,
+    "max_poly_ha_1km": 4.2,
+    "ha_5km": 669.8
+   },
+   "자작나무": {
+    "ha_1km": 1.2,
+    "n_poly_ge1ha_1km": 0,
+    "max_poly_ha_1km": 0.5,
+    "ha_5km": 144.5
+   },
+   "편백나무": {
+    "ha_1km": 0,
+    "n_poly_ge1ha_1km": 0,
+    "max_poly_ha_1km": 0,
+    "ha_5km": 3.4
+   }
+  },
+  "F04": {
+   "잣나무": {
+    "ha_1km": 0,
+    "n_poly_ge1ha_1km": 0,
+    "max_poly_ha_1km": 0,
+    "ha_5km": 65.6
+   },
+   "자작나무": {
+    "ha_1km": 0,
+    "n_poly_ge1ha_1km": 0,
+    "max_poly_ha_1km": 0,
+    "ha_5km": 65.2
+   },
+   "편백나무": {
+    "ha_1km": 0,
+    "n_poly_ge1ha_1km": 0,
+    "max_poly_ha_1km": 0,
+    "ha_5km": 8.2
+   },
+   "죽림": {
+    "ha_1km": 0,
+    "n_poly_ge1ha_1km": 0,
+    "max_poly_ha_1km": 0,
+    "ha_5km": 5.4
+   }
+  },
+  "F05": {
+   "편백나무": {
+    "ha_1km": 5.5,
+    "n_poly_ge1ha_1km": 1,
+    "max_poly_ha_1km": 1.6,
+    "ha_5km": 727.0
+   },
+   "삼나무": {
+    "ha_1km": 1.2,
+    "n_poly_ge1ha_1km": 0,
+    "max_poly_ha_1km": 0.7,
+    "ha_5km": 26.0
+   },
+   "죽림": {
+    "ha_1km": 1.4,
+    "n_poly_ge1ha_1km": 0,
+    "max_poly_ha_1km": 0.7,
+    "ha_5km": 40.9
+   },
+   "잣나무": {
+    "ha_1km": 0,
+    "n_poly_ge1ha_1km": 0,
+    "max_poly_ha_1km": 0,
+    "ha_5km": 5.9
+   },
+   "자작나무": {
+    "ha_1km": 0,
+    "n_poly_ge1ha_1km": 0,
+    "max_poly_ha_1km": 0,
+    "ha_5km": 3.4
+   }
+  },
+  "F06": {
+   "잣나무": {
+    "ha_1km": 1.4,
+    "n_poly_ge1ha_1km": 0,
+    "max_poly_ha_1km": 0.6,
+    "ha_5km": 16.3
+   },
+   "편백나무": {
+    "ha_1km": 0,
+    "n_poly_ge1ha_1km": 0,
+    "max_poly_ha_1km": 0,
+    "ha_5km": 18.6
+   },
+   "자작나무": {
+    "ha_1km": 0,
+    "n_poly_ge1ha_1km": 0,
+    "max_poly_ha_1km": 0,
+    "ha_5km": 2.5
+   },
+   "죽림": {
+    "ha_1km": 0,
+    "n_poly_ge1ha_1km": 0,
+    "max_poly_ha_1km": 0,
+    "ha_5km": 4.1
+   }
+  },
+  "F07": {
+   "잣나무": {
+    "ha_1km": 2.3,
+    "n_poly_ge1ha_1km": 0,
+    "max_poly_ha_1km": 1.0,
+    "ha_5km": 67.9
+   },
+   "죽림": {
+    "ha_1km": 0.2,
+    "n_poly_ge1ha_1km": 0,
+    "max_poly_ha_1km": 0.1,
+    "ha_5km": 7.8
+   }
+  },
+  "F08": {
+   "잣나무": {
+    "ha_1km": 16.4,
+    "n_poly_ge1ha_1km": 4,
+    "max_poly_ha_1km": 5.4,
+    "ha_5km": 618.6
+   },
+   "자작나무": {
+    "ha_1km": 0,
+    "n_poly_ge1ha_1km": 0,
+    "max_poly_ha_1km": 0,
+    "ha_5km": 105.6
+   },
+   "편백나무": {
+    "ha_1km": 0,
+    "n_poly_ge1ha_1km": 0,
+    "max_poly_ha_1km": 0,
+    "ha_5km": 1.1
+   }
+  },
+  "F09": {
+   "잣나무": {
+    "ha_1km": 1.8,
+    "n_poly_ge1ha_1km": 1,
+    "max_poly_ha_1km": 1.2,
+    "ha_5km": 104.9
+   },
+   "자작나무": {
+    "ha_1km": 0.2,
+    "n_poly_ge1ha_1km": 0,
+    "max_poly_ha_1km": 0.2,
+    "ha_5km": 43.9
+   },
+   "편백나무": {
+    "ha_1km": 0,
+    "n_poly_ge1ha_1km": 0,
+    "max_poly_ha_1km": 0,
+    "ha_5km": 3.0
+   }
+  },
+  "F10": {
+   "편백나무": {
+    "ha_1km": 18.9,
+    "n_poly_ge1ha_1km": 4,
+    "max_poly_ha_1km": 5.0,
+    "ha_5km": 65.8
+   },
+   "잣나무": {
+    "ha_1km": 0,
+    "n_poly_ge1ha_1km": 0,
+    "max_poly_ha_1km": 0,
+    "ha_5km": 2.5
+   },
+   "죽림": {
+    "ha_1km": 0,
+    "n_poly_ge1ha_1km": 0,
+    "max_poly_ha_1km": 0,
+    "ha_5km": 11.1
+   }
+  },
+  "F11": {
+   "잣나무": {
+    "ha_1km": 11.9,
+    "n_poly_ge1ha_1km": 3,
+    "max_poly_ha_1km": 4.6,
+    "ha_5km": 114.5
+   },
+   "자작나무": {
+    "ha_1km": 20.5,
+    "n_poly_ge1ha_1km": 2,
+    "max_poly_ha_1km": 16.1,
+    "ha_5km": 60.9
+   },
+   "편백나무": {
+    "ha_1km": 0,
+    "n_poly_ge1ha_1km": 0,
+    "max_poly_ha_1km": 0,
+    "ha_5km": 29.6
+   }
+  },
+  "F12": {
+   "잣나무": {
+    "ha_1km": 5.3,
+    "n_poly_ge1ha_1km": 0,
+    "max_poly_ha_1km": 0.9,
+    "ha_5km": 87.0
+   },
+   "자작나무": {
+    "ha_1km": 0,
+    "n_poly_ge1ha_1km": 0,
+    "max_poly_ha_1km": 0,
+    "ha_5km": 37.6
+   },
+   "편백나무": {
+    "ha_1km": 0,
+    "n_poly_ge1ha_1km": 0,
+    "max_poly_ha_1km": 0,
+    "ha_5km": 5.5
+   }
+  },
+  "F13": {
+   "편백나무": {
+    "ha_1km": 0.8,
+    "n_poly_ge1ha_1km": 0,
+    "max_poly_ha_1km": 0.8,
+    "ha_5km": 59.0
+   },
+   "잣나무": {
+    "ha_1km": 0,
+    "n_poly_ge1ha_1km": 0,
+    "max_poly_ha_1km": 0,
+    "ha_5km": 53.9
+   },
+   "자작나무": {
+    "ha_1km": 0,
+    "n_poly_ge1ha_1km": 0,
+    "max_poly_ha_1km": 0,
+    "ha_5km": 3.1
+   }
+  },
+  "F14": {
+   "편백나무": {
+    "ha_1km": 0,
+    "n_poly_ge1ha_1km": 0,
+    "max_poly_ha_1km": 0,
+    "ha_5km": 67.5
+   },
+   "죽림": {
+    "ha_1km": 0,
+    "n_poly_ge1ha_1km": 0,
+    "max_poly_ha_1km": 0,
+    "ha_5km": 23.2
+   },
+   "자작나무": {
+    "ha_1km": 0,
+    "n_poly_ge1ha_1km": 0,
+    "max_poly_ha_1km": 0,
+    "ha_5km": 4.2
+   }
+  },
+  "hwasun": {
+   "편백나무": {
+    "ha_1km": 6.3,
+    "n_poly_ge1ha_1km": 1,
+    "max_poly_ha_1km": 1.4,
+    "ha_5km": 171.0
+   },
+   "죽림": {
+    "ha_1km": 1.5,
+    "n_poly_ge1ha_1km": 0,
+    "max_poly_ha_1km": 0.4,
+    "ha_5km": 30.0
+   },
+   "삼나무": {
+    "ha_1km": 0,
+    "n_poly_ge1ha_1km": 0,
+    "max_poly_ha_1km": 0,
+    "ha_5km": 5.8
+   }
+  },
+  "jangseong": {
+   "편백나무": {
+    "ha_1km": 86.4,
+    "n_poly_ge1ha_1km": 21,
+    "max_poly_ha_1km": 16.7,
+    "ha_5km": 1168.5
+   },
+   "삼나무": {
+    "ha_1km": 23.8,
+    "n_poly_ge1ha_1km": 4,
+    "max_poly_ha_1km": 14.6,
+    "ha_5km": 157.6
+   },
+   "죽림": {
+    "ha_1km": 2.1,
+    "n_poly_ge1ha_1km": 1,
+    "max_poly_ha_1km": 2.1,
+    "ha_5km": 79.9
+   }
+  },
+  "namhae": {
+   "편백나무": {
+    "ha_1km": 160.5,
+    "n_poly_ge1ha_1km": 15,
+    "max_poly_ha_1km": 37.3,
+    "ha_5km": 755.0
+   },
+   "삼나무": {
+    "ha_1km": 6.7,
+    "n_poly_ge1ha_1km": 1,
+    "max_poly_ha_1km": 6.7,
+    "ha_5km": 31.4
+   },
+   "죽림": {
+    "ha_1km": 0,
+    "n_poly_ge1ha_1km": 0,
+    "max_poly_ha_1km": 0,
+    "ha_5km": 15.1
+   }
+  },
+  "saneum": {
+   "잣나무": {
+    "ha_1km": 38.0,
+    "n_poly_ge1ha_1km": 12,
+    "max_poly_ha_1km": 5.7,
+    "ha_5km": 811.6
+   },
+   "자작나무": {
+    "ha_1km": 0,
+    "n_poly_ge1ha_1km": 0,
+    "max_poly_ha_1km": 0,
+    "ha_5km": 37.1
+   }
+  },
+  "seogwipo": {
+   "삼나무": {
+    "ha_1km": 44.6,
+    "n_poly_ge1ha_1km": 8,
+    "max_poly_ha_1km": 20.5,
+    "ha_5km": 233.1
+   },
+   "편백나무": {
+    "ha_1km": 0.7,
+    "n_poly_ge1ha_1km": 0,
+    "max_poly_ha_1km": 0.7,
+    "ha_5km": 86.6
+   },
+   "죽림": {
+    "ha_1km": 0.4,
+    "n_poly_ge1ha_1km": 0,
+    "max_poly_ha_1km": 0.3,
+    "ha_5km": 8.3
+   }
+  }
  }
 }

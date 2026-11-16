@@ -1,13 +1,13 @@
 {
  "plan": "docs/EVALUATION.md (2026-11-15 고정)",
- "ranAt": "2026-11-16T00:22:18.820Z",
- "seconds": 77.895,
+ "ranAt": "2026-11-16T00:40:31.056Z",
+ "seconds": 83.128,
  "nCases": 1600,
  "config": {
   "engine": "0.5.0",
   "seed": 20271,
   "mcDraws": 400,
-  "paramsHash": "ee591a7f",
+  "paramsHash": "97d162df",
   "weights": {
    "effect": 0.5,
    "env": 0.3,

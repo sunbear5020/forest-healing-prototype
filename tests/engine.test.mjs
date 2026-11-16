@@ -148,4 +148,15 @@ t('v0.5: 숲 취향은 총점을 바꾸지 않고, 경관 배지·꽃가루 안�
   const fall = E.recommend({ ...base, maxHours: 9, topN: 18, month: 10 }, ctx);
   assert.ok(fall.recommendations.every((e) => !e.landscape || e.landscape.cautions.length === 0 || e.site.lat < 33.7));
 });
+t('v0.6: 예측 피톤치드는 측정 계절 밖이면 계산 안 하고, 환경 점수만 ±3점 안에서 조정', () => {
+  const nov = E.recommend({ ...base, month: 11, maxHours: 9, topN: 40 }, ctx);
+  const nv = nov.recommendations.filter((e) => e.nvoc);
+  assert.ok(nv.length > 0);
+  nv.forEach((e) => { assert.ok(e.nvoc.every((x) => x.status === 'out_of_season')); assert.equal(e.nvocAdj, 0); });
+  for (const ov of [{ temp: 30, humidity: 85, wind: 1 }, { temp: 18, humidity: 50, wind: 3 }]) {
+    const r = E.recommend({ ...base, month: 7, maxHours: 9, topN: 40, envOverride: ov }, ctx);
+    r.recommendations.forEach((e) => { assert.ok(Math.abs(e.nvocAdj || 0) <= 3); });
+    assert.ok(r.recommendations.some((e) => e.nvoc && e.nvoc.some((x) => x.status === 'ok')));
+  }
+});
 console.log(`\n${n} tests passed`);

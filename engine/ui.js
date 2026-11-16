@@ -166,6 +166,13 @@
         (e.landscape ? '<p><b>숲 경관(반경 5 km)</b> 침엽 ' + e.landscape.share.conifer + '% · 활엽 ' + e.landscape.share.broadleaf + '% · 혼효 ' + e.landscape.share.mixed + '%' +
           e.landscape.badges.map(function (g) { return '<br><small>' + esc(g.label) + ': ' + esc(g.note) + ' [' + esc(g.basis) + ']</small>'; }).join('') +
           '<br><small>숲 종류(임상)는 점수에 반영하지 않습니다. 숲 종류에 따른 치유 효과 차이는 아직 근거가 부족합니다.</small></p>' : '') +
+        (e.nvoc ? '<p><b>예상 피톤치드(모형값)</b>' + e.nvoc.map(function (x) {
+          var head = '<br>' + esc(x.species) + ' 숲 ' + x.ha1km + ' ha(1 km 안): ';
+          if (x.status === 'ok') return head + (x.range[0] === x.range[1] ? x.range[0] : x.range[0] + '~' + x.range[1]) + ' μg/m³' + (x.level ? ' · ' + esc(x.level) : '') +
+            ' <small>[' + esc(x.src) + ', R² ' + esc(x.r2) + ', 근거등급 ' + esc(x.evidence) + ']</small>';
+          return head + '<small>' + esc(x.note) + '</small>';
+        }).join('') + '<br><small>한 장소·짧은 기간 측정으로 만든 식에 오늘 예보를 넣은 값입니다. 농도와 건강 효과의 관계는 확인되지 않아 효과 점수에는 넣지 않고 환경 점수에만 최대 ±3점 반영합니다' +
+          (e.nvocAdj ? '(이 시설 ' + (e.nvocAdj > 0 ? '+' : '') + e.nvocAdj + '점)' : '') + '.</small></p>' : '') +
         '<p><b>프로그램</b><br>' + prog + '</p><p><b>주변 산림</b> ' + near + '</p>' + (e.links.regionHealth ? '<p><b>시설 지역 건강지표(' + esc(e.links.regionHealth.sigungu) + ')</b><br>' + e.links.regionHealth.items.map(function (x) { return esc(x.text); }).join('<br>') + '<br><small>' + esc(e.links.regionHealth.caution) + '</small></p>' : '') + '<p><b>주변 관광</b> ' + (e.links.tourism && e.links.tourism.length ? e.links.tourism.map(function (t) { return esc(t.name) + ' <small>' + esc(t.type) + ' ' + t.km + 'km</small>'; }).join(', ') : '–') +
         '<br><small>' + esc(e.links.tourismNote || '') + '</small></p></details></li>';
     }).join('') + '</ol>';
