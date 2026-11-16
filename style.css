@@ -818,3 +818,4 @@ input[type="range"]::-moz-range-thumb {
 .ev-grade-vlo { background: #F1DDD5; color: var(--clay); }
 .ev-details summary { cursor: pointer; font-size: 12.5px; color: var(--green-2); margin-top: 6px; }
 @media (max-width: 560px) { .ev-dl { grid-template-columns: 1fr; } }
+a.ghost-btn { text-decoration: none; display: inline-flex; align-items: center; }
