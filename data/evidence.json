@@ -1,7 +1,7 @@
 {
 "_meta": {
 "built": "2026-11-15",
-"note": "효과 근거 계층(data/evidence.json)\n1) model: 설문 기반 효과모형(코드/alg_v1/effect_model.json, 다른 작업에서 적합) — 그대로 싣는다\n2) prior: 산림 미기후·임상→정신건강 메타분석(연구설계/메타분석/작업파일/pooled.json)\n   · 효과모형과 단위를 맞추려고 '단일군 사전-사후' 통합값을 사전값으로 씀(둘 다 사전-사후 변화)\n   · 95% 예측구간을 10~90% 구간으로 환산(반폭 × 1.2816/1.96)\n   · 2026-11-15: 각 사전값에 무작위 대조 연구 통합값(rct, 95% CI)과 GRADE 1차 확실성(grade)을 붙임\n     (작업파일/pooled_design_rob.json, grade.json). 사전값 자체(단일군)는 그대로 둠(단위 일치)\n3) sigungu_points: 시군구 대표점(도시공원 표준데이터 좌표 중앙값, 근사) — 위치 대신 시군구만 고를 때 사용"
+"note": "효과 근거 계층(data/evidence.json)\n1) model: 설문 기반 효과모형(코드/alg_v1/effect_model.json, 다른 작업에서 적합) — 그대로 싣는다\n2) prior: 산림 미기후·임상→정신건강 메타분석(연구설계/메타분석/작업파일/pooled.json)\n   · 효과모형과 단위를 맞추려고 '단일군 사전-사후' 통합값을 사전값으로 씀(둘 다 사전-사후 변화)\n   · 95% 예측구간을 10~90% 구간으로 환산(반폭 × 1.2816/1.96)\n   · 2026-11-15: 각 사전값에 무작위 대조 연구 통합값(rct, 95% CI)과 GRADE 1차 확실성(grade)을 붙임\n     (작업파일/pooled_design_rob.json, grade.json). 사전값 자체(단일군)는 그대로 둠(단위 일치)\n3) sigungu_points: 시군구 대표점(도시공원 표준데이터 좌표 중앙값, 근사) — 위치 대신 시군구만 고를 때 사용\n   · 2026-11-16: 완화 기준 가상 판정(grade_lenient)을 함께 붙임(연구설계/메타분석/11_비뚤림_GRADE_완화판_비교.md). 점수 계산에는 쓰지 않음"
 },
 "model": {
 "facilities": {
@@ -1933,7 +1933,8 @@
 "studies": 4,
 "I2": 25.7
 },
-"grade": "낮음"
+"grade": "낮음",
+"grade_lenient": "중간"
 },
 "anxiety": {
 "g": -0.619,
@@ -1952,7 +1953,8 @@
 "studies": 8,
 "I2": 76.2
 },
-"grade": "매우 낮음"
+"grade": "매우 낮음",
+"grade_lenient": "중간"
 },
 "depression": {
 "g": -0.377,
@@ -1971,7 +1973,8 @@
 "studies": 8,
 "I2": 68.3
 },
-"grade": "매우 낮음"
+"grade": "매우 낮음",
+"grade_lenient": "높음"
 },
 "fatigue": {
 "g": -0.492,
@@ -1990,7 +1993,8 @@
 "studies": 5,
 "I2": 64.0
 },
-"grade": "매우 낮음"
+"grade": "매우 낮음",
+"grade_lenient": "중간"
 },
 "vitality": {
 "g": -0.586,
@@ -2009,7 +2013,8 @@
 "studies": 4,
 "I2": 24.9
 },
-"grade": "중간"
+"grade": "중간",
+"grade_lenient": "높음"
 }
 },
 "meta_controlled_95ci": {

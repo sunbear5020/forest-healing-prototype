@@ -177,10 +177,10 @@
     return { pred: p.g, lo: p.lo, hi: p.hi, n: null, supported: true, basis: 'literature',
              note: '효과측정 자료가 없어 메타분석 통합값(단일군 사전-사후)을 씀. 시설 간 차이 정보 없음' + gradeNote(p), grade: p.grade || null };
   }
-  // 문헌 근거 확실성(GRADE 1차 판정)과 무작위 대조 연구 통합값 표기
+  // 문헌 근거 확실성(GRADE 가상 판정: 엄격·완화)과 무작위 대조 연구 통합값 표기
   function gradeNote(p) {
     if (!p || !p.grade) return '';
-    return ' (문헌 근거 확실성 ' + p.grade + (p.rct ? ', 무작위 대조 연구 ' + p.rct.studies + '편 대조군 대비 g ' + p.rct.g.toFixed(2) + ' [' + p.rct.lo95.toFixed(2) + '~' + p.rct.hi95.toFixed(2) + ']' : '') + ', 1차 판정)';
+    return ' (문헌 근거 확실성 ' + p.grade + (p.rct ? ', 무작위 대조 연구 ' + p.rct.studies + '편 대조군 대비 g ' + p.rct.g.toFixed(2) + ' [' + p.rct.lo95.toFixed(2) + '~' + p.rct.hi95.toFixed(2) + ']' : '') + (p.grade_lenient ? ', 엄격 판정 기준. 완화 판정 ' + p.grade_lenient : '') + ', 가상 판정)';
   }
 
   var _simCache = {};

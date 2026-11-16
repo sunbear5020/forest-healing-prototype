@@ -800,3 +800,21 @@ input[type="range"]::-moz-range-thumb {
 .eg-taste-opt img { width: 100%; aspect-ratio: 3 / 2; object-fit: cover; border-radius: 6px; background: #DDE5DD; }
 .eg-taste-opt small { font-size: 10px; line-height: 1.3; }
 .eg-taste-none { justify-content: center; align-items: center; min-height: 60px; background: #F6F6F4; }
+
+/* ── 연구 근거 화면 ── */
+.ev-sec h3 { font-family: var(--font-serif); font-size: 16px; color: var(--green); margin-bottom: 8px; }
+.ev-dl { display: grid; grid-template-columns: 96px 1fr; gap: 6px 12px; font-size: 13px; }
+.ev-dl dt { color: var(--muted); font-weight: 600; }
+.ev-dl dd { margin: 0; color: var(--ink-soft); }
+.ev-note { font-size: 12.5px; color: var(--ink-soft); margin: 8px 0; line-height: 1.65; }
+.ev-meta { color: var(--muted); }
+.ev-ci { color: var(--muted); font-size: 11px; }
+.ev-table td small { color: var(--muted); }
+.ev-list { margin: 0; padding-left: 18px; font-size: 13px; color: var(--ink-soft); line-height: 1.7; }
+.ev-grade { display: inline-block; padding: 1px 8px; border-radius: 999px; font-size: 11.5px; font-weight: 600; }
+.ev-grade-hi { background: #DCEAD3; color: var(--green); }
+.ev-grade-mid { background: var(--sage-soft); color: var(--green-2); }
+.ev-grade-lo { background: #F3E6CF; color: #7A5524; }
+.ev-grade-vlo { background: #F1DDD5; color: var(--clay); }
+.ev-details summary { cursor: pointer; font-size: 12.5px; color: var(--green-2); margin-top: 6px; }
+@media (max-width: 560px) { .ev-dl { grid-template-columns: 1fr; } }
