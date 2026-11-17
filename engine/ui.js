@@ -225,8 +225,10 @@
   function renderAlternatives(a) {
     var h = '<div class="eg-alt"><h3>방문이 어려울 때</h3>' +
       (a.weather ? '<p class="eg-alert' + (a.weather.outdoorOk ? '' : ' urgent') + '">' + esc(a.weather.note) + (a.weather.basis ? ' <small>(' + esc(a.weather.basis) + ')</small>' : '') + '</p>' : '') + '<ol>';
-    h += '<li><b>' + esc(a.digital.title) + '</b> — ' + (a.digital.available && a.digital.url
-      ? '<a href="' + esc(a.digital.url) + '" target="_blank" rel="noopener">바로 이용</a>' : esc(a.digital.status) + '. ' + esc(a.digital.note)) + '</li>';
+    // 순서: 실내 휴식 → 공원 → 산림공원 → 도시숲 → 산림(검토 E1-06). 디지털 프로그램은 출시 후에만 표시
+    var ind = a.indoor || { title: '실내 휴식', note: '' };
+    h += '<li><b>' + esc(ind.title) + '</b> — ' + esc(ind.note) + (a.digital && a.digital.show
+      ? '<br><b>' + esc(a.digital.title) + '</b> <a href="' + esc(a.digital.url) + '" target="_blank" rel="noopener">바로 이용</a>' : '') + '</li>';
     if (a.originNote) h += '<li>' + esc(a.originNote) + '</li>';
     else {
       h += '<li><b>가까운 숲 같은 공원</b>(수관 피복 30% 이상, 1 ha 이상)<ul>' +

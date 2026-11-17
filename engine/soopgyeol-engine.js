@@ -15,7 +15,7 @@
      3 시설별 평가      evaluateSite()  ─ 효과(E) · 환경 적합(V) · 접근(A) · 제외 사유
      4 종합·순위 범위   rankWithUncertainty()  ─ 몬테카를로 순위 10~90%
      5 프로그램·주변 연계 pickPrograms(), nearbyLinks()
-     6 대체 경로        alternatives()  ─ 디지털 프로그램(개발 중) 자리 → 근처 공원 → 산림공원 → 도시숲(자료 확보 시) → 가까운 산림
+     6 대체 경로        alternatives()  ─ 실내 휴식(디지털 프로그램은 출시 후 함께 표시) → 근처 공원 → 산림공원 → 도시숲(자료 확보 시) → 가까운 산림
    ========================================================================= */
 (function (root, factory) {
   if (typeof module === 'object' && module.exports) module.exports = factory();
@@ -445,8 +445,13 @@
     var res = {
       digital: Object.assign({ available: false, status: '개발 중', title: '산림치유 디지털 프로그램',
                                note: '개발 중인 비대면 프로그램 연결 자리입니다. 치료나 진료를 대신하지 않으며, 출시 후 링크를 연결합니다.' }, ctx.digitalTherapeutic || {}),
-      parks: [], forestParks: [], urbanForest: null, forests: [], originNote: null
+      indoor: { title: '실내 휴식', note: '날씨가 나쁘거나 이동이 어려우면 실내에서 쉬면서 몸 상태를 살피세요. 창밖 녹지 바라보기·실내 식물 등은 부담 없는 대안이지만 숲 방문과 같은 효과를 기대할 근거는 부족합니다.' },
+      parks: [], forestParks: [], urbanForest: null, forests: [], originNote: null,
+      // 제시 순서(검토 E1-06, 사용자 결정 2026-11-17 '전면 수용'): 실내 휴식 → 공원 → 산림공원 → 도시숲 → 산림.
+      // 디지털 프로그램은 출시(available·url) 후에만 실내 휴식 단계에 함께 표시한다.
+      order: ['indoor', 'park', 'forestPark', 'urbanForest', 'forest']
     };
+    res.digital.show = !!(res.digital.available && res.digital.url);
     if (!origin || origin.lat == null) {
       res.originNote = '출발 위치(기기 위치 또는 시군구)를 알려 주시면 근처 공원과 산림을 찾습니다.';
       return res;
@@ -496,7 +501,7 @@
     if (hz.length) {
       res.weather = { hazards: hz, basis: opts.hazardBasis || null, outdoorOk: severe.length === 0,
         note: severe.length
-          ? '오늘은 ' + severe.map(function (h) { return HZ[h]; }).join('·') + ' 때문에 공원·산림 등 실외 활동을 권하지 않습니다. 실내 휴식이나 실내에서 쓸 수 있는 디지털 프로그램(개발 중)을 먼저 고려하고, 공원·산림은 날씨가 나아진 뒤 이용하세요.'
+          ? '오늘은 ' + severe.map(function (h) { return HZ[h]; }).join('·') + ' 때문에 공원·산림 등 실외 활동을 권하지 않습니다. 실내 휴식' + (res.digital.show ? '이나 디지털 프로그램' : '') + '을 먼저 고려하고, 공원·산림은 날씨가 나아진 뒤 이용하세요.'
           : '비 예상: 공원·산림은 짧게, 미끄럼에 유의하세요.' };
     }
     return res;

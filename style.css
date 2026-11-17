@@ -425,6 +425,11 @@ input[type="range"]::-moz-range-thumb {
 .rank-delta.up { color: #1D4F6B; background: #E2EFF6; }
 .rank-delta.down { color: #A2583F; background: #F5E4DA; }
 .rank-delta.same { color: var(--muted); background: var(--cream); }
+.grade-chip { display: flex; flex-direction: column; align-items: center; gap: 2px; font-size: 11px; font-weight: 700; line-height: 1.25; text-align: center; color: var(--green-2); word-break: keep-all; }
+.grade-chip i { font-style: normal; font-size: 20px; line-height: 1; }
+.grade-chip.g1 { color: var(--green); }
+.grade-chip.g2 { color: var(--muted); }
+.rail-item .ri-rank.g2 { color: var(--muted); }
 
 .card-body { min-width: 0; }
 .card-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
@@ -673,7 +678,8 @@ input[type="range"]::-moz-range-thumb {
   .score-ring { width: 48px; height: 48px; margin-left: auto; }
   .score-ring b { font-size: 14px; }
   .score-ring b i { font-size: 9px; }
-  .rank-delta { order: -1; }
+  .grade-chip { flex-direction: row; gap: 6px; font-size: 12px; }
+  .grade-chip i { font-size: 16px; }
   .card-title { font-size: 17px; }
   .card-actions { width: 100%; }
   .mini-btn { flex: 1; text-align: center; }

@@ -128,10 +128,10 @@
       <div class="map-head">
         <div>
           <h2>전국 치유의 숲 지도</h2>
-          <p id="map-caption">상위 5곳을 순위 마커로 표시합니다. 마커를 누르면 해당 카드로 이동합니다.</p>
+          <p id="map-caption">조건에 맞는 5곳을 등급 마커(◎ 비슷하게 잘 맞음, ○ 조건에 맞음)로 표시합니다. 마커를 누르면 해당 카드로 이동합니다.</p>
         </div>
         <div class="map-legend">
-          <span><i class="dot top"></i>TOP 5</span>
+          <span><i class="dot top"></i>조건에 맞는 5곳</span>
           <span><i class="dot rest"></i>그 외</span>
           <span><i class="dot pending"></i>프로필 구축 전</span>
         </div>
@@ -141,7 +141,7 @@
         <aside class="map-rail">
           <p class="rail-cap">현재 조건</p>
           <p class="rail-cond" id="rail-cond"></p>
-          <p class="rail-cap">TOP 5 바로가기</p>
+          <p class="rail-cap">조건에 맞는 5곳 바로가기</p>
           <ol class="rail-list" id="rail-list"></ol>
         </aside>
       </div>
@@ -149,14 +149,14 @@
 
     <div class="results-head">
       <div>
-        <h2>추천 치유의 숲 <span id="result-count" class="count-pill">TOP 5</span></h2>
+        <h2>추천 치유의 숲 <span id="result-count" class="count-pill">조건에 맞는 5곳</span></h2>
         <p id="summary" class="summary"></p>
         <p id="purpose-evidence" class="summary purpose-evidence"></p>
       </div>
     </div>
 
     <p class="demo-tip">
-      <strong>시연 팁</strong> 시나리오 프리셋을 바꾸면 카드의 순위 변동(<span class="up">▲</span>/<span class="down">▼</span>)이 표시됩니다.
+      <strong>시연 팁</strong> 시나리오 프리셋을 바꾸면 카드의 등급(◎ 비슷하게 잘 맞음 / ○ 조건에 맞음)과 목록이 바뀝니다. 목록 순서는 우열 순위가 아닙니다.
       같은 숲이라도 기상 조건에 따라 프로그램이 실내형으로 자동 전환됩니다.
     </p>
 
@@ -329,14 +329,14 @@
           <div class="flow-col">
             <span class="flow-cap">가중합 · 매칭</span>
             <div class="flow-item accent">4축 가중합 → <b>종합 적합도</b></div>
-            <div class="flow-item">TOP 5 선정</div>
+            <div class="flow-item">조건에 맞는 5곳 선정</div>
             <div class="flow-item">프로그램 자동 선택<br /><small>(기상 악화 시 실내 대체)</small></div>
             <div class="flow-item">추천 근거 문장 생성</div>
           </div>
           <div class="flow-arrow" aria-hidden="true">→</div>
           <div class="flow-col">
             <span class="flow-cap">출력</span>
-            <div class="flow-item">순위 카드 · 점수 바</div>
+            <div class="flow-item">등급 카드 · 점수 바</div>
             <div class="flow-item">지도 마커</div>
             <div class="flow-item">상세 임상도 리포트</div>
             <div class="flow-item">기관 시연용 근거</div>

@@ -44,11 +44,14 @@ t('자해 생각 응답 → 긴급 안내와 대체경로 우선 표시', () => 
   assert.ok(r.safety.contacts.some((c) => c.tel === '109'));
   assert.equal(r.alternatives.prominent, true);
 });
-t('방문 불가 → 근처 공원(수관 30% 이상)·가까운 산림·디지털치료제 자리', () => {
+t('방문 불가 → 실내 휴식 먼저, 근처 공원(수관 30% 이상)·가까운 산림, 디지털 프로그램은 출시 전 숨김', () => {
   const r = E.recommend({ ...base, canVisit: false }, ctx);
   const a = r.alternatives;
   assert.equal(a.prominent, true);
   assert.equal(a.digital.available, false);
+  assert.equal(a.digital.show, false);
+  assert.deepEqual(a.order, ['indoor', 'park', 'forestPark', 'urbanForest', 'forest']);
+  assert.ok(a.indoor && a.indoor.title === '실내 휴식');
   assert.ok(a.parks.length > 0 && a.parks.every((p) => p.tree_pct >= 30));
   assert.ok(a.forests.length > 0);
   console.log('parks:', a.parks.map((p) => `${p.name} ${p.km}km 수관${p.tree_pct}%`).join(' | '));
@@ -227,5 +230,13 @@ t('E3-03: PM2.5 1시간 값은 수집 날짜에만 씀', () => {
   if (!other) return;
   const r = E.recommend({ ...base, date: other, maxHours: 99, topN: 99 }, ctx);
   r.recommendations.concat(r.excluded || []).forEach((e) => { if (e.env) assert.equal(e.env.pm25, null); });
+});
+t('E1-06: 디지털 프로그램은 링크가 있을 때만 표시, 기상 안내도 그때만 언급', () => {
+  const off = E.recommend({ ...base, canVisit: false, envOverride: { temp: 15, humidity: 50, pm: 'good', rain: false, wind: 16 } }, ctx);
+  assert.ok(!off.alternatives.weather.note.includes('디지털'));
+  const on = E.recommend({ ...base, canVisit: false, envOverride: { temp: 15, humidity: 50, pm: 'good', rain: false, wind: 16 } },
+    { ...ctx, digitalTherapeutic: { available: true, url: 'https://example.org/p' } });
+  assert.equal(on.alternatives.digital.show, true);
+  assert.ok(on.alternatives.weather.note.includes('디지털 프로그램'));
 });
 console.log(`\n${n} tests passed`);
