@@ -149,7 +149,10 @@
     h += '<div class="rg-box"><h4>마음건강 (지역사회건강조사 2025, 표준화율)</h4>';
     h += bar('스트레스', g.stress, 40) + bar(sido.slice(0, 2) + ' 평균', r.stress, 40, 'sido');
     h += bar('우울감', g.depress, 15) + bar(sido.slice(0, 2) + ' 평균', r.depress, 15, 'sido');
-    if (g.stress != null) { var a = rankOf('stress', g.stress), b = rankOf('depress', g.depress); h += '<p class="rg-kv"><span>전국 229곳 중 높은 순위</span> 스트레스 ' + a.rank + '위 · 우울감 ' + b.rank + '위</p>'; }
+    // 순위 대신 5분위 구간만 보여 줌: 시군구 순위는 해마다 순위 상관 0.44~0.47로 흔들림(REGION_INFO_METHODS), 지역 서열·낙인 방지(검토 E5-04)
+    if (g.stress != null) { var a = rankOf('stress', g.stress), b = rankOf('depress', g.depress);
+      var band = function (o) { var q = Math.min(5, Math.floor((o.rank - 1) / o.n * 5) + 1); return ['높은 편', '약간 높은 편', '중간', '약간 낮은 편', '낮은 편'][q - 1]; };
+      h += '<p class="rg-kv"><span>전국 시군구 5분위 구간</span> 스트레스 ' + band(a) + ' · 우울감 ' + band(b) + '<br><small>한 해 표본 값이라 다음 해 구간이 크게 바뀔 수 있습니다. 지역을 판단하는 근거로 쓰지 마세요.</small></p>'; }
     h += '</div>';
     // 피해 지역 표시
     var fl = flagsOf(sido, sg);
@@ -172,7 +175,8 @@
     var map2 = { wildfire: '산불', landslide: '산사태', pwd: '재선충' };
     var ev = HZ.psych_evidence.filter(function (e) { return Object.keys(types).some(function (t) { return e.hazard.indexOf(map2[t]) === 0; }); });
     if (ev.length) h += '<p class="rg-foot">이 지역 유형과 관련된 심리 영향 근거: ' + ev.map(function (e) { return esc(e.hazard) + ' – ' + esc(e.level); }).join(' · ') + '. 아래 근거 목록을 참고하세요. 이 지역 주민을 직접 조사한 결과가 아닌 경우가 대부분입니다.</p>';
-    h += '<p class="rg-foot">마음이 힘들면 정신건강위기상담 109(자살예방상담 포함, 24시간), 정신건강상담 1577-0199에서 도움을 받을 수 있습니다.</p>';
+    // 연락처 명칭은 엔진(CONTACTS)과 같게: 109 자살예방상담전화, 1577-0199 정신건강위기상담전화(보건복지부, 2026-11-17 확인)
+    h += '<p class="rg-foot">마음이 힘들면 자살예방상담전화 <a href="tel:109">109</a>(24시간), 정신건강위기상담전화 <a href="tel:15770199">1577-0199</a>(24시간)에서 도움을 받을 수 있습니다. 즉시 위험하면 <a href="tel:119">119</a>·<a href="tel:112">112</a>.</p>';
     $('#rg-detail').innerHTML = h;
   }
 

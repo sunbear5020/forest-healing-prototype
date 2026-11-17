@@ -14,7 +14,6 @@
     scenario: 'clear',
     weights: { weather: 32, region: 18, stand: 22, purpose: 28 },
     results: [],
-    prevRank: {},
     selectedId: null,
     weightsTouched: false
   };
@@ -193,16 +192,25 @@
     };
   }
 
+  /* 시연 등급: 첫 시설 점수와 GRADE_GAP점 이내면 '비슷하게 잘 맞음', 그 밖은 '조건에 맞음'.
+     시연 점수에는 불확실성 구간이 없어 고정 폭(5점)을 썼다. 이 폭은 근거 없는 시연용 값이다(추측입니다). */
+  const GRADE_GAP = 5;
+  function gradeOf(total, best) {
+    return best - total <= GRADE_GAP
+      ? { key: 'g1', mark: '◎', label: '비슷하게 잘 맞음' }
+      : { key: 'g2', mark: '○', label: '조건에 맞음' };
+  }
+
   function computeAll() {
     const scored = FORESTS.map(evaluate).sort((a, b) => b.total - a.total);
-    const prev = state.prevRank;
+    // 순위 숫자·순위 변동은 표시하지 않고 등급으로 묶는다(가상 전문가 검토 E5-02·E5-03, 사용자 결정 2026-11-17).
+    // r.order는 화면 배치용 내부 순서일 뿐 우열이 아니다.
+    const best = scored.length ? scored[0].total : 0;
     scored.forEach((r, i) => {
-      r.rank = i + 1;
-      r.delta = prev[r.forest.id] ? prev[r.forest.id] - (i + 1) : 0;
+      r.order = i + 1;
+      r.grade = gradeOf(r.total, best);
     });
     state.results = scored;
-    state.prevRank = {};
-    scored.forEach((r) => { state.prevRank[r.forest.id] = r.rank; });
     return scored;
   }
 
@@ -421,7 +429,7 @@
     </div>`;
   }
 
-  const TAG_LABEL = { stress: '스트레스', sleep: '수면', respiratory: '호흡기·면역', family: '가족·시니어', vitality: '활력' };
+  const TAG_LABEL = { stress: '스트레스', sleep: '수면', respiratory: '맑은 공기·호흡', family: '가족·시니어', vitality: '활력' };
 
   function settingBadge(setting) {
     const map = { '실외': 'out', '실내': 'in', '실내외': 'mix' };
@@ -432,8 +440,6 @@
     const f = r.forest;
     const prog = pickPrograms(f, state.purpose, state.walk);
     const reasons = buildReasons(r, prog);
-    const deltaCls = r.delta > 0 ? 'up' : r.delta < 0 ? 'down' : 'same';
-    const deltaTxt = r.delta > 0 ? `▲ ${r.delta}` : r.delta < 0 ? `▼ ${Math.abs(r.delta)}` : '–';
 
     const tags = [
       `<span class="tag env">${f.region} · ${f.sigungu}</span>`,
@@ -464,11 +470,10 @@
       </div>`;
     }).join('');
 
-    return `<article class="forest-card ${r.rank === 1 ? 'top-1' : ''} ${animate ? 'anim' : ''}" id="card-${f.id}" data-id="${f.id}">
+    return `<article class="forest-card ${r.grade.key === 'g1' ? 'top-1' : ''} ${animate ? 'anim' : ''}" id="card-${f.id}" data-id="${f.id}">
       <div class="rank-col">
-        <span class="rank-label">RANK</span>
-        <span class="rank-num">${String(r.rank).padStart(2, '0')}</span>
-        <span class="rank-delta ${deltaCls}" title="직전 조건 대비 순위 변동">${deltaTxt}</span>
+        <span class="rank-label">등급</span>
+        <span class="grade-chip ${r.grade.key}"><i aria-hidden="true">${r.grade.mark}</i>${r.grade.label}</span>
         <div class="score-ring" style="--p:${r.total}">
           <b>${round(r.total)}<i>%</i></b>
         </div>
@@ -509,11 +514,9 @@
       `${state.region} 출발 · <b>${PURPOSES[state.purpose].label}</b><br />` +
       `${env.temp}℃ · 습도 ${env.humidity}% · PM2.5 ${PM_LEVELS[env.pm].label}${env.rain ? ' · 강수' : ''}`;
     el('#rail-list').innerHTML = state.results.slice(0, TOP_N).map((r) => {
-      const d = r.delta > 0 ? `<span class="ri-delta up">▲${r.delta}</span>`
-        : r.delta < 0 ? `<span class="ri-delta down">▼${Math.abs(r.delta)}</span>` : '';
-      return `<li><button class="rail-item" data-goto="${r.forest.id}" title="${r.forest.name}">
-        <span class="ri-rank">${String(r.rank).padStart(2, '0')}</span>
-        <span class="ri-name">${r.forest.short}</span>${d}
+      return `<li><button class="rail-item" data-goto="${r.forest.id}" title="${r.forest.name} · ${r.grade.label}">
+        <span class="ri-rank ${r.grade.key}" aria-label="${r.grade.label}">${r.grade.mark}</span>
+        <span class="ri-name">${r.forest.short}</span>
         <span class="ri-score">${round(r.total)}</span>
       </button></li>`;
     }).join('');
@@ -521,14 +524,14 @@
 
   function renderResults(animate) {
     const top = state.results.slice(0, TOP_N);
-    el('#result-count').textContent = `TOP ${Math.min(TOP_N, top.length)}`;
+    el('#result-count').textContent = `조건에 맞는 ${Math.min(TOP_N, top.length)}곳`;
 
     const first = top[0], last = top[top.length - 1];
     el('#summary').innerHTML =
       `<b>${state.region}</b> 출발 · <b>${PURPOSES[state.purpose].label}</b> · <b>${WALK_PREFS[state.walk].label}</b> · ` +
       `${state.env.temp}℃/${state.env.humidity}%/PM2.5 ${PM_LEVELS[state.env.pm].label}${state.env.rain ? '·강수' : ''} 조건으로 ` +
-      `시연 점수를 계산한 ${FORESTS.length}곳을 평가했습니다(1차 범위 ${SERVICE_SCOPE.target}개 기관 중 프로필 구축 전 시설은 아래 별도 표시). 1위 <b>${first.forest.short}</b> ${round(first.total)}점, ` +
-      `${top.length}위 <b>${last.forest.short}</b> ${round(last.total)}점 (차이 ${round(first.total - last.total)}점).`;
+      `시연 점수를 계산한 ${FORESTS.length}곳을 평가했습니다(1차 범위 ${SERVICE_SCOPE.target}개 기관 중 프로필 구축 전 시설은 아래 별도 표시). 표시한 ${top.length}곳의 점수는 ${round(last.total)}~${round(first.total)}점이며, ` +
+      `첫 시설과 ${GRADE_GAP}점 이내는 '비슷하게 잘 맞음'(◎) ${top.filter((r) => r.grade.key === 'g1').length}곳으로 묶었습니다. 목록 순서는 우열 순위가 아닙니다.`;
 
     el('#results').innerHTML = top.map((r) => cardHTML(r, animate)).join('');
     el('#purpose-evidence').innerHTML =
@@ -585,14 +588,14 @@
     if (map.getZoom() < 6.3) map.setView(bounds.getCenter(), 6.3);
   }
 
-  function pinIcon(rank, isTop) {
+  function pinIcon(grade, isTop) {
     if (!isTop) return L.divIcon({ className: 'pin-wrap', html: '<span class="pin rest"><span></span></span>', iconSize: [14, 14], iconAnchor: [7, 7] });
-    const cls = rank <= 3 ? `pin rank-${rank}` : 'pin';
+    const cls = grade.key === 'g1' ? 'pin rank-1' : 'pin';
     const small = window.innerWidth < 700;
     const size = small ? 24 : 30;
     return L.divIcon({
       className: 'pin-wrap',
-      html: `<span class="${cls}"><span>${rank}</span></span>`,
+      html: `<span class="${cls}"><span>${grade.mark}</span></span>`,
       iconSize: [size, size],
       iconAnchor: [size / 2, size - 3],
       popupAnchor: [0, -22]
@@ -606,16 +609,16 @@
 
     state.results.forEach((r) => {
       const f = r.forest;
-      const isTop = r.rank <= TOP_N;
+      const isTop = r.order <= TOP_N;
       const m = L.marker([f.lat, f.lng], {
-        icon: pinIcon(r.rank, isTop),
-        zIndexOffset: isTop ? 1000 - r.rank : 0,
+        icon: pinIcon(r.grade, isTop),
+        zIndexOffset: isTop ? 1000 - r.order : 0,
         title: `${f.name} (${round(r.total)}점)`
       });
       if (isTop) {
         const prog = pickPrograms(f, state.purpose, state.walk);
         m.bindPopup(
-          `<div class="pop-name">${r.rank}위 · ${f.name}</div>
+          `<div class="pop-name">${r.grade.mark} ${f.name} <small>${r.grade.label}</small></div>
            <div class="pop-meta">${f.sido} ${f.sigungu} · 종합 <span class="pop-score">${round(r.total)}점</span></div>
            <div class="pop-meta">추천 프로그램: ${prog.items[0] ? prog.items[0].name : '-'}</div>
            <div class="pop-actions">
@@ -646,11 +649,11 @@
     box.innerHTML = `<div class="map-fallback">
       <span class="fb-note">지도 라이브러리를 불러오지 못해 좌표 기반 간이 지도로 표시합니다.</span>
       ${FORESTS.map((f) => {
-        const r = state.results.find((x) => x.forest.id === f.id) || { rank: 99, total: 0 };
-        const isTop = r.rank <= TOP_N;
+        const r = state.results.find((x) => x.forest.id === f.id) || { order: 99, total: 0, grade: { mark: '' } };
+        const isTop = r.order <= TOP_N;
         const x = ((f.lng - 125.6) / (129.6 - 125.6)) * 100;
         const y = ((38.4 - f.lat) / (38.4 - 33.1)) * 100;
-        return `<span class="fb-dot ${isTop ? 'top' : ''}" style="left:${x}%;top:${y}%" title="${f.name}">${isTop ? r.rank : ''}</span>`;
+        return `<span class="fb-dot ${isTop ? 'top' : ''}" style="left:${x}%;top:${y}%" title="${f.name}">${isTop ? r.grade.mark : ''}</span>`;
       }).join('')}
       ${PENDING_FACILITIES.map((p) => {
         const x = ((p.lng - 125.6) / (129.6 - 125.6)) * 100;
@@ -743,7 +746,7 @@
         </div>
         <div class="detail-score">
           <b>${round(r.total)}<span>점</span></b>
-          <span>종합 적합도 · ${r.rank}위</span>
+          <span>종합 적합도 · ${r.grade.label}</span>
         </div>
       </div>
 
@@ -1011,11 +1014,7 @@
   function init() {
     renderControls();
     renderDemoParams();
-    // 초기 순위 기준선 (delta가 처음부터 튀지 않도록)
     computeAll();
-    state.prevRank = {};
-    state.results.forEach((r) => { state.prevRank[r.forest.id] = r.rank; });
-    state.results.forEach((r) => { r.delta = 0; });
 
     initMap();
     update(false);

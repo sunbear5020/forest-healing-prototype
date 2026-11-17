@@ -25,27 +25,35 @@
     return d.toISOString().slice(0, 10);
   }
 
+  function remote() { return !!(window.SoopClient && window.SoopClient.isRemote && window.SoopClient.isRemote(window.SOOP_CONFIG)); }
+  // 고지 문구는 실제 계산 위치에서 만든다(서버 계산이면 기기 밖 전송을 알림, 검토 E5-05·E5-11)
+  function privacyLine() {
+    if (remote()) return '입력값(자가점검·위치)은 추천 계산을 위해 서버로 보내며 저장하지 않습니다. <a href="' + esc(window.SOOP_CONFIG.privacyNoticeUrl) + '" target="_blank" rel="noopener">개인정보 처리방침</a>';
+    return '입력값은 이 브라우저 안에서만 계산하고 보내지 않습니다(지도·글꼴·사진은 외부 서버에서 불러옵니다).';
+  }
+  function tel(t) { return String(t).split('/').map(function (x) { x = x.trim(); return '<a href="tel:' + esc(x.replace(/[^0-9]/g, '')) + '">' + esc(x) + '</a>'; }).join(' / '); }
   function formHTML() {
     var checks = CHECK.map(function (c) {
       return '<div class="eg-check"><label for="eg-' + c[0] + '"><b>' + c[1] + '</b><span>' + c[2] + '</span></label>' +
-        '<input type="range" id="eg-' + c[0] + '" min="0" max="4" step="1" value="' + (c[0] === 'stress' ? 2 : 0) + '" />' +
+        '<input type="range" id="eg-' + c[0] + '" min="0" max="4" step="1" value="' + (c[0] === 'stress' ? 2 : 0) + '" aria-valuetext="' + LEVEL[c[0] === 'stress' ? 2 : 0] + '" />' +
         '<output id="eg-' + c[0] + '-out">' + LEVEL[c[0] === 'stress' ? 2 : 0] + '</output></div>';
     }).join('');
-    var days = [1, 2, 3].map(function (o) { var d = kstDate(o); return '<option value="' + d + '">' + d + (o === 1 ? ' (내일)' : '') + '</option>'; }).join('');
+    // 예보 수집 범위(오늘·내일·모레)와 맞춤(검토 E3-14)
+    var days = [0, 1, 2].map(function (o) { var d = kstDate(o); return '<option value="' + d + '"' + (o === 1 ? ' selected' : '') + '>' + d + [' (오늘)', ' (내일)', ' (모레)'][o] + '</option>'; }).join('');
     var months = '';
     for (var m = 1; m <= 12; m++) months += '<option value="m' + m + '">' + m + '월 방문(평균 기후로 판단)</option>';
     return '' +
       '<div class="eg-head"><div><p class="eyebrow">맞춤 추천 엔진 v' + E.version + '</p>' +
       '<h2>지금 내 상태에 맞는 치유의 숲</h2>' +
       '<p class="summary">상태 자가점검과 조건을 넣으면 효과 근거(설문 효과모형·문헌)와 방문일 환경(예보·기후), 이동시간을 합쳐 추천합니다. ' +
-      '입력값은 이 브라우저 안에서만 계산하고 저장하거나 보내지 않습니다.</p></div></div>' +
+      privacyLine() + '</p></div></div>' +
       '<div class="eg-grid">' +
       '<fieldset class="eg-box"><legend>1. 최근 2주 상태(자가점검, 진단 아님)</legend>' + checks +
       '<label class="eg-inline"><input type="checkbox" id="eg-selfharm" /> 스스로를 해치고 싶은 생각이 든 적이 있다</label></fieldset>' +
       '<fieldset class="eg-box"><legend>2. 조건</legend>' +
       '<label class="eg-field">치유 목적<select id="eg-purpose">' +
       '<option value="stress">스트레스·번아웃 회복</option><option value="sleep">수면·심신 이완</option>' +
-      '<option value="respiratory">호흡기·면역 케어</option><option value="family">가족·시니어 가벼운 산책</option>' +
+      '<option value="respiratory">맑은 공기·호흡 편안함</option><option value="family">가족·시니어 가벼운 산책</option>' +
       '<option value="vitality">활력·집중력 회복</option></select></label>' +
       '<label class="eg-field">걷기<select id="eg-walk"><option value="barrier">무장애·완만한 길</option>' +
       '<option value="normal" selected>보통 산책</option><option value="trek">트레킹 가능</option></select></label>' +
@@ -55,7 +63,7 @@
       '<div class="eg-field">출발 위치<div class="eg-origin">' +
       '<button type="button" class="ghost-btn" id="eg-geo">내 위치 사용</button>' +
       '<select id="eg-sido"><option value="">시도</option></select><select id="eg-sigungu"><option value="">시군구</option></select></div>' +
-      '<small id="eg-geo-note">위치는 이 기기 안에서만 거리 계산에 씁니다.</small></div>' +
+      '<small id="eg-geo-note">' + (remote() ? '위치는 추천 계산을 위해 서버로 보냅니다(저장 안 함).' : '위치는 이 기기 안에서만 거리 계산에 씁니다.') + '</small></div>' +
       tasteHTML() +
       '<label class="eg-inline"><input type="checkbox" id="eg-cannot" /> 지금은 숲에 가기 어렵다(가까운 대안 보기)</label>' +
       '<label class="eg-inline"><input type="checkbox" id="eg-usescn" /> 왼쪽 패널의 기상 시나리오로 시험해 보기</label>' +
@@ -135,31 +143,38 @@
   function render(r) {
     var h = '';
     if (r.safety.level !== 'ok') {
-      h += '<div class="eg-alert ' + (r.safety.level === 'urgent' ? 'urgent' : '') + '">' + r.safety.messages.map(esc).join('<br>') +
-        '<ul>' + r.safety.contacts.map(function (c) { return '<li><b>' + esc(c.name) + '</b> ' + esc(c.tel) + ' <small>' + esc(c.note) + '</small></li>'; }).join('') + '</ul></div>';
+      h += '<div class="eg-alert ' + (r.safety.level === 'urgent' ? 'urgent' : '') + '" role="alert" tabindex="-1" id="eg-safety">' + r.safety.messages.map(esc).join('<br>') +
+        '<ul>' + r.safety.contacts.map(function (c) { return '<li><b>' + esc(c.name) + '</b> ' + tel(c.tel) + ' <small>' + esc(c.note) + '</small></li>'; }).join('') + '</ul></div>';
     }
+    if (r.safety.disclaimer) h += '<p class="summary"><small>' + esc(r.safety.disclaimer) + '</small></p>';
     var alt = r.alternatives;
     var altHTML = renderAlternatives(alt);
     if (alt.prominent) h += altHTML;
     var reg = r.context.region;
     if (reg && reg.stress != null) {
-      h += '<p class="summary eg-region">지역 맥락: ' + esc(reg.sido) + ' ' + esc(reg.sigungu) + ' 스트레스 인지율 ' + reg.stress + '%, 우울감 경험률 ' + reg.depress +
-        '% (지역사회건강조사 ' + reg.year + ', 시도 ' + reg.sidoStress + '%·' + reg.sidoDepress + '%). 개인 추천 점수에는 쓰지 않습니다.</p>';
+      // 묻지 않은 지역 건강지표는 접어서 둔다(지역 꼬리표 방지, 검토 E5-10)
+      h += '<details class="eg-excl"><summary>출발 지역 건강 통계 보기(추천 점수에는 쓰지 않음)</summary><p class="summary eg-region">' + esc(reg.sido) + ' ' + esc(reg.sigungu) + ' 스트레스 인지율 ' + reg.stress + '%, 우울감 경험률 ' + reg.depress +
+        '% (지역사회건강조사 ' + reg.year + ', 시도 ' + reg.sidoStress + '%·' + reg.sidoDepress + '%). 한 해 표본 값이라 해마다 크게 달라질 수 있습니다.</p></details>';
     }
     if (!r.input.origin) h += '<p class="summary">출발 위치를 넣지 않아 이동시간은 중립값으로 계산했습니다.</p>';
+    // 순위 숫자 대신 '최상위와 구분 어려움 / 조건에 맞음' 묶음으로 표시(서열화 방지 원칙, 검토 E5-03)
+    var topR = r.recommendations[0] && r.recommendations[0].totalRange;
+    function groupOf(e) { return topR && e.totalRange && e.totalRange[1] >= topR[0] ? ['비슷하게 잘 맞음', 'g1'] : ['조건에 맞음', 'g2']; }
+    h += '<p class="summary"><small>목록 순서는 점수 범위·근거 등급·이동시간을 합친 정렬 결과이며 우열 순위가 아닙니다. 점수 범위가 첫 시설과 겹치면 \'비슷하게 잘 맞음\'으로 묶습니다.</small></p>';
     h += '<ol class="eg-list">' + r.recommendations.map(function (e) {
+      var grp = groupOf(e);
       var b = BASIS[e.effectBasis] || BASIS.none;
       var prog = e.programs.items.length ? e.programs.items.map(function (p) {
         return esc(p.name) + ' <small>' + esc(p.setting) + '·' + esc(p.difficulty) + (p.indoorAlt ? ' → 실내 대체: ' + esc(p.indoorAlt) : '') + '</small>';
       }).join('<br>') : '<small>' + esc(e.programs.note) + '</small>';
       var near = e.links.forests.length ? e.links.forests.map(function (f) { return esc(f.name) + ' ' + f.km + 'km'; }).join(', ') : '20 km 안 산림 자료 없음';
-      return '<li class="eg-item"><div class="eg-item-head"><span class="eg-rank">' + e.rank + '</span><div><b>' + esc(e.site.name) + '</b>' +
-        ' <span class="eg-badge ' + b[1] + '">' + b[0] + '</span>' +
+      return '<li class="eg-item"><div class="eg-item-head"><span class="eg-rank eg-grp ' + grp[1] + '" aria-label="' + grp[0] + '">' + (grp[1] === 'g1' ? '◎' : '○') + '</span><div><b>' + esc(e.site.name) + '</b>' +
+        ' <span class="eg-badge ' + b[1] + '">' + b[0] + '</span> <span class="eg-badge b-lit">' + grp[0] + '</span>' + (e.envMissing ? ' <span class="eg-badge b-lit">환경 자료 없음(중립값)</span>' : '') +
         (e.landscape ? e.landscape.badges.map(function (g) { return ' <span class="eg-badge b-land" title="' + esc(g.note + ' (' + g.basis + ')') + '">' + esc(g.label) + '</span>'; }).join('') +
           (e.landscape.tasteMatch ? ' <span class="eg-badge b-taste">취향: ' + esc(e.landscape.taste) + ' 많은 편</span>' : '') : '') +
         '<small class="eg-sub">' + esc(e.site.address || '') + '</small>' + kakao(e.site.name, e.site.lat, e.site.lng) +
         (e.landscape && e.landscape.cautions.length ? '<small class="eg-caution">⚠ ' + e.landscape.cautions.map(esc).join(' ') + '</small>' : '') + '</div>' +
-        '<div class="eg-score"><b>' + e.total.toFixed(0) + '</b><small>점수 범위 ' + (e.totalRange ? e.totalRange[0] + '~' + e.totalRange[1] : '-') + ' · 순위 ' + (e.rankRange ? e.rankRange[0] + '~' + e.rankRange[1] + '위' : '-') + '</small></div></div>' +
+        '<div class="eg-score"><b>' + e.total.toFixed(0) + '</b><small>점수 범위 ' + (e.totalRange ? e.totalRange[0] + '~' + e.totalRange[1] : '-') + '</small></div></div>' +
         '<div class="eg-bars"><span>효과 ' + (e.scores.effect == null ? '–' : e.scores.effect) + '</span><span>환경 ' + e.scores.env + '</span><span>접근 ' + e.scores.access +
         (e.access.hours != null ? ' (약 ' + e.access.hours + '시간)' : '') + '</span></div>' +
         '<details><summary>추천 근거와 프로그램</summary><ul class="eg-reasons">' + e.reasons.map(function (x) { return '<li>' + esc(x) + '</li>'; }).join('') + '</ul>' +
@@ -187,6 +202,7 @@
       Object.keys(r.params).map(function (k) { var p = r.params[k]; return '<tr><td>' + esc(p.note) + '</td><td>' + esc(JSON.stringify(p.value)) + '</td><td>' +
         ({ rule: '공공 기준', literature: '문헌', model: '모형', demo: '시연값' }[p.basis]) + '</td></tr>'; }).join('') + '</tbody></table>' + configLine(r.config) + '</details>';
     document.getElementById('eg-out').innerHTML = h;
+    var sa = document.getElementById('eg-safety'); if (sa && sa.focus) sa.focus();
     if (window.SoopExt && typeof window.SoopExt.afterRender === 'function') window.SoopExt.afterRender(r, document.getElementById('eg-out'));
   }
 
@@ -209,8 +225,10 @@
   function renderAlternatives(a) {
     var h = '<div class="eg-alt"><h3>방문이 어려울 때</h3>' +
       (a.weather ? '<p class="eg-alert' + (a.weather.outdoorOk ? '' : ' urgent') + '">' + esc(a.weather.note) + (a.weather.basis ? ' <small>(' + esc(a.weather.basis) + ')</small>' : '') + '</p>' : '') + '<ol>';
-    h += '<li><b>' + esc(a.digital.title) + '</b> — ' + (a.digital.available && a.digital.url
-      ? '<a href="' + esc(a.digital.url) + '" target="_blank" rel="noopener">바로 이용</a>' : esc(a.digital.status) + '. ' + esc(a.digital.note)) + '</li>';
+    // 순서: 실내 휴식 → 공원 → 산림공원 → 도시숲 → 산림(검토 E1-06). 디지털 프로그램은 출시 후에만 표시
+    var ind = a.indoor || { title: '실내 휴식', note: '' };
+    h += '<li><b>' + esc(ind.title) + '</b> — ' + esc(ind.note) + (a.digital && a.digital.show
+      ? '<br><b>' + esc(a.digital.title) + '</b> <a href="' + esc(a.digital.url) + '" target="_blank" rel="noopener">바로 이용</a>' : '') + '</li>';
     if (a.originNote) h += '<li>' + esc(a.originNote) + '</li>';
     else {
       h += '<li><b>가까운 숲 같은 공원</b>(수관 피복 30% 이상, 1 ha 이상)<ul>' +
@@ -240,7 +258,7 @@
   mount.innerHTML = formHTML();
   CHECK.forEach(function (c) {
     var el = document.getElementById('eg-' + c[0]);
-    el.addEventListener('input', function () { document.getElementById('eg-' + c[0] + '-out').textContent = LEVEL[+el.value]; });
+    el.addEventListener('input', function () { document.getElementById('eg-' + c[0] + '-out').textContent = LEVEL[+el.value]; el.setAttribute('aria-valuetext', LEVEL[+el.value]); });
   });
   document.getElementById('eg-run').addEventListener('click', run);
   document.getElementById('eg-geo').addEventListener('click', function () {
@@ -249,7 +267,7 @@
     note.textContent = '위치 확인 중…';
     navigator.geolocation.getCurrentPosition(function (pos) {
       geo = { lat: pos.coords.latitude, lng: pos.coords.longitude };
-      note.textContent = window.SOOP_CONFIG && window.SOOP_CONFIG.apiBase
+      note.textContent = remote()
         ? '기기 위치를 추천 계산에만 쓰려고 서버로 보냅니다(저장 안 함).' : '기기 위치를 사용합니다(저장·전송 안 함).';
     }, function () { note.textContent = '위치를 가져오지 못했습니다. 시군구를 골라 주세요.'; }, { maximumAge: 600000, timeout: 10000 });
   });

@@ -44,11 +44,14 @@ t('자해 생각 응답 → 긴급 안내와 대체경로 우선 표시', () => 
   assert.ok(r.safety.contacts.some((c) => c.tel === '109'));
   assert.equal(r.alternatives.prominent, true);
 });
-t('방문 불가 → 근처 공원(수관 30% 이상)·가까운 산림·디지털치료제 자리', () => {
+t('방문 불가 → 실내 휴식 먼저, 근처 공원(수관 30% 이상)·가까운 산림, 디지털 프로그램은 출시 전 숨김', () => {
   const r = E.recommend({ ...base, canVisit: false }, ctx);
   const a = r.alternatives;
   assert.equal(a.prominent, true);
   assert.equal(a.digital.available, false);
+  assert.equal(a.digital.show, false);
+  assert.deepEqual(a.order, ['indoor', 'park', 'forestPark', 'urbanForest', 'forest']);
+  assert.ok(a.indoor && a.indoor.title === '실내 휴식');
   assert.ok(a.parks.length > 0 && a.parks.every((p) => p.tree_pct >= 30));
   assert.ok(a.forests.length > 0);
   console.log('parks:', a.parks.map((p) => `${p.name} ${p.km}km 수관${p.tree_pct}%`).join(' | '));
@@ -65,7 +68,7 @@ t('수면·호흡기만 고르면 효과 계산 없이 환경·접근으로만 �
   assert.deepEqual(r.profile.literatureOnlyDomains, ['sleep']);
 });
 t('효과모형 시설은 model, 그 외는 similar 근거로 표시', () => {
-  const r = E.recommend({ ...base, maxHours: 9, topN: 18 }, ctx);
+  const r = E.recommend({ ...base, maxHours: 9, topN: 99 }, ctx);
   const byId = Object.fromEntries(r.recommendations.map((e) => [e.site.id, e]));
   assert.equal(byId.F03.effectBasis, 'model');
   assert.equal(byId.F09.effectBasis, 'similar');
@@ -189,5 +192,51 @@ t('2026 프로그램 추천 모형: 대상 종류 필터·순위 범위·시설�
   pr.programs.forEach((x, i) => { if (i) assert.ok(x.rank > pr.programs[i - 1].rank); assert.ok(x.rankRange[0] <= x.rankRange[1]); });
   assert.ok(r.recommendations.some((e) => e.programs.model && e.programs.model.length > 0));
   r.recommendations.forEach((e) => assert.ok(!e.programs.model || e.programs.model.length <= 3));
+});
+
+// ── v0.7.0 가상 전문가 검토 반영 회귀 시험 ──
+t('E4-01: 근거 등급이 낮은 시설은 가까움만으로 측정 시설을 앞서지 않음', () => {
+  const r = E.recommend({ ...base, maxHours: 3, topN: 99 }, ctx);
+  const order = r.recommendations.filter((e) => e.tier === 0).map((e) => e.effectBasis);
+  const firstModel = order.indexOf('model');
+  if (firstModel > 0) {
+    // 측정 시설 앞에 온 유사 추정 시설은 점수가 더 높아야 함(앞당김이 아니라 점수 순)
+    const top = r.recommendations.filter((e) => e.tier === 0);
+    for (let i = 0; i < firstModel; i++) assert.ok(top[i].total >= top[firstModel].total, top[i].site.name);
+  }
+  r.recommendations.forEach((e) => { if (e.nearFirst) { const over = r.recommendations.find((x) => x.site.name === e.nearFirst); if (over) assert.ok({ model: 3, mixed: 3, similar: 2, literature: 1, none: 0 }[e.effectBasis] >= { model: 3, mixed: 3, similar: 2, literature: 1, none: 0 }[over.effectBasis]); } });
+});
+t('E1-02: 2018 피톤치드 측정값은 점수에 넣지 않음(예측 NVOC ±3점만)', () => {
+  const a = E.recommend({ ...base, check: { breath: 4 }, purpose: 'respiratory', maxHours: 9, topN: 99, month: 10 }, ctx);
+  const b = E.recommend({ ...base, check: { breath: 4 }, purpose: 'respiratory', maxHours: 9, topN: 99, month: 10 }, { ...ctx, facilityEnv: { ...ctx.facilityEnv, facilities: Object.fromEntries(Object.entries(ctx.facilityEnv.facilities).map(([k, v]) => [k, { ...v, fixed: v.fixed ? { ...v.fixed, phytoncide_2018: undefined } : v.fixed }])) } });
+  const sb = Object.fromEntries(b.recommendations.map((e) => [e.site.id, e.scores.env]));
+  a.recommendations.forEach((e) => assert.equal(e.scores.env, sb[e.site.id], e.site.name));
+  a.recommendations.forEach((e) => assert.ok(Math.abs(e.nvocAdj || 0) <= 3));
+});
+t('E1-03: 월별 효과 차이는 점수에 넣지 않음', () => {
+  const a = E.recommend({ ...base, month: 5, maxHours: 9, topN: 99 }, ctx), b = E.recommend({ ...base, month: 11, maxHours: 9, topN: 99 }, ctx);
+  const eb = Object.fromEntries(b.recommendations.map((e) => [e.site.id, e.effectSD]));
+  a.recommendations.forEach((e) => { if (eb[e.site.id] != null && e.effectSD != null) assert.ok(Math.abs(e.effectSD - eb[e.site.id]) < 1e-9, e.site.name); });
+});
+t('E3-14·E4-11: 월은 날짜 문자열에서 읽고, maxHours 0·seed 0을 그대로 받음', () => {
+  const r = E.recommend({ ...base, month: undefined, date: '2026-12-01', maxHours: 0, seed: 0 }, ctx);
+  assert.equal(r.input.month, 12);
+  assert.equal(r.input.maxHours, 0);
+  assert.equal(r.config.seed, 0);
+});
+t('E3-03: PM2.5 1시간 값은 수집 날짜에만 씀', () => {
+  const sid = Object.keys(ctx.envToday.sites)[0], et = ctx.envToday.sites[sid];
+  const d0 = String(et.pm25 && et.pm25.time || '').slice(0, 10), other = et.days.map((d) => d.date).find((d) => d !== d0);
+  if (!other) return;
+  const r = E.recommend({ ...base, date: other, maxHours: 99, topN: 99 }, ctx);
+  r.recommendations.concat(r.excluded || []).forEach((e) => { if (e.env) assert.equal(e.env.pm25, null); });
+});
+t('E1-06: 디지털 프로그램은 링크가 있을 때만 표시, 기상 안내도 그때만 언급', () => {
+  const off = E.recommend({ ...base, canVisit: false, envOverride: { temp: 15, humidity: 50, pm: 'good', rain: false, wind: 16 } }, ctx);
+  assert.ok(!off.alternatives.weather.note.includes('디지털'));
+  const on = E.recommend({ ...base, canVisit: false, envOverride: { temp: 15, humidity: 50, pm: 'good', rain: false, wind: 16 } },
+    { ...ctx, digitalTherapeutic: { available: true, url: 'https://example.org/p' } });
+  assert.equal(on.alternatives.digital.show, true);
+  assert.ok(on.alternatives.weather.note.includes('디지털 프로그램'));
 });
 console.log(`\n${n} tests passed`);

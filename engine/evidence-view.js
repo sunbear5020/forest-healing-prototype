@@ -27,7 +27,7 @@
        ['통합 모형', m.model], ['비뚤림 평가', m.rob], ['근거 확실성', m.grade]]
         .map(function (r) { return '<dt>' + r[0] + '</dt><dd>' + esc(r[1]) + '</dd>'; }).join('') + '</dl></section>');
 
-    h.push('<section class="ev-sec"><h3>2. 결과: 숲 체험의 기분·스트레스 개선 효과</h3>' +
+    h.push('<section class="ev-sec"><h3>2. 결과: 숲 체험 전후·대조군 대비 기분·스트레스 변화(문헌)</h3>' +
       '<p class="ev-note">값은 Hedges g, <b>음수일수록 개선</b>(0.2 작음 · 0.5 중간 · 0.8 큼). 괄호는 95% 신뢰구간, 예측구간은 새 연구 하나에서 기대되는 범위.</p>' +
       '<div class="table-scroll"><table class="demo-table ev-table"><thead><tr>' +
       '<th>지표</th><th>대조군 비교 전체 (주분석)</th><th>예측구간</th><th>I²</th><th>무작위 대조만</th><th>단일군 사전-사후</th></tr></thead><tbody>' +
@@ -37,11 +37,11 @@
           '<td>' + ci(x.rct) + '<br><small>' + x.rct.studies + '편</small></td>' +
           '<td>' + ci(x.single) + '<br><small>' + x.single.studies + '편</small></td></tr>';
       }).join('') + '</tbody></table></div>' +
-      '<p class="ev-note">해석: 다섯 지표 모두 평균적으로 중간 크기의 개선이 나타났습니다. 다만 대부분 예측구간이 0을 넘어, 어떤 프로그램·장소에서는 효과가 거의 없을 수도 있습니다.</p></section>');
+      '<p class="ev-note">해석: 다섯 지표 모두 평균적으로 개선 방향의 결과가 보고되었으나, 근거 확실성은 지표별로 매우 낮음~중간(엄격 판정)입니다. 5개 중 3개 지표는 예측구간이 0을 넘어, 어떤 프로그램·장소에서는 효과가 거의 없을 수도 있습니다.</p></section>');
 
     var rules = d.lenientRules || [];
     h.push('<section class="ev-sec"><h3>3. 근거 확실성(GRADE): 엄격 판정과 완화 판정</h3>' +
-      '<p class="ev-note">두 판정 모두 Claude의 <b>가상 판정</b>이며, 실험실 전문가 2인이 별도로 직접 판정할 예정입니다. 통합 효과크기는 두 판정에서 같고 확실성 표시만 달라집니다. 추천 점수 계산에는 어느 쪽도 쓰지 않습니다.</p>' +
+      '<p class="ev-note">두 판정 모두 Claude의 <b>가상 판정</b>이며, 실험실 전문가 2인이 별도로 직접 판정할 예정입니다. 통합 효과크기는 두 판정에서 같고 확실성 표시만 달라집니다. 완화 기준은 엄격 판정 결과를 본 뒤 정한 <b>사후 설정</b>입니다. 우울은 완화 판정 ‘높음’이지만 예측구간이 0을 포함합니다. 추천 점수 계산에는 어느 쪽도 쓰지 않습니다.</p>' +
       '<div class="table-scroll"><table class="demo-table ev-table"><thead><tr><th>지표</th><th>엄격 판정</th><th>완화 판정</th></tr></thead><tbody>' +
       (d.domains || []).map(function (x) {
         return '<tr><th>' + esc(x.label) + '</th><td>' + gradeTag(x.grade.strict) + '</td><td>' + gradeTag(x.grade.lenient) + '</td></tr>';
@@ -55,7 +55,7 @@
 
     var t = d.temperature || {};
     h.push('<section class="ev-sec"><h3>5. 기온에 따른 차이(메타회귀)</h3><p class="ev-note">' + esc(t.note) + '</p>' +
-      '<div class="table-scroll"><table class="demo-table"><thead><tr><th>지표</th><th>기온 1 ℃당 변화</th><th>95% CI</th><th>p</th></tr></thead><tbody>' +
+      '<div class="table-scroll"><table class="demo-table"><thead><tr><th>지표</th><th>기온 10 ℃당 변화</th><th>95% CI</th><th>p</th></tr></thead><tbody>' +
       Object.keys(t.items || {}).map(function (k) {
         var it = t.items[k];
         return '<tr><th>' + esc(k) + '</th><td>' + f2(it.b) + '</td><td>' + f2(it.lo) + ' ~ ' + f2(it.hi) + '</td><td>' + it.p.toFixed(2) + '</td></tr>';

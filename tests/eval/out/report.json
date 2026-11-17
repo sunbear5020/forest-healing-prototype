@@ -1,13 +1,13 @@
 {
  "plan": "docs/EVALUATION.md (2026-11-15 고정)",
- "ranAt": "2026-11-16T03:48:54.709Z",
- "seconds": 94.727,
+ "ranAt": "2026-11-17T04:15:08.628Z",
+ "seconds": 91.538,
  "nCases": 1600,
  "config": {
-  "engine": "0.6.0",
+  "engine": "0.7.0",
   "seed": 20271,
   "mcDraws": 400,
-  "paramsHash": "97d162df",
+  "paramsHash": "cbd759f6",
   "weights": {
    "effect": 0.5,
    "env": 0.3,
@@ -22,8 +22,8 @@
    "evidenceBuilt": "2026-11-15",
    "facilityEnvBuilt": "2026-11-15",
    "envToday": {
-    "generated_at": "2026-11-15T21:37+09:00",
-    "forecast_base": "20261115 1700 KST"
+    "generated_at": "2026-11-17T12:08+09:00",
+    "forecast_base": "20261117 0800 KST"
    },
    "nSites": 44,
    "nParks": 4755,
@@ -68,18 +68,18 @@
  ],
  "baselineOverlap": {
   "n": 202,
-  "setSame": 105,
-  "ordSame": 58,
-  "overlap": 449
+  "setSame": 59,
+  "ordSame": 24,
+  "overlap": 403
  },
  "rankRangeWidthTop5": {
-  "median": 0,
+  "median": 1,
   "p90": 2,
   "max": 6
  },
  "effectBasisTop5": {
-  "similar": 2784,
-  "model": 648,
+  "similar": 2716,
+  "model": 716,
   "none": 1076
  },
  "criteria": [
@@ -280,12 +280,12 @@
   },
   {
    "id": "N1",
-   "n": 440,
-   "pass": 440,
+   "n": 460,
+   "pass": 460,
    "rate": 1,
    "ci95": [
-    0.9913446598966839,
-    0.9999999999999999
+    0.9917178623047179,
+    1
    ],
    "threshold": 0.95,
    "met": true,
