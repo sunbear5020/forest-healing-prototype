@@ -5,6 +5,7 @@
    개인정보 처리방침을 먼저 고쳐야 한다(docs/PLATFORM_MIGRATION.md §5). */
 window.SOOP_CONFIG = window.SOOP_CONFIG || {
   apiBase: '',          // '' = 기기 안 계산(기본값). 서버 계산으로 바꿀 때만 채운다.
+  privacyNoticeUrl: '', // 개인정보 처리방침 주소. 비어 있으면 apiBase를 채워도 서버 계산을 켜지 않는다(engine/client.js).
   apiTimeoutMs: 8000,   // 서버 응답 대기 한도. 넘으면 기기 안 계산으로 되돌린다.
   platform: 'web'       // 'web' | 'android' | 'ios' (앱 빌드 스크립트가 바꿔 씀)
 };

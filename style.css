@@ -251,6 +251,10 @@ input[type="range"] {
   background: linear-gradient(90deg, var(--green-2) 50%, var(--line-soft) 50%);
   outline: none;
 }
+/* 키보드 초점 표시(WCAG 2.4.7, 가상 전문가 검토 E5-06) */
+input[type="range"]:focus-visible { outline: 2px solid var(--ink, #1D4F6B); outline-offset: 4px; }
+.eg-alert a, .rg-foot a { font-weight: 700; text-decoration: underline; }
+.eg-grp.g2 { background: #EEE; color: #555; }
 input[type="range"]::-webkit-slider-runnable-track { background: transparent; height: 4px; border-radius: 2px; }
 input[type="range"]::-moz-range-track { background: transparent; height: 4px; }
 input[type="range"]::-webkit-slider-thumb {

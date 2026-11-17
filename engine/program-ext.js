@@ -42,17 +42,16 @@
         var e = r.recommendations[i]; if (!e || !e.programs.model) return;
         var d = li.querySelector('details'); if (!d) return;
         var p = document.createElement('p');
-        p.innerHTML = '<b>이 시설 운영 프로그램(2026 모형 순위)</b><br>' + (e.programs.model.length ? e.programs.model.map(function (x) {
-          return esc(x.title) + ' <small>' + pr.total + '개 중 ' + x.rank + '위(모형별 ' + x.rankRange[0] + '~' + x.rankRange[1] + '위)' + (x.post != null ? ' · 예상 사후 ' + x.post + '점' : '') + ' · ' + x.year + '</small>'; }).join('<br>')
+        p.innerHTML = '<b>이 시설 운영 프로그램(2026 프로그램 모형 참고)</b><br>' + (e.programs.model.length ? e.programs.model.map(function (x) {
+          return esc(x.title) + ' <small>' + (x.post != null ? '비슷한 참여자 평균 기준 예상 사후 ' + x.post + '점' : '') + ' · ' + x.year + '</small>'; }).join('<br>')
           : '<small>효과측정 자료가 있는 47개 프로그램 중 이 시설 운영분이 없거나, 고른 대상 종류에 해당하지 않음</small>');
         d.appendChild(p);
       });
       var box = document.createElement('section'); box.className = 'eg-programs';
-      box.innerHTML = '<h3>나에게 맞는 프로그램 상위 5(2026 프로그램 추천 모형)</h3>' +
+      box.innerHTML = '<h3>조건에 맞을 가능성이 높은 프로그램 5개(2026 프로그램 추천 모형, 순서는 우열이 아님)</h3>' +
         (pr.missing.length ? '<p class="summary">응답 없음 → 학습 때 대체값 사용: ' + esc(pr.missing.join(', ')) + '</p>' : '') +
         '<ol>' + pr.programs.slice(0, 5).map(function (x) {
-          return '<li><b>' + esc(x.title) + '</b> <small>' + esc(x.category) + ' · ' + esc(x.org) + ' · ' + x.year + ' · ' + pr.total + '개 중 ' + x.rank + '위(모형별 ' + x.rankRange[0] + '~' + x.rankRange[1] + '위)' +
-            (x.post != null ? ' · 사전 ' + x.pre + ' → 예상 사후 ' + x.post + '점' : '') + '</small></li>'; }).join('') + '</ol>' +
+          return '<li><b>' + esc(x.title) + '</b> <small>' + esc(x.category) + ' · ' + esc(x.org) + ' · ' + x.year + (x.post != null ? ' · 사전 ' + x.pre + ' → 비슷한 참여자 평균 기준 예상 사후 ' + x.post + '점' : '') + '</small></li>'; }).join('') + '</ol>' +
         '<ul class="eg-notes">' + pr.limits.map(function (t) { return '<li><small>' + esc(t) + '</small></li>'; }).join('') + '</ul>';
       el.insertBefore(box, el.querySelector('.eg-list'));
     }

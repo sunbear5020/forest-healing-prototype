@@ -59,11 +59,16 @@
   }
 
   /* 브라우저: config.js의 SOOP_CONFIG로 만든다 */
+  // 서버 계산은 개인정보 처리방침 주소(privacyNoticeUrl)가 설정되어 있을 때만 켠다.
+  // 위치·자가점검(자해 문항 포함)이 서버로 가므로 고지 없이 전환되는 것을 코드에서 막는다(가상 전문가 검토 E5-05).
   function fromConfig(cfg, engine) {
     cfg = cfg || (typeof window !== 'undefined' && window.SOOP_CONFIG) || {};
     engine = engine || (typeof window !== 'undefined' && window.SoopEngine);
-    return create({ engine: engine, apiBase: cfg.apiBase, timeoutMs: cfg.apiTimeoutMs });
+    var apiBase = cfg.apiBase && cfg.privacyNoticeUrl ? cfg.apiBase : '';
+    if (cfg.apiBase && !cfg.privacyNoticeUrl && typeof console !== 'undefined') console.warn('[숲결] privacyNoticeUrl이 없어 서버 계산을 켜지 않고 기기 안에서 계산합니다.');
+    return create({ engine: engine, apiBase: apiBase, timeoutMs: cfg.apiTimeoutMs });
   }
 
-  return { create: create, fromConfig: fromConfig };
+  function isRemote(cfg) { cfg = cfg || {}; return !!(cfg.apiBase && cfg.privacyNoticeUrl); }
+  return { create: create, fromConfig: fromConfig, isRemote: isRemote };
 }));

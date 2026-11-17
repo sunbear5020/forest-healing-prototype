@@ -421,7 +421,7 @@
     </div>`;
   }
 
-  const TAG_LABEL = { stress: '스트레스', sleep: '수면', respiratory: '호흡기·면역', family: '가족·시니어', vitality: '활력' };
+  const TAG_LABEL = { stress: '스트레스', sleep: '수면', respiratory: '맑은 공기·호흡', family: '가족·시니어', vitality: '활력' };
 
   function settingBadge(setting) {
     const map = { '실외': 'out', '실내': 'in', '실내외': 'mix' };
