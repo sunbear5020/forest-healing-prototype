@@ -41,7 +41,7 @@
 
     var rules = d.lenientRules || [];
     h.push('<section class="ev-sec"><h3>3. 근거 확실성(GRADE): 엄격 판정과 완화 판정</h3>' +
-      '<p class="ev-note">두 판정 모두 Claude의 <b>가상 판정</b>이며, 실험실 전문가 2인이 별도로 직접 판정할 예정입니다. 통합 효과크기는 두 판정에서 같고 확실성 표시만 달라집니다. 완화 기준은 엄격 판정 결과를 본 뒤 정한 <b>사후 설정</b>입니다. 우울은 완화 판정 '높음'이지만 예측구간이 0을 포함합니다. 추천 점수 계산에는 어느 쪽도 쓰지 않습니다.</p>' +
+      '<p class="ev-note">두 판정 모두 Claude의 <b>가상 판정</b>이며, 실험실 전문가 2인이 별도로 직접 판정할 예정입니다. 통합 효과크기는 두 판정에서 같고 확실성 표시만 달라집니다. 완화 기준은 엄격 판정 결과를 본 뒤 정한 <b>사후 설정</b>입니다. 우울은 완화 판정 ‘높음’이지만 예측구간이 0을 포함합니다. 추천 점수 계산에는 어느 쪽도 쓰지 않습니다.</p>' +
       '<div class="table-scroll"><table class="demo-table ev-table"><thead><tr><th>지표</th><th>엄격 판정</th><th>완화 판정</th></tr></thead><tbody>' +
       (d.domains || []).map(function (x) {
         return '<tr><th>' + esc(x.label) + '</th><td>' + gradeTag(x.grade.strict) + '</td><td>' + gradeTag(x.grade.lenient) + '</td></tr>';
