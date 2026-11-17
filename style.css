@@ -493,6 +493,15 @@ input[type="range"]::-moz-range-thumb {
 .site-footer strong { font-family: var(--font-serif); color: var(--green); font-size: 16px; }
 .site-footer p { font-size: 11.5px; color: var(--muted); margin-top: 4px; }
 .source-list { display: flex; flex-direction: column; gap: 2px; font-size: 11px; color: var(--muted); }
+.site-footer p.footer-copyright {
+  margin: 18px 0 0;
+  padding-top: 12px;
+  border-top: 1px solid var(--line);
+  font-size: 11px;
+  line-height: 1.7;
+  color: var(--muted);
+  max-width: 96ch;
+}
 
 /* ─────────────── modal ─────────────── */
 .modal { position: fixed; inset: 0; z-index: 200; display: flex; align-items: center; justify-content: center; padding: 24px; }
