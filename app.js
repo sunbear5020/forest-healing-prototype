@@ -575,6 +575,15 @@
         buildMap();
         renderMap();
         fitKorea();
+        setTimeout(() => {
+          el('#map').setAttribute('data-map-debug', JSON.stringify({
+            results: state.results.length,
+            markers: Object.keys(markers).length,
+            domPins: document.querySelectorAll('#map .kpin, #map .pin').length,
+            level: map.getLevel(),
+            kids: el('#map').children.length
+          }));
+        }, 1200);
       } catch (e) {
         if (window.console && console.error) console.error('[숲결] 지도 초기화 실패', e);
         el('#map').setAttribute('data-map-error', String((e && e.message) || e));
@@ -700,6 +709,7 @@
       markers[f.id] = { overlay: overlay, position: position, result: r };
     });
 
+    el('#map').setAttribute('data-map-render', String((Object.keys(markers).length)));
     PENDING_FACILITIES.forEach((p) => {
       const position = new km.LatLng(p.lat, p.lng);
       const overlay = new km.CustomOverlay({
