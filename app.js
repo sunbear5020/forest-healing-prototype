@@ -577,7 +577,6 @@
         fitKorea();
       } catch (e) {
         if (window.console && console.error) console.error('[숲결] 지도 초기화 실패', e);
-        el('#map').setAttribute('data-map-error', String((e && e.message) || e));
       }
     });
   }
@@ -684,37 +683,47 @@
       const f = r.forest;
       const isTop = r.order <= TOP_N;
       const position = new km.LatLng(f.lat, f.lng);
-      const overlay = new km.CustomOverlay({
-        position: position,
-        content: pinContent(r.grade, isTop),
-        xAnchor: 0.5,
-        yAnchor: isTop ? 1 : 0.5,
-        zIndex: isTop ? 1000 - r.order : 1,
-        clickable: true,
-        title: `${f.name} (${round(r.total)}점)`
-      });
-      overlay.setMap(map);
-      km.event.addListener(overlay, 'click', () => {
+      /* 클릭은 카카오 이벤트 대신 요소에 직접 건다(오버레이 위 클릭이 지도 클릭으로 새지 않게) */
+      const node = makeNode(pinContent(r.grade, isTop));
+      node.style.cursor = 'pointer';
+      node.setAttribute('title', `${f.name} (${round(r.total)}점)`);
+      node.addEventListener('click', (ev) => {
+        ev.stopPropagation();
         lastOverlayClick = Date.now();
         if (isTop) { map.panTo(position); openPopup(r); }
         else window.__focusForest(f.id, true);
       });
+      const overlay = new km.CustomOverlay({
+        position: position,
+        content: node,
+        xAnchor: 0.5,
+        yAnchor: isTop ? 1 : 0.5,
+        zIndex: isTop ? 1000 - r.order : 1,
+        clickable: true
+      });
+      overlay.setMap(map);
       markers[f.id] = { overlay: overlay, position: position, result: r };
     });
 
     PENDING_FACILITIES.forEach((p) => {
       const position = new km.LatLng(p.lat, p.lng);
+      const node = makeNode('<span class="pin pending"></span>');
+      node.style.cursor = 'pointer';
+      node.setAttribute('title', `${p.name} (프로필 구축 전)`);
+      node.addEventListener('click', (ev) => {
+        ev.stopPropagation();
+        lastOverlayClick = Date.now();
+        openPendingPopup(p);
+      });
       const overlay = new km.CustomOverlay({
         position: position,
-        content: '<span class="pin pending"></span>',
+        content: node,
         xAnchor: 0.5,
         yAnchor: 0.5,
         zIndex: 2,
-        clickable: true,
-        title: `${p.name} (프로필 구축 전)`
+        clickable: true
       });
       overlay.setMap(map);
-      km.event.addListener(overlay, 'click', () => { lastOverlayClick = Date.now(); openPendingPopup(p); });
       markers['pending:' + p.facilityId] = { overlay: overlay, position: position };
     });
   }

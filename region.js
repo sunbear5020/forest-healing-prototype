@@ -231,14 +231,16 @@
         var dot = document.createElement('span');
         dot.className = 'rg-flag-dot' + (x.grade === '극심' ? ' severe' : '') + (uncertain ? ' uncertain' : '');
         dot.style.background = FLAG[x.type].color;
+        dot.style.cursor = 'pointer';
         dot.setAttribute('aria-label', label);
+        dot.addEventListener('click', function (ev) { ev.stopPropagation(); select(p.sido, p.sigungu); });
+        var pos = new km.LatLng(p.lat, p.lng + off);
+        dot.addEventListener('mouseover', function () { showTip(label, pos); });
+        dot.addEventListener('mouseout', hideTip);
         var ov = new km.CustomOverlay({
-          position: new km.LatLng(p.lat, p.lng + off), content: dot,
+          position: pos, content: dot,
           xAnchor: 0.5, yAnchor: 0.5, zIndex: 8, clickable: true
         });
-        km.event.addListener(ov, 'click', function () { select(p.sido, p.sigungu); });
-        km.event.addListener(ov, 'mouseover', function () { showTip(label, ov.getPosition()); });
-        km.event.addListener(ov, 'mouseout', hideTip);
         ov.setMap(map);
         flagOverlays.push(ov);
       });
