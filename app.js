@@ -573,6 +573,7 @@
       if (typeof km.Map !== 'function') { renderMapFallback(); return; }
       buildMap();
       renderMap();
+      fitKorea();
     });
   }
 
@@ -590,7 +591,6 @@
       closePopup();
     });
     window.addEventListener('resize', () => { if (map) map.relayout(); });
-    fitKorea();
   }
 
   function boundsOf(pts) {
@@ -600,18 +600,31 @@
     return b;
   }
 
-  /* 카카오 지도에는 fitBounds가 없어, 경계를 모두 담는 가장 가까운 레벨(1=가까움)을 찾는다 */
+  /* 카카오 지도에는 fitBounds가 없다.
+     레벨(1=가까움)을 이진 탐색해 경계를 모두 담는 가장 가까운 레벨을 찾는다.
+     레벨을 바꾼 직후 getBounds()는 아직 이전 값을 돌려줄 수 있어,
+     한 박자 뒤에 확인하고 결과를 다시 반영한다. */
   function fitToBounds(b, maxLevel) {
     if (!map || !b || b.isEmpty()) return;
-    const limit = maxLevel || 12;
-    map.setCenter(b.getCenter());
+    const limit = Math.min(maxLevel || 12, 14);
     const sw = b.getSouthWest(), ne = b.getNorthEast();
-    for (let lv = 1; lv <= limit; lv++) {
-      map.setLevel(lv);
-      const mb = map.getBounds();
-      if (mb.contain(sw) && mb.contain(ne)) return;
-    }
-    map.setLevel(limit);
+    map.setCenter(b.getCenter());
+    let lo = 1, hi = limit, best = limit;
+    const curFits = (cb) => {
+      let mb = null;
+      try { mb = map.getBounds(); } catch (e) { mb = null; }
+      cb(!!mb && mb.contain(sw) && mb.contain(ne));
+    };
+    const step = () => {
+      if (lo > hi) { map.setLevel(best); return; }
+      const mid = Math.floor((lo + hi) / 2);
+      map.setLevel(mid);
+      setTimeout(() => curFits((ok) => {
+        if (ok) { best = mid; hi = mid - 1; } else { lo = mid + 1; }
+        step();
+      }), 60);
+    };
+    setTimeout(step, 120);
   }
 
   function fitKorea() {
