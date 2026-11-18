@@ -69,7 +69,7 @@
     km.load(function () {
       try {
       if (typeof km.Map !== 'function') { mapFallback(); return; }
-      map = new km.Map('rg-map', {
+      map = new km.Map(document.getElementById('rg-map'), {
         center: new km.LatLng(36.2, 127.9),
         level: 9,
         scrollwheel: false,     // 페이지 스크롤을 지도가 잡아먹지 않게
@@ -82,7 +82,7 @@
       fitTo(wholeBounds(), 14);
       } catch (e) {
         if (window.console && console.error) console.error('[숲결] 지역 지도 초기화 실패', e);
-        document.getElementById('rg-map').setAttribute('data-map-error', String((e && e.message) || e));
+        mapFallback();
       }
     });
   }
