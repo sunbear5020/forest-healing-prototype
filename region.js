@@ -22,7 +22,7 @@
   ];
 
   var st = { layer: 'stress', year: '2024', flags: { wildfire: true, pwd: true, landslide: true }, sel: null };
-  var RH, HZ, GEO, map, geoLayer, flagLayer, featByKey = {};
+  var RH, HZ, GEO, map, featByKey = {}, featBounds = {}, flagOverlays = [], tipEl = null, tipOverlay = null;
 
   function $(s) { return document.querySelector(s); }
   function esc(s) { return String(s == null ? '' : s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
@@ -55,27 +55,120 @@
   }
   function classOf(x, br) { if (x == null || isNaN(x)) return -1; var i = 0; while (i < br.length && x >= br[i]) i++; return Math.min(i, 4); }
 
-  /* ── 지도 ── */
-  function initMap() {
-    map = L.map('rg-map', { center: [36.2, 127.9], zoom: 7, scrollWheelZoom: false, zoomControl: false });
-    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 13, attribution: '&copy; OpenStreetMap contributors · 경계: 통계청 SGIS(admdongkor 가공)' }).addTo(map);
-    L.control.zoom({ position: 'bottomright' }).addTo(map);
-    geoLayer = L.geoJSON(GEO, {
-      style: styleFor,
-      onEachFeature: function (f, lyr) {
-        featByKey[key(f.properties.sido, f.properties.sigungu)] = lyr;
-        lyr.on('click', function () { select(f.properties.sido, f.properties.sigungu); });
-        lyr.bindTooltip(function () { return tip(f.properties); }, { sticky: true });
-      }
-    }).addTo(map);
-    flagLayer = L.layerGroup().addTo(map);
-    map.fitBounds(geoLayer.getBounds(), { padding: [8, 8] });
+  /* ── 지도 (카카오 지도 SDK) ── */
+  function kmaps() {
+    return typeof kakao !== 'undefined' && kakao.maps && typeof kakao.maps.load === 'function' ? kakao.maps : null;
   }
+  function mapFallback() {
+    $('#rg-map').innerHTML = '<p class="rg-empty" style="padding:20px">지도를 불러오지 못했습니다. 아래 검색으로 지역을 찾아보세요.</p>';
+  }
+
+  function initMap() {
+    var km = kmaps();
+    if (!km) { mapFallback(); return; }
+    km.load(function () {
+      if (typeof km.Map !== 'function') { mapFallback(); return; }
+      map = new km.Map('rg-map', {
+        center: new km.LatLng(36.2, 127.9),
+        level: 9,
+        scrollwheel: false,     // 페이지 스크롤을 지도가 잡아먹지 않게
+        draggable: true
+      });
+      map.addControl(new km.ZoomControl(), km.ControlPosition.BOTTOM_RIGHT);
+      buildTooltip();
+      buildPolygons();
+      redraw();
+      fitTo(wholeBounds(), 9);
+    });
+  }
+
+  /* GeoJSON(경계 단순화본) → 카카오 지도 다각형 */
+  function buildPolygons() {
+    var km = kmaps();
+    GEO.features.forEach(function (f) {
+      var p = f.properties;
+      var parts = f.geometry.type === 'Polygon' ? [f.geometry.coordinates] : f.geometry.coordinates;
+      var bounds = new km.LatLngBounds();
+      var polys = [];
+      parts.forEach(function (rings) {
+        var path = rings.map(function (ring) {
+          return ring.map(function (c) { var ll = new km.LatLng(c[1], c[0]); bounds.extend(ll); return ll; });
+        });
+        var poly = new km.Polygon({
+          path: path, strokeWeight: 0.6, strokeColor: '#FFFFFF', strokeOpacity: 1,
+          fillColor: NODATA, fillOpacity: 0.86, zIndex: 1
+        });
+        km.event.addListener(poly, 'click', function () { select(p.sido, p.sigungu); });
+        km.event.addListener(poly, 'mouseover', function (e) { showTip(tip(p), e.latLng); });
+        km.event.addListener(poly, 'mousemove', function (e) { showTip(tip(p), e.latLng); });
+        km.event.addListener(poly, 'mouseout', hideTip);
+        poly.setMap(map);
+        polys.push(poly);
+      });
+      featByKey[key(p.sido, p.sigungu)] = { props: p, polys: polys };
+      featBounds[key(p.sido, p.sigungu)] = bounds;
+    });
+  }
+
+  /* 마우스를 올린 지역의 값 툴팁 */
+  function buildTooltip() {
+    var km = kmaps();
+    tipEl = document.createElement('div');
+    tipEl.className = 'rg-tip';
+    tipEl.style.display = 'none';
+    tipOverlay = new km.CustomOverlay({ content: tipEl, xAnchor: 0.5, yAnchor: 1.4, zIndex: 20 });
+  }
+  function showTip(html, latlng) {
+    if (!tipOverlay || !latlng) return;
+    tipEl.innerHTML = html;
+    tipEl.style.display = 'block';
+    tipOverlay.setPosition(latlng);
+    tipOverlay.setMap(map);
+  }
+  function hideTip() {
+    if (!tipOverlay) return;
+    tipEl.style.display = 'none';
+    tipOverlay.setMap(null);
+  }
+
+  /* 지도에는 fitBounds가 없어, 경계를 모두 담는 가장 가까운 레벨(1=가까움)을 찾는다 */
+  function fitTo(bounds, maxLevel) {
+    if (!map || !bounds || bounds.isEmpty()) return;
+    var limit = maxLevel || 12;
+    map.setCenter(bounds.getCenter());
+    var sw = bounds.getSouthWest(), ne = bounds.getNorthEast();
+    for (var lv = 1; lv <= limit; lv++) {
+      map.setLevel(lv);
+      var mb = map.getBounds();
+      if (mb.contain(sw) && mb.contain(ne)) return;
+    }
+    map.setLevel(limit);
+  }
+  function wholeBounds() {
+    var km = kmaps(), b = new km.LatLngBounds();
+    GEO.features.forEach(function (f) {
+      var fb = featBounds[key(f.properties.sido, f.properties.sigungu)];
+      if (!fb) return;
+      b.extend(fb.getSouthWest()); b.extend(fb.getNorthEast());
+    });
+    return b;
+  }
+
   var curBreaks = [];
-  function styleFor(f) {
-    var p = f.properties, c = classOf(value(p.sido, p.sigungu), curBreaks);
+  function styleOf(p) {
+    var c = classOf(value(p.sido, p.sigungu), curBreaks);
     var sel = st.sel && st.sel.sido === p.sido && st.sel.sigungu === p.sigungu;
-    return { color: sel ? '#1E2A22' : '#FFFFFF', weight: sel ? 2.4 : 0.6, fillColor: c < 0 ? NODATA : PAL[c], fillOpacity: 0.86 };
+    return {
+      strokeColor: sel ? '#1E2A22' : '#FFFFFF', strokeWeight: sel ? 2.4 : 0.6,
+      fillColor: c < 0 ? NODATA : PAL[c], fillOpacity: 0.86
+    };
+  }
+  function applyStyles() {
+    Object.keys(featByKey).forEach(function (k) {
+      var f = featByKey[k], sel = st.sel && st.sel.sido === f.props.sido && st.sel.sigungu === f.props.sigungu;
+      var s = styleOf(f.props);
+      f.polys.forEach(function (poly) { poly.setOptions(s); poly.setZIndex(sel ? 5 : 1); });
+    });
   }
   function tip(p) {
     var L0 = layerDef(), v = value(p.sido, p.sigungu);
@@ -87,7 +180,7 @@
     if (L0.level === 'sido') vals = Object.keys(HZ.sido).map(sidoVal);
     else vals = GEO.features.map(function (f) { return value(f.properties.sido, f.properties.sigungu); });
     curBreaks = breaks(vals);
-    geoLayer.setStyle(styleFor);
+    applyStyles();
     drawFlags();
     legend(L0);
     var notes = {
@@ -113,18 +206,30 @@
   }
   function flagsOf(sido, sg) { return HZ.sigungu_flags.filter(function (f) { return f.sido === sido && f.sigungu === sg; }); }
   function drawFlags() {
-    flagLayer.clearLayers();
+    var km = kmaps();
+    if (!map || !km) return;
+    flagOverlays.forEach(function (o) { o.setMap(null); });
+    flagOverlays = [];
     var types = ['wildfire', 'pwd', 'landslide'];
     GEO.features.forEach(function (f) {
       var p = f.properties, fl = flagsOf(p.sido, p.sigungu).filter(function (x) { return st.flags[x.type]; });
       fl.forEach(function (x) {
         var off = (types.indexOf(x.type) - 1) * 0.06;
         var uncertain = /확실하지 않음/.test(x.certainty);
-        L.circleMarker([p.lat, p.lng + off], {
-          radius: x.grade === '극심' ? 8 : 6, color: '#fff', weight: 2, fillColor: FLAG[x.type].color,
-          fillOpacity: uncertain ? 0.55 : 0.95, dashArray: uncertain ? '2 2' : null
-        }).bindTooltip(esc(p.sigungu) + ' · ' + esc(x.label) + (uncertain ? ' (확실하지 않음)' : ''))
-          .on('click', function () { select(p.sido, p.sigungu); }).addTo(flagLayer);
+        var label = esc(p.sigungu) + ' · ' + esc(x.label) + (uncertain ? ' (확실하지 않음)' : '');
+        var dot = document.createElement('span');
+        dot.className = 'rg-flag-dot' + (x.grade === '극심' ? ' severe' : '') + (uncertain ? ' uncertain' : '');
+        dot.style.background = FLAG[x.type].color;
+        dot.setAttribute('aria-label', label);
+        var ov = new km.CustomOverlay({
+          position: new km.LatLng(p.lat, p.lng + off), content: dot,
+          xAnchor: 0.5, yAnchor: 0.5, zIndex: 8, clickable: true
+        });
+        km.event.addListener(ov, 'click', function () { select(p.sido, p.sigungu); });
+        km.event.addListener(ov, 'mouseover', function () { showTip(label, ov.getPosition()); });
+        km.event.addListener(ov, 'mouseout', hideTip);
+        ov.setMap(map);
+        flagOverlays.push(ov);
       });
     });
   }
@@ -141,8 +246,7 @@
   }
   function select(sido, sg) {
     st.sel = { sido: sido, sigungu: sg };
-    if (geoLayer) geoLayer.setStyle(styleFor);
-    var lyr = featByKey[key(sido, sg)]; if (lyr && lyr.bringToFront) lyr.bringToFront();
+    applyStyles();
     var r = RH.regions[sido] || {}, g = (r.sigungu || {})[sg] || {}, s = HZ.sido[sido];
     var h = '<h3>' + esc(sido) + ' ' + esc(sg) + '</h3><p class="sub">지역 평균을 보여주는 참고 정보입니다. 개인의 상태를 뜻하지 않습니다.</p><div class="rg-grid">';
     // 마음건강
@@ -214,7 +318,7 @@
                 GEO.features.filter(function (f) { return f.properties.sigungu === q || (f.properties.sido + ' ' + f.properties.sigungu).indexOf(q) >= 0; })[0];
       if (!hit) return;
       select(hit.properties.sido, hit.properties.sigungu);
-      var lyr = featByKey[key(hit.properties.sido, hit.properties.sigungu)]; if (lyr && map) map.fitBounds(lyr.getBounds(), { maxZoom: 10 });
+      var fb = featBounds[key(hit.properties.sido, hit.properties.sigungu)]; if (fb && map) fitTo(fb, 10);
       $('#rg-detail').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
     });
   }
@@ -248,8 +352,7 @@
     .then(function (r) {
       RH = r[0]; HZ = r[1]; GEO = r[2];
       tiles(); controls(); evidence(); gaps(); sources(); search();
-      if (typeof L === 'undefined') { $('#rg-map').innerHTML = '<p class="rg-empty" style="padding:20px">지도를 불러오지 못했습니다. 아래 검색으로 지역을 찾아보세요.</p>'; return; }
-      initMap(); redraw();
+      initMap();
     })
     .catch(function (e) { $('#rg-detail').innerHTML = '<p class="rg-empty">자료를 읽지 못했습니다: ' + esc(e.message) + '</p>'; });
 }());

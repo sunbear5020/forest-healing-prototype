@@ -78,3 +78,26 @@
 }
 .rg-year[hidden] { display: none; }
 .rg-results b { color: var(--green); }
+
+/* 카카오 지도 SDK — 마우스 툴팁과 피해 지역 점 */
+.rg-tip {
+  background: rgba(20, 20, 19, .9);
+  color: #fff;
+  font-size: 11.5px;
+  line-height: 1.45;
+  padding: 6px 9px;
+  border-radius: 8px;
+  white-space: nowrap;
+  box-shadow: var(--shadow-sm);
+  pointer-events: none;
+}
+.rg-tip b { color: #fff; }
+.rg-flag-dot {
+  display: block;
+  width: 12px; height: 12px;
+  border-radius: 50%;
+  border: 2px solid #fff;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, .35);
+}
+.rg-flag-dot.severe { width: 16px; height: 16px; }
+.rg-flag-dot.uncertain { opacity: .6; border-style: dashed; }

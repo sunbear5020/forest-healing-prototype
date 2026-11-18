@@ -40,9 +40,14 @@ python3 -m http.server 8000
 # 브라우저에서 http://localhost:8000 접속
 ```
 
-외부 CDN을 사용합니다(인터넷 필요): Leaflet 1.9.4(unpkg), OpenStreetMap 타일,
+외부 CDN을 사용합니다(인터넷 필요): 카카오 지도 JavaScript SDK(dapi.kakao.com, 앱 키 `숲결`),
 Pretendard(jsDelivr), Noto Sans/Serif KR(Google Fonts).
-지도 라이브러리 로드가 실패하면 좌표 기반 간이 지도로 자동 대체됩니다.
+지도 SDK 로드가 실패하거나 키·도메인 설정이 없으면 좌표 기반 간이 지도로 자동 대체됩니다.
+
+지도 키는 **JavaScript 키**(브라우저에 노출되는 공개용 키)를 `index.html`·`region.html`의 SDK 주소에 넣어 씁니다.
+키를 바꾸려면 두 파일을 함께 고치고, 카카오디벨로퍼스 → 앱 `숲결`(ID 1656093) → 플랫폼 키에
+서비스 도메인(`https://sunbear5020.github.io`)이 등록돼 있는지 확인합니다.
+REST API 키는 서버용 비밀값이라 저장소에 넣지 않습니다.
 
 ## 파일 구성
 

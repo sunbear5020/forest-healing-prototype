@@ -552,96 +552,201 @@
   }
 
   /* =======================================================================
-     6. 지도
+     6. 지도 (카카오 지도 JavaScript SDK)
      ======================================================================= */
   let map = null;
-  let markerLayer = null;
-  const markers = {};
+  const markers = {};          // forest.id -> { overlay, position, result }
+  let popupOverlay = null;
+  let lastOverlayClick = 0;    // 마커 클릭이 지도 클릭으로도 전달돼 팝업이 바로 닫히는 것을 막는다
+
+  function kakaoSdk() {
+    return typeof kakao !== 'undefined' && kakao.maps && typeof kakao.maps.load === 'function' ? kakao.maps : null;
+  }
 
   function initMap() {
-    const container = el('#map');
-    if (typeof L === 'undefined') {
+    const km = kakaoSdk();
+    if (!km) {                 // SDK를 불러오지 못했거나 키·도메인 설정 전
       renderMapFallback();
       return;
     }
-    map = L.map(container, {
-      center: [36.1, 127.8],
-      zoom: 7,
-      scrollWheelZoom: false,
-      zoomControl: false,
-      attributionControl: true
+    km.load(() => {
+      if (typeof km.Map !== 'function') { renderMapFallback(); return; }
+      buildMap();
+      renderMap();
     });
-    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      maxZoom: 17,
-      attribution: '&copy; OpenStreetMap contributors'
-    }).addTo(map);
-    L.control.zoom({ position: 'bottomright' }).addTo(map);
-    markerLayer = L.layerGroup().addTo(map);
+  }
+
+  function buildMap() {
+    const km = kakaoSdk();
+    map = new km.Map(el('#map'), {
+      center: new km.LatLng(36.1, 127.8),
+      level: 9,
+      scrollwheel: false,      // 페이지 스크롤을 지도가 잡아먹지 않게
+      draggable: true
+    });
+    map.addControl(new km.ZoomControl(), km.ControlPosition.BOTTOM_RIGHT);
+    km.event.addListener(map, 'click', () => {
+      if (Date.now() - lastOverlayClick < 260) return;
+      closePopup();
+    });
+    window.addEventListener('resize', () => { if (map) map.relayout(); });
     fitKorea();
+  }
+
+  function boundsOf(pts) {
+    const km = kakaoSdk();
+    const b = new km.LatLngBounds();
+    pts.forEach((p) => b.extend(new km.LatLng(p[0], p[1])));
+    return b;
+  }
+
+  /* 카카오 지도에는 fitBounds가 없어, 경계를 모두 담는 가장 가까운 레벨(1=가까움)을 찾는다 */
+  function fitToBounds(b, maxLevel) {
+    if (!map || !b || b.isEmpty()) return;
+    const limit = maxLevel || 12;
+    map.setCenter(b.getCenter());
+    const sw = b.getSouthWest(), ne = b.getNorthEast();
+    for (let lv = 1; lv <= limit; lv++) {
+      map.setLevel(lv);
+      const mb = map.getBounds();
+      if (mb.contain(sw) && mb.contain(ne)) return;
+    }
+    map.setLevel(limit);
   }
 
   function fitKorea() {
     if (!map) return;
-    const bounds = L.latLngBounds(FORESTS.concat(PENDING_FACILITIES).map((f) => [f.lat, f.lng]));
-    map.fitBounds(bounds, { padding: [26, 26] });
-    // 제주~강원 전 구간을 한 화면에 두되, 너무 축소되어 반도가 작아지지 않게 하한 줌을 둔다
-    if (map.getZoom() < 6.3) map.setView(bounds.getCenter(), 6.3);
+    /* 제주~강원 전 구간을 한 화면에 두되, 너무 축소되어 반도가 작아지지 않게 상한 레벨을 둔다 */
+    fitToBounds(boundsOf(FORESTS.concat(PENDING_FACILITIES).map((f) => [f.lat, f.lng])), 9);
   }
 
-  function pinIcon(grade, isTop) {
-    if (!isTop) return L.divIcon({ className: 'pin-wrap', html: '<span class="pin rest"><span></span></span>', iconSize: [14, 14], iconAnchor: [7, 7] });
-    const cls = grade.key === 'g1' ? 'pin rank-1' : 'pin';
-    const small = window.innerWidth < 700;
-    const size = small ? 24 : 30;
-    return L.divIcon({
-      className: 'pin-wrap',
-      html: `<span class="${cls}"><span>${grade.mark}</span></span>`,
-      iconSize: [size, size],
-      iconAnchor: [size / 2, size - 3],
-      popupAnchor: [0, -22]
-    });
+  function pinContent(grade, isTop) {
+    if (!isTop) return '<span class="pin rest"></span>';
+    const big = grade.key === 'g1';
+    return `<span class="kpin ${big ? 's34' : 's28'}"><span class="pin${big ? ' rank-1' : ''}"><span>${grade.mark}</span></span></span>`;
+  }
+
+  function makeNode(html) {
+    const d = document.createElement('div');
+    d.innerHTML = String(html).trim();
+    return d.firstElementChild;
+  }
+
+  function popupContent(r) {
+    const f = r.forest;
+    const prog = pickPrograms(f, state.purpose, state.walk);
+    const node = makeNode(`<div class="kpop-wrap"><div class="kpop">
+        <button class="kpop-close" type="button" aria-label="닫기">×</button>
+        <div class="pop-name">${r.grade.mark} ${f.name} <small>${r.grade.label}</small></div>
+        <div class="pop-meta">${f.sido} ${f.sigungu} · 종합 <span class="pop-score">${round(r.total)}점</span></div>
+        <div class="pop-meta">추천 프로그램: ${prog.items[0] ? prog.items[0].name : '-'}</div>
+        <div class="pop-actions">
+          <button class="pop-btn" type="button" data-card>카드에서 보기</button>
+          <button class="pop-btn ghost" type="button" data-detail>상세 보기</button>
+        </div>
+      </div></div>`);
+    node.querySelector('.kpop-close').addEventListener('click', closePopup);
+    node.querySelector('[data-card]').addEventListener('click', () => window.__focusForest(f.id, false));
+    node.querySelector('[data-detail]').addEventListener('click', () => window.__focusForest(f.id, true));
+    return node;
   }
 
   function renderMap() {
     if (!map) return;
-    markerLayer.clearLayers();
-    Object.keys(markers).forEach((k) => delete markers[k]);
+    const km = kakaoSdk();
+    closePopup();
+    Object.keys(markers).forEach((k) => {
+      if (markers[k].overlay) markers[k].overlay.setMap(null);
+      delete markers[k];
+    });
 
     state.results.forEach((r) => {
       const f = r.forest;
       const isTop = r.order <= TOP_N;
-      const m = L.marker([f.lat, f.lng], {
-        icon: pinIcon(r.grade, isTop),
-        zIndexOffset: isTop ? 1000 - r.order : 0,
+      const position = new km.LatLng(f.lat, f.lng);
+      const overlay = new km.CustomOverlay({
+        position: position,
+        content: pinContent(r.grade, isTop),
+        xAnchor: 0.5,
+        yAnchor: isTop ? 1 : 0.5,
+        zIndex: isTop ? 1000 - r.order : 1,
+        clickable: true,
         title: `${f.name} (${round(r.total)}점)`
       });
-      if (isTop) {
-        const prog = pickPrograms(f, state.purpose, state.walk);
-        m.bindPopup(
-          `<div class="pop-name">${r.grade.mark} ${f.name} <small>${r.grade.label}</small></div>
-           <div class="pop-meta">${f.sido} ${f.sigungu} · 종합 <span class="pop-score">${round(r.total)}점</span></div>
-           <div class="pop-meta">추천 프로그램: ${prog.items[0] ? prog.items[0].name : '-'}</div>
-           <div class="pop-actions">
-             <button class="pop-btn" onclick="window.__focusForest('${f.id}', false)">카드에서 보기</button>
-             <button class="pop-btn ghost" onclick="window.__focusForest('${f.id}', true)">상세 보기</button>
-           </div>`
-        );
-      }
-      m.on('click', () => { if (!isTop) window.__focusForest(f.id, true); });
-      m.addTo(markerLayer);
-      markers[f.id] = m;
+      overlay.setMap(map);
+      km.event.addListener(overlay, 'click', () => {
+        lastOverlayClick = Date.now();
+        if (isTop) { map.panTo(position); openPopup(r); }
+        else window.__focusForest(f.id, true);
+      });
+      markers[f.id] = { overlay: overlay, position: position, result: r };
     });
 
     PENDING_FACILITIES.forEach((p) => {
-      L.marker([p.lat, p.lng], {
-        icon: L.divIcon({ className: 'pin-wrap', html: '<span class="pin pending"><span></span></span>', iconSize: [14, 14], iconAnchor: [7, 7] }),
+      const position = new km.LatLng(p.lat, p.lng);
+      const overlay = new km.CustomOverlay({
+        position: position,
+        content: '<span class="pin pending"></span>',
+        xAnchor: 0.5,
+        yAnchor: 0.5,
+        zIndex: 2,
+        clickable: true,
         title: `${p.name} (프로필 구축 전)`
-      }).bindPopup(
-        `<div class="pop-name">${p.name}</div>
-         <div class="pop-meta">${p.address}</div>
-         <div class="pop-meta">1차 범위 기관 · 시설 프로필 구축 전이라 점수를 계산하지 않았습니다.</div>`
-      ).addTo(markerLayer);
+      });
+      overlay.setMap(map);
+      km.event.addListener(overlay, 'click', () => { lastOverlayClick = Date.now(); openPendingPopup(p); });
+      markers['pending:' + p.facilityId] = { overlay: overlay, position: position };
     });
+  }
+
+  function openPopup(r) {
+    if (!map) return;
+    const km = kakaoSdk();
+    const m = markers[r.forest.id];
+    if (!m) return;
+    closePopup();
+    popupOverlay = new km.CustomOverlay({
+      position: m.position,
+      content: popupContent(r),
+      xAnchor: 0.5,
+      yAnchor: 1,
+      zIndex: 3000,
+      clickable: true
+    });
+    popupOverlay.setMap(map);
+  }
+
+  function openPendingPopup(p) {
+    if (!map) return;
+    const km = kakaoSdk();
+    const m = markers['pending:' + p.facilityId];
+    if (!m) return;
+    closePopup();
+    const node = makeNode(`<div class="kpop-wrap"><div class="kpop">
+        <button class="kpop-close" type="button" aria-label="닫기">×</button>
+        <div class="pop-name">${p.name}</div>
+        <div class="pop-meta">${p.address}</div>
+        <div class="pop-meta">1차 범위 기관 · 시설 프로필 구축 전이라 점수를 계산하지 않았습니다.</div>
+      </div></div>`);
+    node.querySelector('.kpop-close').addEventListener('click', closePopup);
+    popupOverlay = new km.CustomOverlay({
+      position: m.position, content: node, xAnchor: 0.5, yAnchor: 1, zIndex: 3000, clickable: true
+    });
+    popupOverlay.setMap(map);
+  }
+
+  function closePopup() {
+    if (popupOverlay) { popupOverlay.setMap(null); popupOverlay = null; }
+  }
+
+  /* 레벨은 작을수록 가깝다. 이미 더 가까이 보고 있으면 그대로 둔다. */
+  function focusOnForest(id, nearestLevel) {
+    const m = markers[id];
+    if (!m || !map) return;
+    const lv = Math.min(map.getLevel(), nearestLevel);
+    map.setLevel(lv);
+    map.panTo(m.position);
+    return m;
   }
 
   function renderMapFallback() {
@@ -671,9 +776,7 @@
       card.scrollIntoView({ behavior: 'smooth', block: 'center' });
       setTimeout(() => card.classList.remove('is-active'), 2600);
     }
-    if (markers[id] && map) {
-      map.setView(markers[id].getLatLng(), Math.max(map.getZoom(), 8), { animate: true });
-    }
+    focusOnForest(id, 6);
     if (openDetail) openDetailModal(id);
   }
   window.__focusForest = focusForest;
@@ -814,10 +917,8 @@
 
   window.__focusOnMap = function (id) {
     closeModal('#modal-detail');
-    if (markers[id] && map) {
-      map.setView(markers[id].getLatLng(), 10, { animate: true });
-      markers[id].openPopup();
-    }
+    const m = focusOnForest(id, 5);
+    if (m && m.result) openPopup(m.result);
   };
 
   /* =======================================================================
@@ -894,8 +995,8 @@
       } else if (t.dataset.goto) {
         focusForest(t.dataset.goto, false);
       } else if (t.dataset.focus) {
-        const m = markers[t.dataset.focus];
-        if (m && map) { map.setView(m.getLatLng(), 9, { animate: true }); m.openPopup(); }
+        const m = focusOnForest(t.dataset.focus, 6);
+        if (m && m.result) openPopup(m.result);
         el('#map').scrollIntoView({ behavior: 'smooth', block: 'center' });
       } else if (t.hasAttribute('data-close')) {
         const modal = t.closest('.modal');
