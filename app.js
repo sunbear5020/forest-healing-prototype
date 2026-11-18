@@ -575,15 +575,6 @@
         buildMap();
         renderMap();
         fitKorea();
-        setTimeout(() => {
-          el('#map').setAttribute('data-map-debug', JSON.stringify({
-            results: state.results.length,
-            markers: Object.keys(markers).length,
-            domPins: document.querySelectorAll('#map .kpin, #map .pin').length,
-            level: map.getLevel(),
-            kids: el('#map').children.length
-          }));
-        }, 1200);
       } catch (e) {
         if (window.console && console.error) console.error('[숲결] 지도 초기화 실패', e);
         el('#map').setAttribute('data-map-error', String((e && e.message) || e));
@@ -607,6 +598,12 @@
     window.addEventListener('resize', () => { if (map) map.relayout(); });
   }
 
+  function centerOf(b) {
+    const km = kakaoSdk();
+    const sw = b.getSouthWest(), ne = b.getNorthEast();
+    return new km.LatLng((sw.getLat() + ne.getLat()) / 2, (sw.getLng() + ne.getLng()) / 2);
+  }
+
   function boundsOf(pts) {
     const km = kakaoSdk();
     const b = new km.LatLngBounds();
@@ -619,10 +616,10 @@
      레벨을 바꾼 직후 getBounds()는 아직 이전 값을 돌려줄 수 있어,
      한 박자 뒤에 확인하고 결과를 다시 반영한다. */
   function fitToBounds(b, maxLevel) {
-    if (!map || !b || b.isEmpty()) return;
+    if (!map || !b) return;
     const limit = Math.min(maxLevel || 12, 14);
     const sw = b.getSouthWest(), ne = b.getNorthEast();
-    map.setCenter(b.getCenter());
+    map.setCenter(centerOf(b));
     let lo = 1, hi = limit, best = limit;
     const curFits = (cb) => {
       let mb = null;
@@ -709,7 +706,6 @@
       markers[f.id] = { overlay: overlay, position: position, result: r };
     });
 
-    el('#map').setAttribute('data-map-render', String((Object.keys(markers).length)));
     PENDING_FACILITIES.forEach((p) => {
       const position = new km.LatLng(p.lat, p.lng);
       const overlay = new km.CustomOverlay({

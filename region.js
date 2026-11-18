@@ -134,10 +134,10 @@
   /* 지도에는 fitBounds가 없다. 레벨(1=가까움)을 이진 탐색해 경계를 모두 담는 가장 가까운 레벨을 찾는다.
      레벨을 바꾼 직후 getBounds()는 아직 이전 값을 돌려줄 수 있어, 한 박자 뒤에 확인한다. */
   function fitTo(bounds, maxLevel) {
-    if (!map || !bounds || bounds.isEmpty()) return;
+    if (!map || !bounds) return;
     var limit = Math.min(maxLevel || 12, 14);
     var sw = bounds.getSouthWest(), ne = bounds.getNorthEast();
-    map.setCenter(bounds.getCenter());
+    map.setCenter(centerOf(bounds));
     var lo = 1, hi = limit, best = limit;
     function step() {
       if (lo > hi) { map.setLevel(best); return; }
@@ -161,6 +161,10 @@
       b.extend(fb.getSouthWest()); b.extend(fb.getNorthEast());
     });
     return b;
+  }
+  function centerOf(b) {
+    var km = kmaps(), sw = b.getSouthWest(), ne = b.getNorthEast();
+    return new km.LatLng((sw.getLat() + ne.getLat()) / 2, (sw.getLng() + ne.getLng()) / 2);
   }
 
   var curBreaks = [];
