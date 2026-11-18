@@ -570,10 +570,15 @@
       return;
     }
     km.load(() => {
-      if (typeof km.Map !== 'function') { renderMapFallback(); return; }
-      buildMap();
-      renderMap();
-      fitKorea();
+      try {
+        if (typeof km.Map !== 'function') { renderMapFallback(); return; }
+        buildMap();
+        renderMap();
+        fitKorea();
+      } catch (e) {
+        if (window.console && console.error) console.error('[숲결] 지도 초기화 실패', e);
+        el('#map').setAttribute('data-map-error', String((e && e.message) || e));
+      }
     });
   }
 
