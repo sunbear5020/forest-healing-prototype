@@ -78,7 +78,7 @@
       buildTooltip();
       buildPolygons();
       redraw();
-      fitTo(wholeBounds(), 9);
+      fitTo(wholeBounds(), 14);
     });
   }
 
@@ -131,28 +131,26 @@
     tipOverlay.setMap(null);
   }
 
-  /* 지도에는 fitBounds가 없다. 레벨(1=가까움)을 이진 탐색해 경계를 모두 담는 가장 가까운 레벨을 찾는다.
-     레벨을 바꾼 직후 getBounds()는 아직 이전 값을 돌려줄 수 있어, 한 박자 뒤에 확인한다. */
+  /* 지도에는 fitBounds가 없다. 지금 레벨에서 경계의 화면 픽셀 크기를 재고,
+     화면(여유 16%)에 들어오도록 레벨을 올린다. 카카오 지도는 한 레벨마다 화면이 2배 넓어진다. */
   function fitTo(bounds, maxLevel) {
     if (!map || !bounds) return;
     var limit = Math.min(maxLevel || 12, 14);
     var sw = bounds.getSouthWest(), ne = bounds.getNorthEast();
     map.setCenter(centerOf(bounds));
-    var lo = 1, hi = limit, best = limit;
-    function step() {
-      if (lo > hi) { map.setLevel(best); return; }
-      var mid = Math.floor((lo + hi) / 2);
-      map.setLevel(mid);
-      setTimeout(function () {
-        var mb = null;
-        try { mb = map.getBounds(); } catch (e) { mb = null; }
-        var ok = !!mb && mb.contain(sw) && mb.contain(ne);
-        if (ok) { best = mid; hi = mid - 1; } else { lo = mid + 1; }
-        step();
-      }, 60);
-    }
-    setTimeout(step, 120);
+    var lv = limit;
+    try {
+      var proj = map.getProjection();
+      var p1 = proj.containerPointFromCoords(sw);
+      var p2 = proj.containerPointFromCoords(ne);
+      var box = document.getElementById('rg-map');
+      var w = Math.abs(p2.x - p1.x), h = Math.abs(p2.y - p1.y);
+      var ratio = Math.max(w / (box.clientWidth * 0.84 || 1), h / (box.clientHeight * 0.84 || 1), 1);
+      lv = map.getLevel() + Math.ceil(Math.log(ratio) / Math.LN2);
+    } catch (e) { lv = limit; }
+    map.setLevel(Math.min(Math.max(1, lv), limit));
   }
+
   function wholeBounds() {
     var km = kmaps(), b = new km.LatLngBounds();
     GEO.features.forEach(function (f) {
@@ -331,7 +329,7 @@
                 GEO.features.filter(function (f) { return f.properties.sigungu === q || (f.properties.sido + ' ' + f.properties.sigungu).indexOf(q) >= 0; })[0];
       if (!hit) return;
       select(hit.properties.sido, hit.properties.sigungu);
-      var fb = featBounds[key(hit.properties.sido, hit.properties.sigungu)]; if (fb && map) fitTo(fb, 10);
+      var fb = featBounds[key(hit.properties.sido, hit.properties.sigungu)]; if (fb && map) fitTo(fb, 12);
       $('#rg-detail').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
     });
   }

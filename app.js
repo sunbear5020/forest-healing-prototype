@@ -611,37 +611,33 @@
     return b;
   }
 
-  /* 카카오 지도에는 fitBounds가 없다.
-     레벨(1=가까움)을 이진 탐색해 경계를 모두 담는 가장 가까운 레벨을 찾는다.
-     레벨을 바꾼 직후 getBounds()는 아직 이전 값을 돌려줄 수 있어,
-     한 박자 뒤에 확인하고 결과를 다시 반영한다. */
+  /* 카카오 지도에는 fitBounds가 없다. 지금 레벨에서 경계의 화면 픽셀 크기를 재고,
+     화면(여유 14%)에 들어오도록 레벨을 올린다. 카카오 지도는 한 레벨마다 화면이 2배 넓어진다. */
   function fitToBounds(b, maxLevel) {
     if (!map || !b) return;
+    const km = kakaoSdk();
     const limit = Math.min(maxLevel || 12, 14);
     const sw = b.getSouthWest(), ne = b.getNorthEast();
     map.setCenter(centerOf(b));
-    let lo = 1, hi = limit, best = limit;
-    const curFits = (cb) => {
-      let mb = null;
-      try { mb = map.getBounds(); } catch (e) { mb = null; }
-      cb(!!mb && mb.contain(sw) && mb.contain(ne));
-    };
-    const step = () => {
-      if (lo > hi) { map.setLevel(best); return; }
-      const mid = Math.floor((lo + hi) / 2);
-      map.setLevel(mid);
-      setTimeout(() => curFits((ok) => {
-        if (ok) { best = mid; hi = mid - 1; } else { lo = mid + 1; }
-        step();
-      }), 60);
-    };
-    setTimeout(step, 120);
+    let lv = limit;
+    try {
+      const proj = map.getProjection();
+      const p1 = proj.containerPointFromCoords(sw);
+      const p2 = proj.containerPointFromCoords(ne);
+      const box = el('#map');
+      const w = Math.abs(p2.x - p1.x), h = Math.abs(p2.y - p1.y);
+      const ratio = Math.max(w / (box.clientWidth * 0.86 || 1), h / (box.clientHeight * 0.86 || 1), 1);
+      lv = map.getLevel() + Math.ceil(Math.log(ratio) / Math.LN2);
+    } catch (e) {
+      lv = limit;                       // 투영 계산이 막히면 넓게 보여 주는 쪽으로
+    }
+    map.setLevel(Math.min(Math.max(1, lv), limit));
   }
 
   function fitKorea() {
     if (!map) return;
     /* 제주~강원 전 구간을 한 화면에 두되, 너무 축소되어 반도가 작아지지 않게 상한 레벨을 둔다 */
-    fitToBounds(boundsOf(FORESTS.concat(PENDING_FACILITIES).map((f) => [f.lat, f.lng])), 9);
+    fitToBounds(boundsOf(FORESTS.concat(PENDING_FACILITIES).map((f) => [f.lat, f.lng])), 14);
   }
 
   function pinContent(grade, isTop) {
@@ -800,7 +796,7 @@
       card.scrollIntoView({ behavior: 'smooth', block: 'center' });
       setTimeout(() => card.classList.remove('is-active'), 2600);
     }
-    focusOnForest(id, 6);
+    focusOnForest(id, 7);
     if (openDetail) openDetailModal(id);
   }
   window.__focusForest = focusForest;
@@ -941,7 +937,7 @@
 
   window.__focusOnMap = function (id) {
     closeModal('#modal-detail');
-    const m = focusOnForest(id, 5);
+    const m = focusOnForest(id, 6);
     if (m && m.result) openPopup(m.result);
   };
 
@@ -1019,7 +1015,7 @@
       } else if (t.dataset.goto) {
         focusForest(t.dataset.goto, false);
       } else if (t.dataset.focus) {
-        const m = focusOnForest(t.dataset.focus, 6);
+        const m = focusOnForest(t.dataset.focus, 7);
         if (m && m.result) openPopup(m.result);
         el('#map').scrollIntoView({ behavior: 'smooth', block: 'center' });
       } else if (t.hasAttribute('data-close')) {
