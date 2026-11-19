@@ -1,6 +1,6 @@
 {
- "generated_at": "2026-11-19T10:59+09:00",
- "forecast_base": "20261119 0800 KST",
+ "generated_at": "2026-11-20T02:37+09:00",
+ "forecast_base": "20261119 2300 KST",
  "sources": {
   "forecast": "기상청 단기예보 조회서비스(공공데이터포털 15084084), 격자 5 km, 10~16시",
   "pm25": "한국환경공단 에어코리아 시도별 실시간 측정정보, 시도 측정소 PM2.5 중앙값(시설 인근 측정소 아님)"
@@ -13,43 +13,43 @@
    ],
    "days": [
     {
-     "date": "2026-11-19",
-     "tmp_day": 0.9,
-     "tmx": 2.0,
-     "tmn": null,
-     "reh": 49,
-     "wsd_max": 7.0,
-     "pop_max": 30.0,
-     "rain_hours": 0,
-     "sky_mode": 4
-    },
-    {
      "date": "2026-11-20",
      "tmp_day": -2.0,
-     "tmx": -1.0,
-     "tmn": -7.0,
-     "reh": 45,
-     "wsd_max": 7.4,
+     "tmx": 0.0,
+     "tmn": -6.0,
+     "reh": 46,
+     "wsd_max": 6.7,
      "pop_max": 0.0,
      "rain_hours": 0,
      "sky_mode": 1
     },
     {
      "date": "2026-11-21",
-     "tmp_day": -1.6,
+     "tmp_day": -1.7,
      "tmx": 0.0,
      "tmn": -7.0,
+     "reh": 34,
+     "wsd_max": 5.5,
+     "pop_max": 0.0,
+     "rain_hours": 0,
+     "sky_mode": 1
+    },
+    {
+     "date": "2026-11-22",
+     "tmp_day": 0.9,
+     "tmx": 2.0,
+     "tmn": -8.0,
      "reh": 36,
-     "wsd_max": 6.1,
+     "wsd_max": 3.3,
      "pop_max": 0.0,
      "rain_hours": 0,
      "sky_mode": 1
     }
    ],
    "pm25": {
-    "pm25_median": 13.0,
-    "n_station": 49,
-    "time": "2026-11-19 10:00"
+    "pm25_median": 9.0,
+    "n_station": 51,
+    "time": "2026-11-20 02:00"
    },
    "sido": "경북",
    "error": null
@@ -61,43 +61,43 @@
    ],
    "days": [
     {
-     "date": "2026-11-19",
-     "tmp_day": -2.0,
-     "tmx": -1.0,
-     "tmn": null,
-     "reh": 49,
-     "wsd_max": 7.8,
-     "pop_max": 20.0,
-     "rain_hours": 0,
-     "sky_mode": 1
-    },
-    {
      "date": "2026-11-20",
      "tmp_day": -5.0,
-     "tmx": -3.0,
-     "tmn": -10.0,
-     "reh": 46,
-     "wsd_max": 7.4,
+     "tmx": -4.0,
+     "tmn": -9.0,
+     "reh": 47,
+     "wsd_max": 6.8,
      "pop_max": 0.0,
      "rain_hours": 0,
      "sky_mode": 1
     },
     {
      "date": "2026-11-21",
-     "tmp_day": -4.0,
+     "tmp_day": -4.3,
      "tmx": -3.0,
      "tmn": -10.0,
-     "reh": 35,
-     "wsd_max": 5.5,
+     "reh": 34,
+     "wsd_max": 5.2,
+     "pop_max": 0.0,
+     "rain_hours": 0,
+     "sky_mode": 1
+    },
+    {
+     "date": "2026-11-22",
+     "tmp_day": -1.4,
+     "tmx": 0.0,
+     "tmn": -11.0,
+     "reh": 39,
+     "wsd_max": 3.5,
      "pop_max": 0.0,
      "rain_hours": 0,
      "sky_mode": 1
     }
    ],
    "pm25": {
-    "pm25_median": 11.0,
-    "n_station": 36,
-    "time": "2026-11-19 10:00"
+    "pm25_median": 8.0,
+    "n_station": 37,
+    "time": "2026-11-20 02:00"
    },
    "sido": "강원",
    "error": null
@@ -109,43 +109,43 @@
    ],
    "days": [
     {
-     "date": "2026-11-19",
-     "tmp_day": 3.7,
-     "tmx": 5.0,
-     "tmn": null,
-     "reh": 56,
-     "wsd_max": 4.3,
-     "pop_max": 30.0,
-     "rain_hours": 0,
-     "sky_mode": 4
-    },
-    {
      "date": "2026-11-20",
-     "tmp_day": 1.6,
+     "tmp_day": 1.4,
      "tmx": 3.0,
      "tmn": -4.0,
-     "reh": 51,
-     "wsd_max": 5.1,
+     "reh": 52,
+     "wsd_max": 4.5,
      "pop_max": 30.0,
      "rain_hours": 0,
      "sky_mode": 1
     },
     {
      "date": "2026-11-21",
-     "tmp_day": 2.1,
-     "tmx": 4.0,
+     "tmp_day": 1.9,
+     "tmx": 3.0,
      "tmn": -5.0,
      "reh": 44,
-     "wsd_max": 5.0,
+     "wsd_max": 4.5,
+     "pop_max": 0.0,
+     "rain_hours": 0,
+     "sky_mode": 1
+    },
+    {
+     "date": "2026-11-22",
+     "tmp_day": 3.0,
+     "tmx": 5.0,
+     "tmn": -6.0,
+     "reh": 46,
+     "wsd_max": 3.0,
      "pop_max": 0.0,
      "rain_hours": 0,
      "sky_mode": 1
     }
    ],
    "pm25": {
-    "pm25_median": 13.0,
-    "n_station": 49,
-    "time": "2026-11-19 10:00"
+    "pm25_median": 9.0,
+    "n_station": 51,
+    "time": "2026-11-20 02:00"
    },
    "sido": "경북",
    "error": null
@@ -157,43 +157,43 @@
    ],
    "days": [
     {
-     "date": "2026-11-19",
-     "tmp_day": 3.4,
-     "tmx": 4.0,
-     "tmn": null,
-     "reh": 86,
-     "wsd_max": 4.7,
+     "date": "2026-11-20",
+     "tmp_day": 2.1,
+     "tmx": 3.0,
+     "tmn": -1.0,
+     "reh": 76,
+     "wsd_max": 5.4,
      "pop_max": 60.0,
-     "rain_hours": 7,
+     "rain_hours": 5,
      "sky_mode": 4
     },
     {
-     "date": "2026-11-20",
-     "tmp_day": 2.3,
+     "date": "2026-11-21",
+     "tmp_day": 2.4,
      "tmx": 3.0,
-     "tmn": -1.0,
-     "reh": 78,
-     "wsd_max": 6.0,
-     "pop_max": 60.0,
-     "rain_hours": 2,
-     "sky_mode": 3
+     "tmn": -3.0,
+     "reh": 62,
+     "wsd_max": 3.3,
+     "pop_max": 0.0,
+     "rain_hours": 0,
+     "sky_mode": 1
     },
     {
-     "date": "2026-11-21",
-     "tmp_day": 2.7,
-     "tmx": 4.0,
+     "date": "2026-11-22",
+     "tmp_day": 4.6,
+     "tmx": 6.0,
      "tmn": -3.0,
-     "reh": 61,
-     "wsd_max": 3.8,
+     "reh": 64,
+     "wsd_max": 0.8,
      "pop_max": 0.0,
      "rain_hours": 0,
      "sky_mode": 1
     }
    ],
    "pm25": {
-    "pm25_median": 7.5,
-    "n_station": 46,
-    "time": "2026-11-19 10:00"
+    "pm25_median": 3.0,
+    "n_station": 44,
+    "time": "2026-11-20 02:00"
    },
    "sido": "전남",
    "error": null
@@ -205,43 +205,43 @@
    ],
    "days": [
     {
-     "date": "2026-11-19",
-     "tmp_day": 1.9,
-     "tmx": 3.0,
-     "tmn": null,
-     "reh": 60,
-     "wsd_max": 5.1,
-     "pop_max": 30.0,
-     "rain_hours": 0,
-     "sky_mode": 4
-    },
-    {
      "date": "2026-11-20",
-     "tmp_day": -0.3,
-     "tmx": 1.0,
+     "tmp_day": 0.0,
+     "tmx": 2.0,
      "tmn": -5.0,
      "reh": 51,
-     "wsd_max": 6.8,
+     "wsd_max": 6.2,
      "pop_max": 0.0,
      "rain_hours": 0,
      "sky_mode": 1
     },
     {
      "date": "2026-11-21",
-     "tmp_day": 0.6,
+     "tmp_day": 0.4,
      "tmx": 2.0,
      "tmn": -6.0,
-     "reh": 43,
-     "wsd_max": 6.0,
+     "reh": 42,
+     "wsd_max": 5.5,
+     "pop_max": 0.0,
+     "rain_hours": 0,
+     "sky_mode": 1
+    },
+    {
+     "date": "2026-11-22",
+     "tmp_day": 0.9,
+     "tmx": 3.0,
+     "tmn": -7.0,
+     "reh": 42,
+     "wsd_max": 4.5,
      "pop_max": 0.0,
      "rain_hours": 0,
      "sky_mode": 1
     }
    ],
    "pm25": {
-    "pm25_median": 13.0,
-    "n_station": 49,
-    "time": "2026-11-19 10:00"
+    "pm25_median": 9.0,
+    "n_station": 51,
+    "time": "2026-11-20 02:00"
    },
    "sido": "경북",
    "error": null
@@ -253,43 +253,43 @@
    ],
    "days": [
     {
-     "date": "2026-11-19",
-     "tmp_day": 4.0,
-     "tmx": 6.0,
-     "tmn": null,
-     "reh": 64,
-     "wsd_max": 3.6,
-     "pop_max": 30.0,
-     "rain_hours": 0,
-     "sky_mode": 4
-    },
-    {
      "date": "2026-11-20",
-     "tmp_day": 2.3,
+     "tmp_day": 2.0,
      "tmx": 4.0,
-     "tmn": -4.0,
-     "reh": 58,
-     "wsd_max": 5.2,
+     "tmn": -3.0,
+     "reh": 57,
+     "wsd_max": 4.6,
      "pop_max": 30.0,
      "rain_hours": 0,
      "sky_mode": 3
     },
     {
      "date": "2026-11-21",
-     "tmp_day": 2.3,
+     "tmp_day": 2.1,
      "tmx": 4.0,
      "tmn": -5.0,
      "reh": 51,
-     "wsd_max": 3.7,
+     "wsd_max": 3.1,
+     "pop_max": 0.0,
+     "rain_hours": 0,
+     "sky_mode": 1
+    },
+    {
+     "date": "2026-11-22",
+     "tmp_day": 3.6,
+     "tmx": 6.0,
+     "tmn": -5.0,
+     "reh": 54,
+     "wsd_max": 1.3,
      "pop_max": 0.0,
      "rain_hours": 0,
      "sky_mode": 1
     }
    ],
    "pm25": {
-    "pm25_median": 21.0,
-    "n_station": 15,
-    "time": "2026-11-19 10:00"
+    "pm25_median": 7.0,
+    "n_station": 14,
+    "time": "2026-11-20 02:00"
    },
    "sido": "대전",
    "error": null
@@ -301,34 +301,34 @@
    ],
    "days": [
     {
-     "date": "2026-11-19",
-     "tmp_day": 2.0,
-     "tmx": 3.0,
-     "tmn": null,
-     "reh": 42,
-     "wsd_max": 6.7,
-     "pop_max": 20.0,
-     "rain_hours": 0,
-     "sky_mode": 1
-    },
-    {
      "date": "2026-11-20",
-     "tmp_day": -1.3,
+     "tmp_day": -1.1,
      "tmx": 0.0,
      "tmn": -7.0,
-     "reh": 41,
-     "wsd_max": 6.2,
+     "reh": 43,
+     "wsd_max": 5.7,
      "pop_max": 0.0,
      "rain_hours": 0,
      "sky_mode": 1
     },
     {
      "date": "2026-11-21",
-     "tmp_day": -1.6,
+     "tmp_day": -1.7,
      "tmx": 0.0,
      "tmn": -8.0,
      "reh": 36,
-     "wsd_max": 4.6,
+     "wsd_max": 4.0,
+     "pop_max": 0.0,
+     "rain_hours": 0,
+     "sky_mode": 1
+    },
+    {
+     "date": "2026-11-22",
+     "tmp_day": 1.3,
+     "tmx": 3.0,
+     "tmn": -8.0,
+     "reh": 45,
+     "wsd_max": 2.7,
      "pop_max": 0.0,
      "rain_hours": 0,
      "sky_mode": 1
@@ -336,8 +336,8 @@
    ],
    "pm25": {
     "pm25_median": 9.0,
-    "n_station": 110,
-    "time": "2026-11-19 10:00"
+    "n_station": 114,
+    "time": "2026-11-20 02:00"
    },
    "sido": "경기",
    "error": null
@@ -349,43 +349,43 @@
    ],
    "days": [
     {
-     "date": "2026-11-19",
-     "tmp_day": -0.4,
-     "tmx": 1.0,
-     "tmn": null,
-     "reh": 40,
+     "date": "2026-11-20",
+     "tmp_day": -2.9,
+     "tmx": -2.0,
+     "tmn": -7.0,
+     "reh": 36,
      "wsd_max": 8.0,
      "pop_max": 0.0,
      "rain_hours": 0,
      "sky_mode": 1
     },
     {
-     "date": "2026-11-20",
-     "tmp_day": -3.1,
-     "tmx": -2.0,
+     "date": "2026-11-21",
+     "tmp_day": -1.9,
+     "tmx": -1.0,
      "tmn": -7.0,
-     "reh": 35,
-     "wsd_max": 8.5,
+     "reh": 26,
+     "wsd_max": 5.6,
      "pop_max": 0.0,
      "rain_hours": 0,
      "sky_mode": 1
     },
     {
-     "date": "2026-11-21",
-     "tmp_day": -1.7,
-     "tmx": -1.0,
-     "tmn": -7.0,
-     "reh": 26,
-     "wsd_max": 6.0,
+     "date": "2026-11-22",
+     "tmp_day": 1.9,
+     "tmx": 3.0,
+     "tmn": -8.0,
+     "reh": 23,
+     "wsd_max": 4.0,
      "pop_max": 0.0,
      "rain_hours": 0,
      "sky_mode": 1
     }
    ],
    "pm25": {
-    "pm25_median": 11.0,
-    "n_station": 36,
-    "time": "2026-11-19 10:00"
+    "pm25_median": 8.0,
+    "n_station": 37,
+    "time": "2026-11-20 02:00"
    },
    "sido": "강원",
    "error": null
@@ -397,43 +397,43 @@
    ],
    "days": [
     {
-     "date": "2026-11-19",
-     "tmp_day": 7.1,
-     "tmx": 9.0,
-     "tmn": null,
-     "reh": 52,
-     "wsd_max": 4.4,
-     "pop_max": 30.0,
-     "rain_hours": 0,
-     "sky_mode": 4
-    },
-    {
      "date": "2026-11-20",
      "tmp_day": 5.4,
      "tmx": 7.0,
      "tmn": 0.0,
-     "reh": 44,
-     "wsd_max": 5.5,
+     "reh": 45,
+     "wsd_max": 5.0,
      "pop_max": 0.0,
      "rain_hours": 0,
      "sky_mode": 1
     },
     {
      "date": "2026-11-21",
-     "tmp_day": 6.0,
+     "tmp_day": 5.9,
      "tmx": 7.0,
      "tmn": -2.0,
      "reh": 41,
-     "wsd_max": 5.0,
+     "wsd_max": 4.5,
+     "pop_max": 0.0,
+     "rain_hours": 0,
+     "sky_mode": 1
+    },
+    {
+     "date": "2026-11-22",
+     "tmp_day": 6.4,
+     "tmx": 9.0,
+     "tmn": -3.0,
+     "reh": 37,
+     "wsd_max": 3.1,
      "pop_max": 0.0,
      "rain_hours": 0,
      "sky_mode": 1
     }
    ],
    "pm25": {
-    "pm25_median": 13.5,
-    "n_station": 24,
-    "time": "2026-11-19 10:00"
+    "pm25_median": 7.0,
+    "n_station": 23,
+    "time": "2026-11-20 02:00"
    },
    "sido": "울산",
    "error": null
@@ -445,23 +445,12 @@
    ],
    "days": [
     {
-     "date": "2026-11-19",
-     "tmp_day": -1.1,
-     "tmx": 0.0,
-     "tmn": null,
-     "reh": 75,
-     "wsd_max": 5.3,
-     "pop_max": 30.0,
-     "rain_hours": 0,
-     "sky_mode": 4
-    },
-    {
      "date": "2026-11-20",
-     "tmp_day": -3.0,
+     "tmp_day": -2.7,
      "tmx": -2.0,
-     "tmn": -6.0,
-     "reh": 67,
-     "wsd_max": 6.4,
+     "tmn": -5.0,
+     "reh": 68,
+     "wsd_max": 5.9,
      "pop_max": 30.0,
      "rain_hours": 0,
      "sky_mode": 1
@@ -470,18 +459,29 @@
      "date": "2026-11-21",
      "tmp_day": -1.9,
      "tmx": -1.0,
+     "tmn": -7.0,
+     "reh": 56,
+     "wsd_max": 4.5,
+     "pop_max": 0.0,
+     "rain_hours": 0,
+     "sky_mode": 1
+    },
+    {
+     "date": "2026-11-22",
+     "tmp_day": -0.1,
+     "tmx": 1.0,
      "tmn": -8.0,
-     "reh": 54,
-     "wsd_max": 5.1,
+     "reh": 56,
+     "wsd_max": 3.1,
      "pop_max": 0.0,
      "rain_hours": 0,
      "sky_mode": 1
     }
    ],
    "pm25": {
-    "pm25_median": 13.0,
-    "n_station": 49,
-    "time": "2026-11-19 10:00"
+    "pm25_median": 9.0,
+    "n_station": 51,
+    "time": "2026-11-20 02:00"
    },
    "sido": "경북",
    "error": null
@@ -493,23 +493,12 @@
    ],
    "days": [
     {
-     "date": "2026-11-19",
-     "tmp_day": 1.1,
-     "tmx": 3.0,
-     "tmn": null,
-     "reh": 51,
-     "wsd_max": 6.5,
-     "pop_max": 30.0,
-     "rain_hours": 0,
-     "sky_mode": 3
-    },
-    {
      "date": "2026-11-20",
      "tmp_day": -1.7,
      "tmx": 0.0,
      "tmn": -6.0,
-     "reh": 47,
-     "wsd_max": 6.9,
+     "reh": 48,
+     "wsd_max": 6.4,
      "pop_max": 0.0,
      "rain_hours": 0,
      "sky_mode": 1
@@ -519,17 +508,28 @@
      "tmp_day": -2.0,
      "tmx": -1.0,
      "tmn": -7.0,
-     "reh": 41,
-     "wsd_max": 5.3,
+     "reh": 39,
+     "wsd_max": 4.7,
+     "pop_max": 0.0,
+     "rain_hours": 0,
+     "sky_mode": 1
+    },
+    {
+     "date": "2026-11-22",
+     "tmp_day": 0.0,
+     "tmx": 2.0,
+     "tmn": -8.0,
+     "reh": 46,
+     "wsd_max": 2.9,
      "pop_max": 0.0,
      "rain_hours": 0,
      "sky_mode": 1
     }
    ],
    "pm25": {
-    "pm25_median": 17.0,
-    "n_station": 32,
-    "time": "2026-11-19 10:00"
+    "pm25_median": 8.0,
+    "n_station": 33,
+    "time": "2026-11-20 02:00"
    },
    "sido": "충북",
    "error": null
@@ -541,43 +541,43 @@
    ],
    "days": [
     {
-     "date": "2026-11-19",
-     "tmp_day": 3.6,
-     "tmx": 5.0,
-     "tmn": null,
-     "reh": 65,
-     "wsd_max": 4.8,
-     "pop_max": 60.0,
-     "rain_hours": 3,
-     "sky_mode": 4
-    },
-    {
      "date": "2026-11-20",
-     "tmp_day": 1.7,
+     "tmp_day": 1.1,
      "tmx": 3.0,
-     "tmn": -4.0,
-     "reh": 61,
-     "wsd_max": 6.9,
+     "tmn": -3.0,
+     "reh": 62,
+     "wsd_max": 6.4,
      "pop_max": 20.0,
      "rain_hours": 0,
      "sky_mode": 3
     },
     {
      "date": "2026-11-21",
-     "tmp_day": 1.1,
-     "tmx": 3.0,
+     "tmp_day": 1.0,
+     "tmx": 2.0,
      "tmn": -5.0,
      "reh": 56,
-     "wsd_max": 4.0,
+     "wsd_max": 3.4,
      "pop_max": 20.0,
+     "rain_hours": 0,
+     "sky_mode": 1
+    },
+    {
+     "date": "2026-11-22",
+     "tmp_day": 3.1,
+     "tmx": 5.0,
+     "tmn": -5.0,
+     "reh": 57,
+     "wsd_max": 1.2,
+     "pop_max": 0.0,
      "rain_hours": 0,
      "sky_mode": 1
     }
    ],
    "pm25": {
-    "pm25_median": 11.0,
-    "n_station": 49,
-    "time": "2026-11-19 10:00"
+    "pm25_median": 8.0,
+    "n_station": 50,
+    "time": "2026-11-20 02:00"
    },
    "sido": "충남",
    "error": null
@@ -589,30 +589,19 @@
    ],
    "days": [
     {
-     "date": "2026-11-19",
-     "tmp_day": 5.3,
-     "tmx": 6.0,
-     "tmn": null,
-     "reh": 76,
-     "wsd_max": 3.9,
-     "pop_max": 60.0,
-     "rain_hours": 4,
-     "sky_mode": 4
-    },
-    {
      "date": "2026-11-20",
      "tmp_day": 3.6,
-     "tmx": 5.0,
+     "tmx": 4.0,
      "tmn": -1.0,
-     "reh": 67,
-     "wsd_max": 4.6,
+     "reh": 66,
+     "wsd_max": 3.9,
      "pop_max": 30.0,
      "rain_hours": 0,
      "sky_mode": 1
     },
     {
      "date": "2026-11-21",
-     "tmp_day": 4.4,
+     "tmp_day": 4.1,
      "tmx": 6.0,
      "tmn": -3.0,
      "reh": 53,
@@ -620,12 +609,23 @@
      "pop_max": 0.0,
      "rain_hours": 0,
      "sky_mode": 1
+    },
+    {
+     "date": "2026-11-22",
+     "tmp_day": 5.7,
+     "tmx": 8.0,
+     "tmn": -4.0,
+     "reh": 54,
+     "wsd_max": 1.4,
+     "pop_max": 0.0,
+     "rain_hours": 0,
+     "sky_mode": 1
     }
    ],
    "pm25": {
-    "pm25_median": 7.5,
-    "n_station": 46,
-    "time": "2026-11-19 10:00"
+    "pm25_median": 3.0,
+    "n_station": 44,
+    "time": "2026-11-20 02:00"
    },
    "sido": "전남",
    "error": null
@@ -637,23 +637,12 @@
    ],
    "days": [
     {
-     "date": "2026-11-19",
-     "tmp_day": 0.0,
-     "tmx": 1.0,
-     "tmn": null,
-     "reh": 46,
-     "wsd_max": 6.4,
-     "pop_max": 20.0,
-     "rain_hours": 0,
-     "sky_mode": 3
-    },
-    {
      "date": "2026-11-20",
      "tmp_day": -3.0,
      "tmx": -2.0,
-     "tmn": -8.0,
-     "reh": 44,
-     "wsd_max": 6.0,
+     "tmn": -7.0,
+     "reh": 46,
+     "wsd_max": 5.3,
      "pop_max": 0.0,
      "rain_hours": 0,
      "sky_mode": 1
@@ -663,8 +652,19 @@
      "tmp_day": -3.3,
      "tmx": -2.0,
      "tmn": -8.0,
-     "reh": 37,
-     "wsd_max": 4.3,
+     "reh": 36,
+     "wsd_max": 3.7,
+     "pop_max": 0.0,
+     "rain_hours": 0,
+     "sky_mode": 1
+    },
+    {
+     "date": "2026-11-22",
+     "tmp_day": -0.3,
+     "tmx": 1.0,
+     "tmn": -9.0,
+     "reh": 49,
+     "wsd_max": 2.7,
      "pop_max": 0.0,
      "rain_hours": 0,
      "sky_mode": 1
@@ -672,8 +672,8 @@
    ],
    "pm25": {
     "pm25_median": 9.0,
-    "n_station": 110,
-    "time": "2026-11-19 10:00"
+    "n_station": 114,
+    "time": "2026-11-20 02:00"
    },
    "sido": "경기",
    "error": null
@@ -685,43 +685,43 @@
    ],
    "days": [
     {
-     "date": "2026-11-19",
-     "tmp_day": 3.0,
-     "tmx": 4.0,
-     "tmn": null,
-     "reh": 89,
-     "wsd_max": 5.2,
-     "pop_max": 60.0,
-     "rain_hours": 7,
-     "sky_mode": 4
-    },
-    {
      "date": "2026-11-20",
-     "tmp_day": 1.6,
-     "tmx": 3.0,
+     "tmp_day": 1.4,
+     "tmx": 2.0,
      "tmn": -2.0,
      "reh": 80,
-     "wsd_max": 5.4,
+     "wsd_max": 4.8,
      "pop_max": 60.0,
-     "rain_hours": 2,
+     "rain_hours": 5,
      "sky_mode": 4
     },
     {
      "date": "2026-11-21",
-     "tmp_day": 2.4,
-     "tmx": 4.0,
+     "tmp_day": 2.3,
+     "tmx": 3.0,
      "tmn": -4.0,
-     "reh": 63,
-     "wsd_max": 3.9,
+     "reh": 64,
+     "wsd_max": 3.3,
+     "pop_max": 0.0,
+     "rain_hours": 0,
+     "sky_mode": 1
+    },
+    {
+     "date": "2026-11-22",
+     "tmp_day": 4.1,
+     "tmx": 6.0,
+     "tmn": -4.0,
+     "reh": 66,
+     "wsd_max": 1.2,
      "pop_max": 0.0,
      "rain_hours": 0,
      "sky_mode": 1
     }
    ],
    "pm25": {
-    "pm25_median": 7.5,
-    "n_station": 46,
-    "time": "2026-11-19 10:00"
+    "pm25_median": 3.0,
+    "n_station": 44,
+    "time": "2026-11-20 02:00"
    },
    "sido": "전남",
    "error": null
@@ -733,23 +733,12 @@
    ],
    "days": [
     {
-     "date": "2026-11-19",
-     "tmp_day": 10.1,
-     "tmx": 13.0,
-     "tmn": null,
-     "reh": 66,
-     "wsd_max": 6.6,
-     "pop_max": 30.0,
-     "rain_hours": 0,
-     "sky_mode": 3
-    },
-    {
      "date": "2026-11-20",
      "tmp_day": 9.0,
      "tmx": 12.0,
      "tmn": 7.0,
-     "reh": 66,
-     "wsd_max": 7.8,
+     "reh": 69,
+     "wsd_max": 7.3,
      "pop_max": 60.0,
      "rain_hours": 1,
      "sky_mode": 3
@@ -757,19 +746,30 @@
     {
      "date": "2026-11-21",
      "tmp_day": 10.0,
-     "tmx": 12.0,
+     "tmx": 13.0,
+     "tmn": 8.0,
+     "reh": 66,
+     "wsd_max": 5.1,
+     "pop_max": 20.0,
+     "rain_hours": 0,
+     "sky_mode": 1
+    },
+    {
+     "date": "2026-11-22",
+     "tmp_day": 10.4,
+     "tmx": 14.0,
      "tmn": 7.0,
-     "reh": 67,
-     "wsd_max": 5.7,
+     "reh": 59,
+     "wsd_max": 3.0,
      "pop_max": 20.0,
      "rain_hours": 0,
      "sky_mode": 1
     }
    ],
    "pm25": {
-    "pm25_median": 6.0,
+    "pm25_median": 7.5,
     "n_station": 14,
-    "time": "2026-11-19 10:00"
+    "time": "2026-11-20 02:00"
    },
    "sido": "제주",
    "error": null
@@ -781,43 +781,43 @@
    ],
    "days": [
     {
-     "date": "2026-11-19",
-     "tmp_day": 2.1,
-     "tmx": 3.0,
-     "tmn": null,
-     "reh": 93,
-     "wsd_max": 5.6,
-     "pop_max": 60.0,
-     "rain_hours": 4,
-     "sky_mode": 4
-    },
-    {
      "date": "2026-11-20",
      "tmp_day": 0.0,
      "tmx": 1.0,
-     "tmn": -4.0,
-     "reh": 82,
-     "wsd_max": 4.8,
+     "tmn": -3.0,
+     "reh": 81,
+     "wsd_max": 4.1,
      "pop_max": 30.0,
      "rain_hours": 0,
      "sky_mode": 1
     },
     {
      "date": "2026-11-21",
-     "tmp_day": 1.1,
+     "tmp_day": 1.0,
      "tmx": 3.0,
      "tmn": -5.0,
-     "reh": 63,
-     "wsd_max": 4.0,
+     "reh": 64,
+     "wsd_max": 3.4,
+     "pop_max": 0.0,
+     "rain_hours": 0,
+     "sky_mode": 1
+    },
+    {
+     "date": "2026-11-22",
+     "tmp_day": 2.3,
+     "tmx": 4.0,
+     "tmn": -6.0,
+     "reh": 68,
+     "wsd_max": 2.0,
      "pop_max": 0.0,
      "rain_hours": 0,
      "sky_mode": 1
     }
    ],
    "pm25": {
-    "pm25_median": 7.5,
-    "n_station": 46,
-    "time": "2026-11-19 10:00"
+    "pm25_median": 3.0,
+    "n_station": 44,
+    "time": "2026-11-20 02:00"
    },
    "sido": "전남",
    "error": null
@@ -829,23 +829,12 @@
    ],
    "days": [
     {
-     "date": "2026-11-19",
-     "tmp_day": 7.0,
-     "tmx": 10.0,
-     "tmn": null,
-     "reh": 65,
-     "wsd_max": 7.9,
-     "pop_max": 30.0,
-     "rain_hours": 0,
-     "sky_mode": 3
-    },
-    {
      "date": "2026-11-20",
-     "tmp_day": 5.0,
-     "tmx": 8.0,
+     "tmp_day": 5.4,
+     "tmx": 7.0,
      "tmn": 2.0,
-     "reh": 57,
-     "wsd_max": 6.1,
+     "reh": 58,
+     "wsd_max": 5.5,
      "pop_max": 0.0,
      "rain_hours": 0,
      "sky_mode": 1
@@ -853,19 +842,30 @@
     {
      "date": "2026-11-21",
      "tmp_day": 5.9,
-     "tmx": 9.0,
+     "tmx": 8.0,
      "tmn": 1.0,
+     "reh": 54,
+     "wsd_max": 4.5,
+     "pop_max": 0.0,
+     "rain_hours": 0,
+     "sky_mode": 1
+    },
+    {
+     "date": "2026-11-22",
+     "tmp_day": 5.6,
+     "tmx": 9.0,
+     "tmn": 0.0,
      "reh": 55,
-     "wsd_max": 5.0,
+     "wsd_max": 2.7,
      "pop_max": 0.0,
      "rain_hours": 0,
      "sky_mode": 1
     }
    ],
    "pm25": {
-    "pm25_median": 7.5,
-    "n_station": 48,
-    "time": "2026-11-19 10:00"
+    "pm25_median": 6.0,
+    "n_station": 47,
+    "time": "2026-11-20 02:00"
    },
    "sido": "경남",
    "error": null
@@ -877,23 +877,12 @@
    ],
    "days": [
     {
-     "date": "2026-11-19",
-     "tmp_day": 6.3,
-     "tmx": 8.0,
-     "tmn": null,
-     "reh": 56,
-     "wsd_max": 4.2,
-     "pop_max": 30.0,
-     "rain_hours": 0,
-     "sky_mode": 4
-    },
-    {
      "date": "2026-11-20",
-     "tmp_day": 4.4,
-     "tmx": 6.0,
+     "tmp_day": 4.9,
+     "tmx": 7.0,
      "tmn": -1.0,
      "reh": 46,
-     "wsd_max": 5.2,
+     "wsd_max": 4.7,
      "pop_max": 0.0,
      "rain_hours": 0,
      "sky_mode": 1
@@ -904,16 +893,27 @@
      "tmx": 7.0,
      "tmn": -3.0,
      "reh": 43,
-     "wsd_max": 4.6,
+     "wsd_max": 4.0,
+     "pop_max": 0.0,
+     "rain_hours": 0,
+     "sky_mode": 1
+    },
+    {
+     "date": "2026-11-22",
+     "tmp_day": 5.6,
+     "tmx": 8.0,
+     "tmn": -3.0,
+     "reh": 38,
+     "wsd_max": 3.3,
      "pop_max": 0.0,
      "rain_hours": 0,
      "sky_mode": 1
     }
    ],
    "pm25": {
-    "pm25_median": 12.0,
-    "n_station": 35,
-    "time": "2026-11-19 10:00"
+    "pm25_median": 7.0,
+    "n_station": 33,
+    "time": "2026-11-20 02:00"
    },
    "sido": "부산",
    "error": null
@@ -925,23 +925,12 @@
    ],
    "days": [
     {
-     "date": "2026-11-19",
-     "tmp_day": 2.7,
-     "tmx": 4.0,
-     "tmn": null,
-     "reh": 60,
-     "wsd_max": 3.4,
-     "pop_max": 30.0,
-     "rain_hours": 0,
-     "sky_mode": 4
-    },
-    {
      "date": "2026-11-20",
-     "tmp_day": 0.7,
+     "tmp_day": 1.0,
      "tmx": 2.0,
-     "tmn": -5.0,
+     "tmn": -4.0,
      "reh": 52,
-     "wsd_max": 5.1,
+     "wsd_max": 4.5,
      "pop_max": 0.0,
      "rain_hours": 0,
      "sky_mode": 1
@@ -951,17 +940,28 @@
      "tmp_day": 1.1,
      "tmx": 3.0,
      "tmn": -6.0,
-     "reh": 47,
-     "wsd_max": 4.7,
+     "reh": 46,
+     "wsd_max": 4.2,
+     "pop_max": 0.0,
+     "rain_hours": 0,
+     "sky_mode": 1
+    },
+    {
+     "date": "2026-11-22",
+     "tmp_day": 1.0,
+     "tmx": 3.0,
+     "tmn": -7.0,
+     "reh": 52,
+     "wsd_max": 3.1,
      "pop_max": 0.0,
      "rain_hours": 0,
      "sky_mode": 1
     }
    ],
    "pm25": {
-    "pm25_median": 16.5,
-    "n_station": 24,
-    "time": "2026-11-19 10:00"
+    "pm25_median": 7.0,
+    "n_station": 26,
+    "time": "2026-11-20 02:00"
    },
    "sido": "대구",
    "error": null
@@ -973,43 +973,43 @@
    ],
    "days": [
     {
-     "date": "2026-11-19",
-     "tmp_day": 3.7,
-     "tmx": 5.0,
-     "tmn": null,
-     "reh": 67,
-     "wsd_max": 3.5,
-     "pop_max": 60.0,
-     "rain_hours": 1,
-     "sky_mode": 4
-    },
-    {
      "date": "2026-11-20",
      "tmp_day": 1.6,
      "tmx": 3.0,
-     "tmn": -4.0,
+     "tmn": -3.0,
      "reh": 58,
-     "wsd_max": 5.1,
+     "wsd_max": 4.5,
      "pop_max": 30.0,
      "rain_hours": 0,
      "sky_mode": 3
     },
     {
      "date": "2026-11-21",
-     "tmp_day": 1.9,
+     "tmp_day": 1.6,
      "tmx": 3.0,
      "tmn": -4.0,
      "reh": 51,
-     "wsd_max": 3.6,
+     "wsd_max": 3.0,
+     "pop_max": 0.0,
+     "rain_hours": 0,
+     "sky_mode": 1
+    },
+    {
+     "date": "2026-11-22",
+     "tmp_day": 3.1,
+     "tmx": 5.0,
+     "tmn": -5.0,
+     "reh": 55,
+     "wsd_max": 1.0,
      "pop_max": 0.0,
      "rain_hours": 0,
      "sky_mode": 1
     }
    ],
    "pm25": {
-    "pm25_median": 21.0,
-    "n_station": 15,
-    "time": "2026-11-19 10:00"
+    "pm25_median": 7.0,
+    "n_station": 14,
+    "time": "2026-11-20 02:00"
    },
    "sido": "대전",
    "error": null
@@ -1021,34 +1021,34 @@
    ],
    "days": [
     {
-     "date": "2026-11-19",
-     "tmp_day": 2.4,
-     "tmx": 4.0,
-     "tmn": null,
-     "reh": 38,
-     "wsd_max": 6.6,
-     "pop_max": 30.0,
-     "rain_hours": 0,
-     "sky_mode": 1
-    },
-    {
      "date": "2026-11-20",
      "tmp_day": -0.6,
      "tmx": 1.0,
      "tmn": -6.0,
-     "reh": 36,
-     "wsd_max": 6.2,
+     "reh": 37,
+     "wsd_max": 5.5,
      "pop_max": 0.0,
      "rain_hours": 0,
      "sky_mode": 1
     },
     {
      "date": "2026-11-21",
-     "tmp_day": -0.9,
+     "tmp_day": -1.1,
      "tmx": 1.0,
      "tmn": -8.0,
-     "reh": 30,
-     "wsd_max": 4.2,
+     "reh": 31,
+     "wsd_max": 3.6,
+     "pop_max": 0.0,
+     "rain_hours": 0,
+     "sky_mode": 1
+    },
+    {
+     "date": "2026-11-22",
+     "tmp_day": 2.1,
+     "tmx": 4.0,
+     "tmn": -9.0,
+     "reh": 42,
+     "wsd_max": 2.1,
      "pop_max": 0.0,
      "rain_hours": 0,
      "sky_mode": 1
@@ -1056,8 +1056,8 @@
    ],
    "pm25": {
     "pm25_median": 9.0,
-    "n_station": 110,
-    "time": "2026-11-19 10:00"
+    "n_station": 114,
+    "time": "2026-11-20 02:00"
    },
    "sido": "경기",
    "error": null
@@ -1069,34 +1069,34 @@
    ],
    "days": [
     {
-     "date": "2026-11-19",
-     "tmp_day": 1.4,
-     "tmx": 4.0,
-     "tmn": null,
-     "reh": 46,
-     "wsd_max": 6.1,
-     "pop_max": 30.0,
-     "rain_hours": 0,
-     "sky_mode": 1
-    },
-    {
      "date": "2026-11-20",
      "tmp_day": -1.6,
      "tmx": 1.0,
      "tmn": -6.0,
-     "reh": 44,
-     "wsd_max": 6.0,
+     "reh": 46,
+     "wsd_max": 5.3,
      "pop_max": 0.0,
      "rain_hours": 0,
      "sky_mode": 1
     },
     {
      "date": "2026-11-21",
-     "tmp_day": -1.6,
+     "tmp_day": -2.0,
      "tmx": 0.0,
      "tmn": -7.0,
-     "reh": 38,
-     "wsd_max": 4.3,
+     "reh": 36,
+     "wsd_max": 3.7,
+     "pop_max": 0.0,
+     "rain_hours": 0,
+     "sky_mode": 1
+    },
+    {
+     "date": "2026-11-22",
+     "tmp_day": 0.9,
+     "tmx": 3.0,
+     "tmn": -8.0,
+     "reh": 50,
+     "wsd_max": 2.7,
      "pop_max": 0.0,
      "rain_hours": 0,
      "sky_mode": 1
@@ -1104,8 +1104,8 @@
    ],
    "pm25": {
     "pm25_median": 9.0,
-    "n_station": 110,
-    "time": "2026-11-19 10:00"
+    "n_station": 114,
+    "time": "2026-11-20 02:00"
    },
    "sido": "경기",
    "error": null
@@ -1117,23 +1117,12 @@
    ],
    "days": [
     {
-     "date": "2026-11-19",
-     "tmp_day": 0.0,
-     "tmx": 1.0,
-     "tmn": null,
-     "reh": 44,
-     "wsd_max": 6.5,
-     "pop_max": 30.0,
-     "rain_hours": 0,
-     "sky_mode": 1
-    },
-    {
      "date": "2026-11-20",
      "tmp_day": -3.1,
      "tmx": -2.0,
-     "tmn": -8.0,
-     "reh": 43,
-     "wsd_max": 6.3,
+     "tmn": -7.0,
+     "reh": 44,
+     "wsd_max": 5.7,
      "pop_max": 0.0,
      "rain_hours": 0,
      "sky_mode": 1
@@ -1144,7 +1133,18 @@
      "tmx": -2.0,
      "tmn": -9.0,
      "reh": 36,
-     "wsd_max": 4.5,
+     "wsd_max": 3.9,
+     "pop_max": 0.0,
+     "rain_hours": 0,
+     "sky_mode": 1
+    },
+    {
+     "date": "2026-11-22",
+     "tmp_day": -0.3,
+     "tmx": 1.0,
+     "tmn": -9.0,
+     "reh": 47,
+     "wsd_max": 2.5,
      "pop_max": 0.0,
      "rain_hours": 0,
      "sky_mode": 1
@@ -1152,8 +1152,8 @@
    ],
    "pm25": {
     "pm25_median": 9.0,
-    "n_station": 110,
-    "time": "2026-11-19 10:00"
+    "n_station": 114,
+    "time": "2026-11-20 02:00"
    },
    "sido": "경기",
    "error": null
@@ -1165,43 +1165,43 @@
    ],
    "days": [
     {
-     "date": "2026-11-19",
-     "tmp_day": 4.3,
-     "tmx": 6.0,
-     "tmn": null,
-     "reh": 34,
-     "wsd_max": 7.2,
-     "pop_max": 0.0,
-     "rain_hours": 0,
-     "sky_mode": 1
-    },
-    {
      "date": "2026-11-20",
-     "tmp_day": 1.6,
+     "tmp_day": 1.7,
      "tmx": 4.0,
-     "tmn": -4.0,
+     "tmn": -3.0,
      "reh": 31,
-     "wsd_max": 7.6,
+     "wsd_max": 7.1,
      "pop_max": 0.0,
      "rain_hours": 0,
      "sky_mode": 1
     },
     {
      "date": "2026-11-21",
-     "tmp_day": 2.6,
+     "tmp_day": 2.3,
      "tmx": 4.0,
      "tmn": -4.0,
-     "reh": 22,
-     "wsd_max": 6.5,
+     "reh": 21,
+     "wsd_max": 6.0,
+     "pop_max": 0.0,
+     "rain_hours": 0,
+     "sky_mode": 1
+    },
+    {
+     "date": "2026-11-22",
+     "tmp_day": 5.9,
+     "tmx": 8.0,
+     "tmn": -4.0,
+     "reh": 21,
+     "wsd_max": 4.2,
      "pop_max": 0.0,
      "rain_hours": 0,
      "sky_mode": 1
     }
    ],
    "pm25": {
-    "pm25_median": 11.0,
-    "n_station": 36,
-    "time": "2026-11-19 10:00"
+    "pm25_median": 8.0,
+    "n_station": 37,
+    "time": "2026-11-20 02:00"
    },
    "sido": "강원",
    "error": null
@@ -1213,43 +1213,43 @@
    ],
    "days": [
     {
-     "date": "2026-11-19",
-     "tmp_day": -1.0,
-     "tmx": 0.0,
-     "tmn": null,
-     "reh": 48,
-     "wsd_max": 7.0,
-     "pop_max": 20.0,
-     "rain_hours": 0,
-     "sky_mode": 1
-    },
-    {
      "date": "2026-11-20",
      "tmp_day": -4.0,
      "tmx": -2.0,
-     "tmn": -9.0,
-     "reh": 46,
-     "wsd_max": 7.2,
+     "tmn": -8.0,
+     "reh": 47,
+     "wsd_max": 6.6,
      "pop_max": 0.0,
      "rain_hours": 0,
      "sky_mode": 1
     },
     {
      "date": "2026-11-21",
-     "tmp_day": -3.4,
+     "tmp_day": -3.6,
      "tmx": -2.0,
      "tmn": -9.0,
      "reh": 34,
-     "wsd_max": 5.0,
+     "wsd_max": 4.5,
+     "pop_max": 0.0,
+     "rain_hours": 0,
+     "sky_mode": 1
+    },
+    {
+     "date": "2026-11-22",
+     "tmp_day": -1.6,
+     "tmx": 0.0,
+     "tmn": -10.0,
+     "reh": 36,
+     "wsd_max": 3.0,
      "pop_max": 0.0,
      "rain_hours": 0,
      "sky_mode": 1
     }
    ],
    "pm25": {
-    "pm25_median": 11.0,
-    "n_station": 36,
-    "time": "2026-11-19 10:00"
+    "pm25_median": 8.0,
+    "n_station": 37,
+    "time": "2026-11-20 02:00"
    },
    "sido": "강원",
    "error": null
@@ -1261,23 +1261,12 @@
    ],
    "days": [
     {
-     "date": "2026-11-19",
-     "tmp_day": -2.7,
-     "tmx": -1.0,
-     "tmn": null,
-     "reh": 47,
-     "wsd_max": 7.9,
-     "pop_max": 20.0,
-     "rain_hours": 0,
-     "sky_mode": 1
-    },
-    {
      "date": "2026-11-20",
      "tmp_day": -5.3,
      "tmx": -4.0,
-     "tmn": -10.0,
-     "reh": 43,
-     "wsd_max": 7.5,
+     "tmn": -9.0,
+     "reh": 44,
+     "wsd_max": 7.0,
      "pop_max": 0.0,
      "rain_hours": 0,
      "sky_mode": 1
@@ -1292,12 +1281,23 @@
      "pop_max": 0.0,
      "rain_hours": 0,
      "sky_mode": 1
+    },
+    {
+     "date": "2026-11-22",
+     "tmp_day": -1.7,
+     "tmx": 0.0,
+     "tmn": -12.0,
+     "reh": 30,
+     "wsd_max": 3.5,
+     "pop_max": 0.0,
+     "rain_hours": 0,
+     "sky_mode": 1
     }
    ],
    "pm25": {
-    "pm25_median": 11.0,
-    "n_station": 36,
-    "time": "2026-11-19 10:00"
+    "pm25_median": 8.0,
+    "n_station": 37,
+    "time": "2026-11-20 02:00"
    },
    "sido": "강원",
    "error": null
@@ -1309,43 +1309,43 @@
    ],
    "days": [
     {
-     "date": "2026-11-19",
-     "tmp_day": 2.0,
-     "tmx": 4.0,
-     "tmn": null,
-     "reh": 41,
-     "wsd_max": 6.7,
-     "pop_max": 20.0,
-     "rain_hours": 0,
-     "sky_mode": 3
-    },
-    {
      "date": "2026-11-20",
      "tmp_day": -1.0,
-     "tmx": 0.0,
-     "tmn": -6.0,
-     "reh": 38,
-     "wsd_max": 6.0,
+     "tmx": 1.0,
+     "tmn": -5.0,
+     "reh": 41,
+     "wsd_max": 5.3,
      "pop_max": 0.0,
      "rain_hours": 0,
      "sky_mode": 1
     },
     {
      "date": "2026-11-21",
-     "tmp_day": -1.0,
-     "tmx": 1.0,
-     "tmn": -6.0,
-     "reh": 33,
-     "wsd_max": 4.3,
+     "tmp_day": -1.1,
+     "tmx": 0.0,
+     "tmn": -7.0,
+     "reh": 32,
+     "wsd_max": 3.7,
+     "pop_max": 0.0,
+     "rain_hours": 0,
+     "sky_mode": 1
+    },
+    {
+     "date": "2026-11-22",
+     "tmp_day": 1.7,
+     "tmx": 3.0,
+     "tmn": -7.0,
+     "reh": 42,
+     "wsd_max": 2.7,
      "pop_max": 0.0,
      "rain_hours": 0,
      "sky_mode": 1
     }
    ],
    "pm25": {
-    "pm25_median": 11.0,
-    "n_station": 36,
-    "time": "2026-11-19 10:00"
+    "pm25_median": 8.0,
+    "n_station": 37,
+    "time": "2026-11-20 02:00"
    },
    "sido": "강원",
    "error": null
@@ -1357,43 +1357,43 @@
    ],
    "days": [
     {
-     "date": "2026-11-19",
-     "tmp_day": 3.1,
-     "tmx": 5.0,
-     "tmn": null,
-     "reh": 47,
-     "wsd_max": 5.7,
-     "pop_max": 30.0,
-     "rain_hours": 0,
-     "sky_mode": 4
-    },
-    {
      "date": "2026-11-20",
-     "tmp_day": 0.7,
+     "tmp_day": 0.9,
      "tmx": 3.0,
-     "tmn": -5.0,
-     "reh": 43,
-     "wsd_max": 6.4,
+     "tmn": -4.0,
+     "reh": 45,
+     "wsd_max": 5.8,
      "pop_max": 20.0,
      "rain_hours": 0,
      "sky_mode": 1
     },
     {
      "date": "2026-11-21",
-     "tmp_day": 0.3,
+     "tmp_day": 0.1,
      "tmx": 2.0,
      "tmn": -6.0,
      "reh": 37,
-     "wsd_max": 5.1,
+     "wsd_max": 4.5,
+     "pop_max": 0.0,
+     "rain_hours": 0,
+     "sky_mode": 1
+    },
+    {
+     "date": "2026-11-22",
+     "tmp_day": 2.0,
+     "tmx": 4.0,
+     "tmn": -8.0,
+     "reh": 46,
+     "wsd_max": 2.0,
      "pop_max": 0.0,
      "rain_hours": 0,
      "sky_mode": 1
     }
    ],
    "pm25": {
-    "pm25_median": 17.0,
-    "n_station": 32,
-    "time": "2026-11-19 10:00"
+    "pm25_median": 8.0,
+    "n_station": 33,
+    "time": "2026-11-20 02:00"
    },
    "sido": "충북",
    "error": null
@@ -1405,43 +1405,43 @@
    ],
    "days": [
     {
-     "date": "2026-11-19",
-     "tmp_day": 2.6,
-     "tmx": 4.0,
-     "tmn": null,
-     "reh": 67,
-     "wsd_max": 3.6,
-     "pop_max": 60.0,
-     "rain_hours": 1,
-     "sky_mode": 4
-    },
-    {
      "date": "2026-11-20",
-     "tmp_day": 0.6,
+     "tmp_day": 0.9,
      "tmx": 2.0,
-     "tmn": -5.0,
-     "reh": 59,
-     "wsd_max": 5.1,
+     "tmn": -4.0,
+     "reh": 61,
+     "wsd_max": 4.5,
      "pop_max": 30.0,
      "rain_hours": 0,
      "sky_mode": 4
     },
     {
      "date": "2026-11-21",
-     "tmp_day": 1.0,
+     "tmp_day": 0.9,
      "tmx": 2.0,
      "tmn": -6.0,
      "reh": 51,
-     "wsd_max": 3.8,
+     "wsd_max": 3.2,
+     "pop_max": 0.0,
+     "rain_hours": 0,
+     "sky_mode": 1
+    },
+    {
+     "date": "2026-11-22",
+     "tmp_day": 2.3,
+     "tmx": 4.0,
+     "tmn": -7.0,
+     "reh": 56,
+     "wsd_max": 1.0,
      "pop_max": 0.0,
      "rain_hours": 0,
      "sky_mode": 1
     }
    ],
    "pm25": {
-    "pm25_median": 17.0,
-    "n_station": 32,
-    "time": "2026-11-19 10:00"
+    "pm25_median": 8.0,
+    "n_station": 33,
+    "time": "2026-11-20 02:00"
    },
    "sido": "충북",
    "error": null
@@ -1453,43 +1453,43 @@
    ],
    "days": [
     {
-     "date": "2026-11-19",
-     "tmp_day": 0.3,
-     "tmx": 1.0,
-     "tmn": null,
-     "reh": 72,
-     "wsd_max": 4.7,
-     "pop_max": 30.0,
-     "rain_hours": 0,
-     "sky_mode": 4
-    },
-    {
      "date": "2026-11-20",
-     "tmp_day": -2.0,
-     "tmx": 0.0,
+     "tmp_day": -1.6,
+     "tmx": -1.0,
      "tmn": -6.0,
-     "reh": 65,
-     "wsd_max": 6.0,
+     "reh": 66,
+     "wsd_max": 5.4,
      "pop_max": 30.0,
      "rain_hours": 0,
      "sky_mode": 3
     },
     {
      "date": "2026-11-21",
-     "tmp_day": -1.1,
+     "tmp_day": -1.0,
      "tmx": 0.0,
      "tmn": -8.0,
-     "reh": 53,
-     "wsd_max": 4.7,
+     "reh": 55,
+     "wsd_max": 4.1,
+     "pop_max": 0.0,
+     "rain_hours": 0,
+     "sky_mode": 1
+    },
+    {
+     "date": "2026-11-22",
+     "tmp_day": 0.1,
+     "tmx": 2.0,
+     "tmn": -7.0,
+     "reh": 61,
+     "wsd_max": 2.8,
      "pop_max": 0.0,
      "rain_hours": 0,
      "sky_mode": 1
     }
    ],
    "pm25": {
-    "pm25_median": 17.0,
-    "n_station": 32,
-    "time": "2026-11-19 10:00"
+    "pm25_median": 8.0,
+    "n_station": 33,
+    "time": "2026-11-20 02:00"
    },
    "sido": "충북",
    "error": null
@@ -1501,43 +1501,43 @@
    ],
    "days": [
     {
-     "date": "2026-11-19",
-     "tmp_day": 2.1,
-     "tmx": 4.0,
-     "tmn": null,
-     "reh": 57,
-     "wsd_max": 5.2,
-     "pop_max": 30.0,
-     "rain_hours": 0,
-     "sky_mode": 4
-    },
-    {
      "date": "2026-11-20",
-     "tmp_day": -0.3,
+     "tmp_day": 0.0,
      "tmx": 1.0,
-     "tmn": -6.0,
-     "reh": 52,
-     "wsd_max": 7.1,
+     "tmn": -5.0,
+     "reh": 54,
+     "wsd_max": 6.4,
      "pop_max": 30.0,
      "rain_hours": 0,
      "sky_mode": 3
     },
     {
      "date": "2026-11-21",
-     "tmp_day": -0.4,
+     "tmp_day": -0.6,
      "tmx": 1.0,
      "tmn": -7.0,
-     "reh": 48,
-     "wsd_max": 5.0,
+     "reh": 47,
+     "wsd_max": 4.4,
+     "pop_max": 0.0,
+     "rain_hours": 0,
+     "sky_mode": 1
+    },
+    {
+     "date": "2026-11-22",
+     "tmp_day": 1.9,
+     "tmx": 4.0,
+     "tmn": -7.0,
+     "reh": 54,
+     "wsd_max": 1.7,
      "pop_max": 0.0,
      "rain_hours": 0,
      "sky_mode": 1
     }
    ],
    "pm25": {
-    "pm25_median": 17.0,
-    "n_station": 32,
-    "time": "2026-11-19 10:00"
+    "pm25_median": 8.0,
+    "n_station": 33,
+    "time": "2026-11-20 02:00"
    },
    "sido": "충북",
    "error": null
@@ -1549,23 +1549,12 @@
    ],
    "days": [
     {
-     "date": "2026-11-19",
-     "tmp_day": 3.0,
-     "tmx": 4.0,
-     "tmn": null,
-     "reh": 52,
-     "wsd_max": 5.6,
-     "pop_max": 30.0,
-     "rain_hours": 0,
-     "sky_mode": 4
-    },
-    {
      "date": "2026-11-20",
-     "tmp_day": 0.1,
-     "tmx": 1.0,
+     "tmp_day": 0.6,
+     "tmx": 2.0,
      "tmn": -5.0,
-     "reh": 49,
-     "wsd_max": 6.7,
+     "reh": 50,
+     "wsd_max": 6.1,
      "pop_max": 30.0,
      "rain_hours": 0,
      "sky_mode": 1
@@ -1576,16 +1565,27 @@
      "tmx": 1.0,
      "tmn": -6.0,
      "reh": 41,
-     "wsd_max": 5.4,
+     "wsd_max": 4.7,
+     "pop_max": 0.0,
+     "rain_hours": 0,
+     "sky_mode": 1
+    },
+    {
+     "date": "2026-11-22",
+     "tmp_day": 2.0,
+     "tmx": 3.0,
+     "tmn": -7.0,
+     "reh": 46,
+     "wsd_max": 2.1,
      "pop_max": 0.0,
      "rain_hours": 0,
      "sky_mode": 1
     }
    ],
    "pm25": {
-    "pm25_median": 17.0,
-    "n_station": 32,
-    "time": "2026-11-19 10:00"
+    "pm25_median": 8.0,
+    "n_station": 33,
+    "time": "2026-11-20 02:00"
    },
    "sido": "충북",
    "error": null
@@ -1597,43 +1597,43 @@
    ],
    "days": [
     {
-     "date": "2026-11-19",
-     "tmp_day": 5.0,
-     "tmx": 6.0,
-     "tmn": null,
-     "reh": 71,
-     "wsd_max": 5.5,
-     "pop_max": 60.0,
-     "rain_hours": 6,
-     "sky_mode": 4
-    },
-    {
      "date": "2026-11-20",
-     "tmp_day": 2.7,
+     "tmp_day": 2.9,
      "tmx": 4.0,
-     "tmn": -3.0,
-     "reh": 66,
-     "wsd_max": 6.8,
+     "tmn": -2.0,
+     "reh": 68,
+     "wsd_max": 6.2,
      "pop_max": 60.0,
      "rain_hours": 1,
      "sky_mode": 1
     },
     {
      "date": "2026-11-21",
-     "tmp_day": 2.6,
+     "tmp_day": 2.7,
      "tmx": 4.0,
      "tmn": -4.0,
-     "reh": 59,
-     "wsd_max": 3.5,
+     "reh": 61,
+     "wsd_max": 3.0,
      "pop_max": 20.0,
      "rain_hours": 0,
      "sky_mode": 3
+    },
+    {
+     "date": "2026-11-22",
+     "tmp_day": 4.4,
+     "tmx": 7.0,
+     "tmn": -4.0,
+     "reh": 61,
+     "wsd_max": 2.7,
+     "pop_max": 0.0,
+     "rain_hours": 0,
+     "sky_mode": 1
     }
    ],
    "pm25": {
-    "pm25_median": 11.0,
-    "n_station": 49,
-    "time": "2026-11-19 10:00"
+    "pm25_median": 8.0,
+    "n_station": 50,
+    "time": "2026-11-20 02:00"
    },
    "sido": "충남",
    "error": null
@@ -1645,43 +1645,43 @@
    ],
    "days": [
     {
-     "date": "2026-11-19",
-     "tmp_day": 7.4,
-     "tmx": 8.0,
-     "tmn": null,
-     "reh": 73,
-     "wsd_max": 7.7,
-     "pop_max": 60.0,
-     "rain_hours": 7,
-     "sky_mode": 4
-    },
-    {
      "date": "2026-11-20",
-     "tmp_day": 5.3,
-     "tmx": 7.0,
+     "tmp_day": 5.1,
+     "tmx": 6.0,
      "tmn": 1.0,
-     "reh": 70,
-     "wsd_max": 5.5,
+     "reh": 72,
+     "wsd_max": 4.9,
      "pop_max": 30.0,
      "rain_hours": 0,
      "sky_mode": 1
     },
     {
      "date": "2026-11-21",
-     "tmp_day": 6.0,
-     "tmx": 7.0,
+     "tmp_day": 6.3,
+     "tmx": 8.0,
      "tmn": 0.0,
+     "reh": 59,
+     "wsd_max": 4.1,
+     "pop_max": 0.0,
+     "rain_hours": 0,
+     "sky_mode": 1
+    },
+    {
+     "date": "2026-11-22",
+     "tmp_day": 7.0,
+     "tmx": 9.0,
+     "tmn": -1.0,
      "reh": 60,
-     "wsd_max": 4.3,
+     "wsd_max": 1.9,
      "pop_max": 0.0,
      "rain_hours": 0,
      "sky_mode": 1
     }
    ],
    "pm25": {
-    "pm25_median": 7.5,
-    "n_station": 46,
-    "time": "2026-11-19 10:00"
+    "pm25_median": 3.0,
+    "n_station": 44,
+    "time": "2026-11-20 02:00"
    },
    "sido": "전남",
    "error": null
@@ -1693,23 +1693,12 @@
    ],
    "days": [
     {
-     "date": "2026-11-19",
-     "tmp_day": 8.4,
-     "tmx": 10.0,
-     "tmn": null,
-     "reh": 66,
-     "wsd_max": 7.3,
-     "pop_max": 30.0,
-     "rain_hours": 0,
-     "sky_mode": 4
-    },
-    {
      "date": "2026-11-20",
-     "tmp_day": 6.3,
+     "tmp_day": 6.4,
      "tmx": 8.0,
      "tmn": 2.0,
-     "reh": 62,
-     "wsd_max": 5.9,
+     "reh": 63,
+     "wsd_max": 5.4,
      "pop_max": 0.0,
      "rain_hours": 0,
      "sky_mode": 1
@@ -1718,18 +1707,29 @@
      "date": "2026-11-21",
      "tmp_day": 7.4,
      "tmx": 9.0,
-     "tmn": 1.0,
+     "tmn": 0.0,
      "reh": 55,
-     "wsd_max": 4.0,
+     "wsd_max": 3.5,
+     "pop_max": 0.0,
+     "rain_hours": 0,
+     "sky_mode": 1
+    },
+    {
+     "date": "2026-11-22",
+     "tmp_day": 7.4,
+     "tmx": 10.0,
+     "tmn": 0.0,
+     "reh": 54,
+     "wsd_max": 2.7,
      "pop_max": 0.0,
      "rain_hours": 0,
      "sky_mode": 1
     }
    ],
    "pm25": {
-    "pm25_median": 7.5,
-    "n_station": 46,
-    "time": "2026-11-19 10:00"
+    "pm25_median": 3.0,
+    "n_station": 44,
+    "time": "2026-11-20 02:00"
    },
    "sido": "전남",
    "error": null
@@ -1741,43 +1741,43 @@
    ],
    "days": [
     {
-     "date": "2026-11-19",
-     "tmp_day": 7.6,
-     "tmx": 9.0,
-     "tmn": null,
-     "reh": 69,
-     "wsd_max": 6.7,
-     "pop_max": 60.0,
-     "rain_hours": 3,
-     "sky_mode": 4
-    },
-    {
      "date": "2026-11-20",
-     "tmp_day": 5.9,
+     "tmp_day": 5.6,
      "tmx": 7.0,
-     "tmn": 0.0,
-     "reh": 66,
-     "wsd_max": 5.7,
+     "tmn": 1.0,
+     "reh": 67,
+     "wsd_max": 5.1,
      "pop_max": 0.0,
      "rain_hours": 0,
      "sky_mode": 1
     },
     {
      "date": "2026-11-21",
-     "tmp_day": 7.0,
+     "tmp_day": 6.9,
      "tmx": 8.0,
-     "tmn": -1.0,
+     "tmn": 0.0,
+     "reh": 54,
+     "wsd_max": 4.0,
+     "pop_max": 0.0,
+     "rain_hours": 0,
+     "sky_mode": 1
+    },
+    {
+     "date": "2026-11-22",
+     "tmp_day": 7.4,
+     "tmx": 9.0,
+     "tmn": -2.0,
      "reh": 55,
-     "wsd_max": 4.3,
+     "wsd_max": 2.7,
      "pop_max": 0.0,
      "rain_hours": 0,
      "sky_mode": 1
     }
    ],
    "pm25": {
-    "pm25_median": 7.5,
-    "n_station": 46,
-    "time": "2026-11-19 10:00"
+    "pm25_median": 3.0,
+    "n_station": 44,
+    "time": "2026-11-20 02:00"
    },
    "sido": "전남",
    "error": null
@@ -1789,43 +1789,43 @@
    ],
    "days": [
     {
-     "date": "2026-11-19",
-     "tmp_day": 5.1,
-     "tmx": 6.0,
-     "tmn": null,
-     "reh": 72,
-     "wsd_max": 5.1,
-     "pop_max": 30.0,
-     "rain_hours": 0,
-     "sky_mode": 4
-    },
-    {
      "date": "2026-11-20",
      "tmp_day": 3.3,
      "tmx": 4.0,
-     "tmn": -2.0,
-     "reh": 62,
-     "wsd_max": 5.3,
+     "tmn": -1.0,
+     "reh": 63,
+     "wsd_max": 4.8,
      "pop_max": 0.0,
      "rain_hours": 0,
      "sky_mode": 1
     },
     {
      "date": "2026-11-21",
-     "tmp_day": 4.6,
+     "tmp_day": 4.4,
      "tmx": 6.0,
+     "tmn": -5.0,
+     "reh": 51,
+     "wsd_max": 3.8,
+     "pop_max": 0.0,
+     "rain_hours": 0,
+     "sky_mode": 1
+    },
+    {
+     "date": "2026-11-22",
+     "tmp_day": 5.0,
+     "tmx": 7.0,
      "tmn": -4.0,
      "reh": 53,
-     "wsd_max": 4.5,
+     "wsd_max": 3.5,
      "pop_max": 0.0,
      "rain_hours": 0,
      "sky_mode": 1
     }
    ],
    "pm25": {
-    "pm25_median": 7.5,
-    "n_station": 46,
-    "time": "2026-11-19 10:00"
+    "pm25_median": 3.0,
+    "n_station": 44,
+    "time": "2026-11-20 02:00"
    },
    "sido": "전남",
    "error": null
@@ -1837,23 +1837,12 @@
    ],
    "days": [
     {
-     "date": "2026-11-19",
-     "tmp_day": 7.1,
-     "tmx": 8.0,
-     "tmn": null,
-     "reh": 76,
-     "wsd_max": 6.0,
-     "pop_max": 60.0,
-     "rain_hours": 6,
-     "sky_mode": 4
-    },
-    {
      "date": "2026-11-20",
-     "tmp_day": 5.0,
+     "tmp_day": 4.9,
      "tmx": 6.0,
-     "tmn": 0.0,
-     "reh": 70,
-     "wsd_max": 5.0,
+     "tmn": 1.0,
+     "reh": 69,
+     "wsd_max": 4.5,
      "pop_max": 20.0,
      "rain_hours": 0,
      "sky_mode": 1
@@ -1864,16 +1853,27 @@
      "tmx": 7.0,
      "tmn": 0.0,
      "reh": 56,
-     "wsd_max": 4.2,
+     "wsd_max": 3.5,
+     "pop_max": 0.0,
+     "rain_hours": 0,
+     "sky_mode": 1
+    },
+    {
+     "date": "2026-11-22",
+     "tmp_day": 7.0,
+     "tmx": 9.0,
+     "tmn": -2.0,
+     "reh": 57,
+     "wsd_max": 1.4,
      "pop_max": 0.0,
      "rain_hours": 0,
      "sky_mode": 1
     }
    ],
    "pm25": {
-    "pm25_median": 7.5,
-    "n_station": 46,
-    "time": "2026-11-19 10:00"
+    "pm25_median": 3.0,
+    "n_station": 44,
+    "time": "2026-11-20 02:00"
    },
    "sido": "전남",
    "error": null
@@ -1885,23 +1885,12 @@
    ],
    "days": [
     {
-     "date": "2026-11-19",
-     "tmp_day": 3.0,
-     "tmx": 4.0,
-     "tmn": null,
-     "reh": 46,
-     "wsd_max": 6.0,
-     "pop_max": 30.0,
-     "rain_hours": 0,
-     "sky_mode": 4
-    },
-    {
      "date": "2026-11-20",
-     "tmp_day": 0.1,
+     "tmp_day": 0.7,
      "tmx": 2.0,
      "tmn": -4.0,
-     "reh": 43,
-     "wsd_max": 7.2,
+     "reh": 44,
+     "wsd_max": 6.7,
      "pop_max": 0.0,
      "rain_hours": 0,
      "sky_mode": 1
@@ -1911,17 +1900,28 @@
      "tmp_day": 1.1,
      "tmx": 2.0,
      "tmn": -4.0,
-     "reh": 36,
-     "wsd_max": 7.4,
+     "reh": 33,
+     "wsd_max": 6.8,
+     "pop_max": 0.0,
+     "rain_hours": 0,
+     "sky_mode": 1
+    },
+    {
+     "date": "2026-11-22",
+     "tmp_day": 2.9,
+     "tmx": 4.0,
+     "tmn": -6.0,
+     "reh": 32,
+     "wsd_max": 4.9,
      "pop_max": 0.0,
      "rain_hours": 0,
      "sky_mode": 1
     }
    ],
    "pm25": {
-    "pm25_median": 13.0,
-    "n_station": 49,
-    "time": "2026-11-19 10:00"
+    "pm25_median": 9.0,
+    "n_station": 51,
+    "time": "2026-11-20 02:00"
    },
    "sido": "경북",
    "error": null
@@ -1933,43 +1933,43 @@
    ],
    "days": [
     {
-     "date": "2026-11-19",
-     "tmp_day": 7.1,
-     "tmx": 9.0,
-     "tmn": null,
-     "reh": 56,
-     "wsd_max": 4.0,
-     "pop_max": 30.0,
-     "rain_hours": 0,
-     "sky_mode": 3
-    },
-    {
      "date": "2026-11-20",
      "tmp_day": 5.3,
      "tmx": 7.0,
-     "tmn": -1.0,
-     "reh": 49,
-     "wsd_max": 4.3,
+     "tmn": 0.0,
+     "reh": 50,
+     "wsd_max": 3.7,
      "pop_max": 20.0,
      "rain_hours": 0,
      "sky_mode": 1
     },
     {
      "date": "2026-11-21",
-     "tmp_day": 5.3,
+     "tmp_day": 5.4,
      "tmx": 7.0,
      "tmn": -2.0,
      "reh": 46,
-     "wsd_max": 3.6,
+     "wsd_max": 3.0,
+     "pop_max": 0.0,
+     "rain_hours": 0,
+     "sky_mode": 1
+    },
+    {
+     "date": "2026-11-22",
+     "tmp_day": 5.1,
+     "tmx": 7.0,
+     "tmn": -3.0,
+     "reh": 48,
+     "wsd_max": 2.1,
      "pop_max": 0.0,
      "rain_hours": 0,
      "sky_mode": 1
     }
    ],
    "pm25": {
-    "pm25_median": 7.5,
-    "n_station": 48,
-    "time": "2026-11-19 10:00"
+    "pm25_median": 6.0,
+    "n_station": 47,
+    "time": "2026-11-20 02:00"
    },
    "sido": "경남",
    "error": null
@@ -1981,23 +1981,12 @@
    ],
    "days": [
     {
-     "date": "2026-11-19",
-     "tmp_day": 0.3,
-     "tmx": 4.0,
-     "tmn": null,
-     "reh": 78,
-     "wsd_max": 5.0,
-     "pop_max": 30.0,
-     "rain_hours": 0,
-     "sky_mode": 4
-    },
-    {
      "date": "2026-11-20",
-     "tmp_day": -1.6,
-     "tmx": 2.0,
+     "tmp_day": -1.3,
+     "tmx": 1.0,
      "tmn": -4.0,
-     "reh": 70,
-     "wsd_max": 6.4,
+     "reh": 71,
+     "wsd_max": 5.8,
      "pop_max": 30.0,
      "rain_hours": 0,
      "sky_mode": 3
@@ -2005,19 +1994,30 @@
     {
      "date": "2026-11-21",
      "tmp_day": -0.1,
-     "tmx": 4.0,
-     "tmn": -5.0,
-     "reh": 56,
-     "wsd_max": 4.5,
+     "tmx": 3.0,
+     "tmn": -6.0,
+     "reh": 57,
+     "wsd_max": 3.8,
+     "pop_max": 0.0,
+     "rain_hours": 0,
+     "sky_mode": 1
+    },
+    {
+     "date": "2026-11-22",
+     "tmp_day": 1.1,
+     "tmx": 5.0,
+     "tmn": -6.0,
+     "reh": 59,
+     "wsd_max": 3.0,
      "pop_max": 0.0,
      "rain_hours": 0,
      "sky_mode": 1
     }
    ],
    "pm25": {
-    "pm25_median": 7.5,
-    "n_station": 48,
-    "time": "2026-11-19 10:00"
+    "pm25_median": 6.0,
+    "n_station": 47,
+    "time": "2026-11-20 02:00"
    },
    "sido": "경남",
    "error": null
@@ -2029,23 +2029,12 @@
    ],
    "days": [
     {
-     "date": "2026-11-19",
-     "tmp_day": 1.9,
-     "tmx": 3.0,
-     "tmn": null,
-     "reh": 65,
-     "wsd_max": 5.2,
-     "pop_max": 30.0,
-     "rain_hours": 0,
-     "sky_mode": 4
-    },
-    {
      "date": "2026-11-20",
-     "tmp_day": 0.0,
+     "tmp_day": 0.1,
      "tmx": 1.0,
      "tmn": -4.0,
      "reh": 58,
-     "wsd_max": 6.6,
+     "wsd_max": 6.0,
      "pop_max": 20.0,
      "rain_hours": 0,
      "sky_mode": 1
@@ -2055,17 +2044,28 @@
      "tmp_day": 0.7,
      "tmx": 2.0,
      "tmn": -7.0,
-     "reh": 50,
-     "wsd_max": 5.1,
+     "reh": 52,
+     "wsd_max": 4.5,
+     "pop_max": 0.0,
+     "rain_hours": 0,
+     "sky_mode": 1
+    },
+    {
+     "date": "2026-11-22",
+     "tmp_day": 2.0,
+     "tmx": 4.0,
+     "tmn": -7.0,
+     "reh": 51,
+     "wsd_max": 2.8,
      "pop_max": 0.0,
      "rain_hours": 0,
      "sky_mode": 1
     }
    ],
    "pm25": {
-    "pm25_median": 7.5,
-    "n_station": 48,
-    "time": "2026-11-19 10:00"
+    "pm25_median": 6.0,
+    "n_station": 47,
+    "time": "2026-11-20 02:00"
    },
    "sido": "경남",
    "error": null
@@ -2077,43 +2077,43 @@
    ],
    "days": [
     {
-     "date": "2026-11-19",
-     "tmp_day": 3.0,
-     "tmx": 4.0,
-     "tmn": null,
-     "reh": 61,
-     "wsd_max": 5.0,
-     "pop_max": 30.0,
-     "rain_hours": 0,
-     "sky_mode": 4
-    },
-    {
      "date": "2026-11-20",
-     "tmp_day": 0.9,
+     "tmp_day": 1.1,
      "tmx": 2.0,
-     "tmn": -4.0,
+     "tmn": -3.0,
      "reh": 57,
-     "wsd_max": 6.3,
+     "wsd_max": 5.7,
      "pop_max": 20.0,
      "rain_hours": 0,
      "sky_mode": 1
     },
     {
      "date": "2026-11-21",
-     "tmp_day": 1.7,
+     "tmp_day": 1.6,
      "tmx": 3.0,
      "tmn": -6.0,
      "reh": 50,
-     "wsd_max": 4.8,
+     "wsd_max": 4.3,
+     "pop_max": 0.0,
+     "rain_hours": 0,
+     "sky_mode": 1
+    },
+    {
+     "date": "2026-11-22",
+     "tmp_day": 3.1,
+     "tmx": 5.0,
+     "tmn": -6.0,
+     "reh": 51,
+     "wsd_max": 2.5,
      "pop_max": 0.0,
      "rain_hours": 0,
      "sky_mode": 1
     }
    ],
    "pm25": {
-    "pm25_median": 7.5,
-    "n_station": 48,
-    "time": "2026-11-19 10:00"
+    "pm25_median": 6.0,
+    "n_station": 47,
+    "time": "2026-11-20 02:00"
    },
    "sido": "경남",
    "error": null
